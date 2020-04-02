@@ -1,6 +1,5 @@
 import React from 'react';
 import './Node.css';
-import { NUM_COL } from './consts';
 
 export default function Node(props) {
   const extraClassName = props.isFinish
@@ -9,9 +8,6 @@ export default function Node(props) {
     ? 'node-start'
     : '';
   return (
-    <div
-      id={`node-${props.row * NUM_COL + props.col}`}
-      className={`node ${extraClassName}`}
-    ></div>
+    <div id={`node-${props.val}`} className={`node ${extraClassName}`}></div>
   );
 }
