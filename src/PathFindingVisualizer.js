@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Node from './Node';
-
-const START_NODE_ROW = 5;
-const START_NODE_COL = 15;
-const FINISH_NODE_ROW = 10;
-const FINISH_NODE_COL = 35;
+import {
+  START_NODE_COL,
+  FINISH_NODE_COL,
+  START_NODE_ROW,
+  FINISH_NODE_ROW,
+  NUM_COL,
+  NUM_ROW
+} from './consts';
 
 export default function PathFindingVisualizer() {
   const [grid, setGrid] = useState([]);
@@ -25,15 +28,17 @@ export default function PathFindingVisualizer() {
 
   const getInitialGrid = () => {
     const grid = [];
-    for (let row = 0; row < 20; row++) {
+    for (let row = 0; row < NUM_ROW; row++) {
       const currentRow = [];
-      for (let col = 0; col < 50; col++) {
+      for (let col = 0; col < NUM_COL; col++) {
         currentRow.push(createNode(col, row));
       }
       grid.push(currentRow);
     }
     return grid;
   };
+
+  console.log(grid);
 
   return (
     <div>
@@ -46,7 +51,7 @@ export default function PathFindingVisualizer() {
                 const { row, col, isStart, isFinish } = node;
                 return (
                   <Node
-                    key={`${rowIdx}-${nodeIdx}`}
+                    key={rowIdx * NUM_COL + nodeIdx}
                     col={col}
                     row={row}
                     isStart={isStart}
