@@ -71,8 +71,10 @@ export default function PathFindingVisualizer() {
     return grid;
   };
 
-  console.log(grid);
+  //   add bfs
+  const bfs = () => {};
 
+  console.log(grid);
   return (
     <div>
       <h1>Path Finding</h1>
