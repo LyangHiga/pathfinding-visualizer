@@ -4,10 +4,9 @@ import {
   START_NODE_ROW,
   FINISH_NODE_ROW
 } from '../consts';
-
 import Queue from '../structures/queue';
-
 import { valToIndx } from '../helpers';
+import { pathAnimation } from '../animations';
 
 const bfs = grid => {
   const start = grid[START_NODE_ROW][START_NODE_COL];
@@ -54,7 +53,7 @@ const bfs = grid => {
     a = parents[a];
   }
   path = path.reverse();
-  console.log(path);
+  pathAnimation(path);
   return { path };
 };
 
