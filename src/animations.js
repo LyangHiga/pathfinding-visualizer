@@ -15,3 +15,15 @@ export async function visitedAnimation(v, end) {
   await sleep(10);
   vertex.backgroundColor = 'blue';
 }
+
+export const clear = (grid) => {
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid[i].length; j++) {
+      const v = grid[i][j];
+      if (!v.isStart && !v.isFinish) {
+        const vertex = document.getElementById(`node-${v.val}`).style;
+        vertex.backgroundColor = 'white';
+      }
+    }
+  }
+};
