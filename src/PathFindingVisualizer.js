@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Node from './Node';
 import { getInitialGrid } from './helpers';
 import bfs from './algorithms/bfs';
+import dfs from './algorithms/dfs';
 import { clear } from './animations';
 import './PathFindingVisualizer.css';
 
@@ -18,6 +19,7 @@ export default function PathFindingVisualizer() {
       <div className="nav">
         <h1>Path Finding</h1>
         <button onClick={() => bfs(grid)}>bfs</button>
+        <button onClick={() => dfs(grid)}>dfs</button>
         <button onClick={() => clear(grid)}>clear</button>
       </div>
       <div className="grid">

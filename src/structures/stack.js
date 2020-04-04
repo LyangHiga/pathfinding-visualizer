@@ -44,3 +44,5 @@ class Stack {
     return removed;
   }
 }
+
+export default Stack;

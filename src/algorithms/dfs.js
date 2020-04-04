@@ -4,46 +4,59 @@ import {
   START_NODE_ROW,
   FINISH_NODE_ROW,
 } from '../consts';
-import Queue from '../structures/queue';
+import Stack from '../structures/stack';
+
 import { valToIndx } from '../helpers';
 import { pathAnimation, visitedAnimation } from '../animations';
 
-async function bfs(grid) {
+// dfs iterative
+async function dfs(grid) {
   const start = grid[START_NODE_ROW][START_NODE_COL];
   const end = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+  let result = [];
   let visited = {};
   let parents = {};
   let path = [];
   let dist = {};
-  let q = new Queue();
-  // add start vertex to the queue
-  q.enQueue(start);
+  let stack = new Stack();
+  // add start vertex to the stack
+  stack.push(start);
   // start vertex is already visited
   visited[start.val] = true;
   dist[start.val] = 0;
-  parents[start.val] = null;
-  // vertex that will be deQueue
+  //   parents[start.val] = null;
   let v;
-  while (q.size !== 0) {
-    v = q.deQueue().val;
-    // check if v is the end vertex
+  let i = 0;
+  while (stack.size !== 0) {
+    // take vertex v from the top of the stack
+    v = stack.pop().val;
+    result.push(v.val);
+    // add parent of v wich is the last one poped
+    if (i === 0) {
+      parents[v.val] = null;
+    } else {
+      parents[v.val] = result[i - 1];
+      dist[v.val] = dist[parents[v.val]] + 1;
+    }
     if (v.val === end.val) {
       //   we find the target
       break;
     }
+    i++;
+    // mark w as visited
+    visited[v.val] = true;
+    await visitedAnimation(v.val, start.val, end.val);
     // for every edge of v
     for (const key in v.adjList) {
       const w = v.adjList[key];
       const { row, col } = valToIndx(w);
       //   check w is visited
       if (visited[w] !== true && w !== null) {
-        //mark  w as visited
-        visited[w] = true;
-        await visitedAnimation(w, end);
-        //   enQueue w
-        q.enQueue(grid[row][col]);
-        parents[w] = v.val;
-        dist[w] = dist[v.val] + 1;
+        stack.push(grid[row][col]);
+        if (w === end.val) {
+          //   we find the target
+          break;
+        }
       }
     }
   }
@@ -54,8 +67,7 @@ async function bfs(grid) {
     a = parents[a];
   }
   path = path.reverse();
-  pathAnimation(path);
-  //   return { path };
+  pathAnimation(path, start.val);
 }
 
-export default bfs;
+export default dfs;
