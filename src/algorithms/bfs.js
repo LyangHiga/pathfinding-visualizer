@@ -5,7 +5,7 @@ import {
   FINISH_NODE_ROW,
 } from '../consts';
 import Queue from '../structures/queue';
-import { valToIndx } from '../helpers';
+import { valToIndx, getPath } from '../helpers';
 import { pathAnimation, visitedAnimation } from '../animations';
 
 async function bfs(grid) {
@@ -13,7 +13,6 @@ async function bfs(grid) {
   const end = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
   let visited = {};
   let parents = {};
-  let path = [];
   let dist = {};
   let q = new Queue();
   // add start vertex to the queue
@@ -47,15 +46,8 @@ async function bfs(grid) {
       }
     }
   }
-  //   building path
-  let a = parents[end.val];
-  for (let i = 0; i < dist[end.val] - 1; i++) {
-    path.push(a);
-    a = parents[a];
-  }
-  path = path.reverse();
+  const path = getPath(parents, end.val, dist[end.val]);
   pathAnimation(path, start.val);
-  //   return { path };
 }
 
 export default bfs;

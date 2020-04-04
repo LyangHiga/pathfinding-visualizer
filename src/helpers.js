@@ -4,7 +4,7 @@ import {
   START_NODE_ROW,
   FINISH_NODE_ROW,
   NUM_COL,
-  NUM_ROW
+  NUM_ROW,
 } from './consts';
 
 const createNode = (col, row) => {
@@ -17,7 +17,7 @@ const createNode = (col, row) => {
     isStart: row === START_NODE_ROW && col === START_NODE_COL,
     isFinish: row === FINISH_NODE_ROW && col === FINISH_NODE_COL,
     adjList: adjList,
-    val: val
+    val: val,
   };
 };
 
@@ -41,7 +41,7 @@ const createAdjList = (val, col, row) => {
   return { a, b, c, d };
 };
 
-export const valToIndx = val => {
+export const valToIndx = (val) => {
   // const val = row * NUM_COL + col;
   const row = Math.floor(val / NUM_COL);
   const col = val - row * NUM_COL;
@@ -59,4 +59,15 @@ export const getInitialGrid = () => {
     grid.push(currentRow);
   }
   return grid;
+};
+
+//   building path
+export const getPath = (parents, end, dist) => {
+  let a = parents[end];
+  let path = [];
+  for (let i = 0; i < dist - 1; i++) {
+    path.push(a);
+    a = parents[a];
+  }
+  return path.reverse();
 };

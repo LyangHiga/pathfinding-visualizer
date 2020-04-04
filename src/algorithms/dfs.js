@@ -5,18 +5,16 @@ import {
   FINISH_NODE_ROW,
 } from '../consts';
 import Stack from '../structures/stack';
-
-import { valToIndx } from '../helpers';
+import { valToIndx, getPath } from '../helpers';
 import { pathAnimation, visitedAnimation } from '../animations';
 
-// dfs iterative
 async function dfs(grid) {
   const start = grid[START_NODE_ROW][START_NODE_COL];
   const end = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+  //   stack pop order
   let result = [];
   let visited = {};
   let parents = {};
-  let path = [];
   let dist = {};
   let stack = new Stack();
   // add start vertex to the stack
@@ -24,7 +22,6 @@ async function dfs(grid) {
   // start vertex is already visited
   visited[start.val] = true;
   dist[start.val] = 0;
-  //   parents[start.val] = null;
   let v;
   let i = 0;
   while (stack.size !== 0) {
@@ -60,13 +57,7 @@ async function dfs(grid) {
       }
     }
   }
-  //   building path
-  let a = parents[end.val];
-  for (let i = 0; i < dist[end.val] - 1; i++) {
-    path.push(a);
-    a = parents[a];
-  }
-  path = path.reverse();
+  let path = getPath(parents, end.val, dist[end.val]);
   pathAnimation(path, start.val);
 }
 
