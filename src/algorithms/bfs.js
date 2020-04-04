@@ -2,13 +2,14 @@ import {
   START_NODE_COL,
   FINISH_NODE_COL,
   START_NODE_ROW,
-  FINISH_NODE_ROW
+  FINISH_NODE_ROW,
 } from '../consts';
 import Queue from '../structures/queue';
 import { valToIndx } from '../helpers';
-import { pathAnimation } from '../animations';
+import { pathAnimation, visitedAnimation } from '../animations';
 
-const bfs = grid => {
+// const bfs = (grid) => {
+async function bfs(grid) {
   const start = grid[START_NODE_ROW][START_NODE_COL];
   const end = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
   let visited = {};
@@ -29,17 +30,16 @@ const bfs = grid => {
     // check if v is the end vertex
     if (v.val === end.val) {
       //   we find the target
-      // parents[end.val] = v.val;
-      // dist[end.val] = dist[v.val] + 1;
       break;
     }
     for (const key in v.adjList) {
       const w = v.adjList[key];
       const { row, col } = valToIndx(w);
       //   check w is visited
-      if (visited[w] !== true) {
+      if (visited[w] !== true && w !== null) {
         // w visited
         visited[w] = true;
+        await visitedAnimation(w, end);
         //   enQueue w
         q.enQueue(grid[row][col]);
         parents[w] = v.val;
@@ -55,6 +55,6 @@ const bfs = grid => {
   path = path.reverse();
   pathAnimation(path);
   return { path };
-};
+}
 
 export default bfs;
