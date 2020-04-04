@@ -13,8 +13,6 @@ export default function PathFindingVisualizer() {
     setGrid(n);
   }, []);
 
-  console.log(grid);
-
   return (
     <div>
       <div className="nav">

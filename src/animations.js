@@ -12,7 +12,7 @@ export async function pathAnimation(path) {
 export async function visitedAnimation(v, end) {
   if (v === end.val) return;
   const vertex = document.getElementById(`node-${v}`).style;
-  await sleep(10);
+  await sleep(5);
   vertex.backgroundColor = 'blue';
 }
 

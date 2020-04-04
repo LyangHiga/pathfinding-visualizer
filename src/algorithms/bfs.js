@@ -8,7 +8,6 @@ import Queue from '../structures/queue';
 import { valToIndx } from '../helpers';
 import { pathAnimation, visitedAnimation } from '../animations';
 
-// const bfs = (grid) => {
 async function bfs(grid) {
   const start = grid[START_NODE_ROW][START_NODE_COL];
   const end = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
@@ -47,6 +46,7 @@ async function bfs(grid) {
       }
     }
   }
+  //   building path
   let a = parents[end.val];
   for (let i = 0; i < dist[end.val] - 1; i++) {
     path.push(a);
@@ -54,7 +54,7 @@ async function bfs(grid) {
   }
   path = path.reverse();
   pathAnimation(path);
-  return { path };
+  //   return { path };
 }
 
 export default bfs;
