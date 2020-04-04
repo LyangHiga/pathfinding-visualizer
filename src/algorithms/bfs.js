@@ -39,7 +39,7 @@ async function bfs(grid) {
       if (visited[w] !== true && w !== null) {
         //mark  w as visited
         visited[w] = true;
-        await visitedAnimation(w, end);
+        await visitedAnimation(w, start.val, end.val);
         //   enQueue w
         q.enQueue(grid[row][col]);
         parents[w] = v.val;
@@ -54,7 +54,7 @@ async function bfs(grid) {
     a = parents[a];
   }
   path = path.reverse();
-  pathAnimation(path);
+  pathAnimation(path, start.val);
   //   return { path };
 }
 

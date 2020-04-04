@@ -15,7 +15,7 @@ export async function visitedAnimation(v, start, end) {
   if (v === end) return;
   if (v === start) return;
   const vertex = document.getElementById(`node-${v}`).style;
-  await sleep(10);
+  await sleep(5);
   vertex.backgroundColor = 'blue';
 }
 
