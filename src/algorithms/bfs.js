@@ -34,13 +34,15 @@ async function bfs(grid) {
     for (const key in v.adjList) {
       const w = v.adjList[key];
       const { row, col } = valToIndx(w);
-      //   check w is visited
-      if (visited[w] !== true && w !== null) {
+      //   wVertex has all properties while w is wVeterx.val
+      const wVertex = grid[row][col];
+      //   check w is visited, is not null or wall
+      if (visited[w] !== true && w !== null && !wVertex.isWall) {
         //mark  w as visited
         visited[w] = true;
         await visitedAnimation(w, start.val, end.val);
-        //   enQueue w
-        q.enQueue(grid[row][col]);
+        //   enQueue vertex w
+        q.enQueue(wVertex);
         parents[w] = v.val;
         dist[w] = dist[v.val] + 1;
       }

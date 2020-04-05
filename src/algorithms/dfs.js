@@ -47,9 +47,12 @@ async function dfs(grid) {
     for (const key in v.adjList) {
       const w = v.adjList[key];
       const { row, col } = valToIndx(w);
-      //   check w is visited
-      if (visited[w] !== true && w !== null) {
-        stack.push(grid[row][col]);
+      //   wVertex has all properties while w is wVeterx.val
+      const wVertex = grid[row][col];
+      //   check w is visited, is not null or wall
+      if (visited[w] !== true && w !== null && !wVertex.isWall) {
+        //   push w vertex
+        stack.push(wVertex);
         if (w === end.val) {
           //   we find the target
           break;

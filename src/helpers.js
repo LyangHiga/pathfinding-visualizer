@@ -16,6 +16,7 @@ const createNode = (col, row) => {
     row,
     isStart: row === START_NODE_ROW && col === START_NODE_COL,
     isFinish: row === FINISH_NODE_ROW && col === FINISH_NODE_COL,
+    isWall: false,
     adjList: adjList,
     val: val,
   };
@@ -70,4 +71,15 @@ export const getPath = (parents, end, dist) => {
     a = parents[a];
   }
   return path.reverse();
+};
+
+export const getNewGridWithWallToggled = (grid, row, col) => {
+  const newGrid = grid.slice();
+  const node = newGrid[row][col];
+  const newNode = {
+    ...node,
+    isWall: !node.isWall,
+  };
+  newGrid[row][col] = newNode;
+  return newGrid;
 };

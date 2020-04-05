@@ -14,7 +14,6 @@ const styles = (theme) => ({
     cursor: 'pointer',
     border: 'none',
     fontSize: '15px',
-    cursor: 'pointer',
   },
 });
 

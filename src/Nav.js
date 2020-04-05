@@ -19,7 +19,7 @@ function Nav(props) {
   }
 
   return (
-    <AppBar position="static" color="white" className={classes.Navbar}>
+    <AppBar position="static" color="inherit" className={classes.Navbar}>
       <Toolbar>
         <Typography className={classes.title} variant="h6" color="inherit">
           Pathfinding Visualizer
