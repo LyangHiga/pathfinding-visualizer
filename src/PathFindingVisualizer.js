@@ -32,7 +32,12 @@ export default function PathFindingVisualizer() {
 
   return (
     <div>
-      <Nav grid={grid} disable={disable} setDisable={setDisable} />
+      <Nav
+        grid={grid}
+        setGrid={setGrid}
+        disable={disable}
+        setDisable={setDisable}
+      />
       <div className="grid">
         {grid.map((row, rowIdx) => {
           return (

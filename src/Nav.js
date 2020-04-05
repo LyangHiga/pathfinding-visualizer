@@ -1,16 +1,23 @@
 import React from 'react';
 import bfs from './algorithms/bfs';
 import dfs from './algorithms/dfs';
-import { clear } from './animations';
+import { clearAnimation } from './animations';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import styles from './NavStyles';
+import { getInitialGrid } from './helpers';
 
 function Nav(props) {
   const { classes } = props;
+
+  const clear = () => {
+    clearAnimation(props.grid);
+    const n = getInitialGrid();
+    props.setGrid(n);
+  };
 
   async function handleClick(alg) {
     props.setDisable(true);
@@ -27,7 +34,7 @@ function Nav(props) {
         <div className={classes.button}>
           <button
             className={classes.button}
-            onClick={() => clear(props.grid)}
+            onClick={() => clear()}
             disabled={props.disable}
           >
             Clear

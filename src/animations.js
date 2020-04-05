@@ -19,7 +19,7 @@ export async function visitedAnimation(v, start, end) {
   vertex.backgroundColor = 'blue';
 }
 
-export const clear = (grid) => {
+export const clearAnimation = (grid) => {
   for (let i = 0; i < grid.length; i++) {
     for (let j = 0; j < grid[i].length; j++) {
       const v = grid[i][j];
