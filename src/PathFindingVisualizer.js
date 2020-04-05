@@ -16,7 +16,7 @@ export default function PathFindingVisualizer() {
   }, []);
 
   const handleMouseDown = (row, col) => {
-    wallAnimation(grid[row][col].val);
+    wallAnimation(grid[row][col]);
     const newGrid = getNewGridWithWallToggled(grid, row, col);
     setGrid(newGrid);
     setMouseIsPressed(true);
@@ -24,7 +24,7 @@ export default function PathFindingVisualizer() {
 
   const handleMouseEnter = (row, col) => {
     if (!mouseIsPressed) return;
-    wallAnimation(grid[row][col].val);
+    wallAnimation(grid[row][col]);
     const newGrid = getNewGridWithWallToggled(grid, row, col);
     setGrid(newGrid);
   };

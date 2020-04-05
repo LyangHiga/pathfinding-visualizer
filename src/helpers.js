@@ -67,6 +67,7 @@ export const getInitialGrid = () => {
 
 // returns a new grid after a mouse click (wall is created)
 export const getNewGridWithWallToggled = (grid, row, col) => {
+  if (grid[row][col].isStart || grid[row][col].isFinish) return grid;
   const newGrid = grid.slice();
   const node = newGrid[row][col];
   const newNode = {

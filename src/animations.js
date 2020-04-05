@@ -32,6 +32,7 @@ export const clearAnimation = (grid) => {
 };
 
 export const wallAnimation = (v) => {
-  const vertex = document.getElementById(`node-${v}`).style;
+  if (v.isStart || v.isFinish) return;
+  const vertex = document.getElementById(`node-${v.val}`).style;
   vertex.backgroundColor = 'rgb(12, 53, 71)';
 };
