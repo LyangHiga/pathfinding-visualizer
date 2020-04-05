@@ -3,6 +3,7 @@ import Node from './Node';
 import { getInitialGrid, getNewGridWithWallToggled } from './helpers';
 import Nav from './Nav';
 import './PathFindingVisualizer.css';
+import { wallAnimation } from './animations';
 
 export default function PathFindingVisualizer() {
   const [grid, setGrid] = useState([]);
@@ -15,6 +16,7 @@ export default function PathFindingVisualizer() {
   }, []);
 
   const handleMouseDown = (row, col) => {
+    wallAnimation(grid[row][col].val);
     const newGrid = getNewGridWithWallToggled(grid, row, col);
     setGrid(newGrid);
     setMouseIsPressed(true);
@@ -22,6 +24,7 @@ export default function PathFindingVisualizer() {
 
   const handleMouseEnter = (row, col) => {
     if (!mouseIsPressed) return;
+    wallAnimation(grid[row][col].val);
     const newGrid = getNewGridWithWallToggled(grid, row, col);
     setGrid(newGrid);
   };

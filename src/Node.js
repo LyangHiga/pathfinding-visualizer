@@ -6,8 +6,6 @@ export default function Node(props) {
     ? 'node-finish'
     : props.isStart
     ? 'node-start'
-    : props.isWall
-    ? 'node-wall'
     : '';
   return (
     <div

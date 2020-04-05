@@ -7,6 +7,8 @@ import {
   NUM_ROW,
 } from './consts';
 
+// Node Helpers
+
 const createNode = (col, row) => {
   const val = row * NUM_COL + col;
   const adjList = createAdjList(val, col, row);
@@ -25,7 +27,7 @@ const createNode = (col, row) => {
 //         A
 //    B   VAL  D
 //         C
-// return all neighbours of VAL
+// returns all neighbours of VAL
 const createAdjList = (val, col, row) => {
   //   neighbours in a line above
   // negative numbers arent a node
@@ -42,14 +44,15 @@ const createAdjList = (val, col, row) => {
   return { a, b, c, d };
 };
 
+// returns {row, col} of a vertex val
 export const valToIndx = (val) => {
-  // const val = row * NUM_COL + col;
   const row = Math.floor(val / NUM_COL);
   const col = val - row * NUM_COL;
-  // console.log(`row = ${row}, col = ${col}`);
   return { row, col };
 };
 
+// Grid Helpers
+// returns the initial Grid
 export const getInitialGrid = () => {
   const grid = [];
   for (let row = 0; row < NUM_ROW; row++) {
@@ -62,17 +65,7 @@ export const getInitialGrid = () => {
   return grid;
 };
 
-//   building path
-export const getPath = (parents, end, dist) => {
-  let a = parents[end];
-  let path = [];
-  for (let i = 0; i < dist - 1; i++) {
-    path.push(a);
-    a = parents[a];
-  }
-  return path.reverse();
-};
-
+// returns a new grid after a mouse click (wall is created)
 export const getNewGridWithWallToggled = (grid, row, col) => {
   const newGrid = grid.slice();
   const node = newGrid[row][col];
@@ -82,4 +75,15 @@ export const getNewGridWithWallToggled = (grid, row, col) => {
   };
   newGrid[row][col] = newNode;
   return newGrid;
+};
+
+//   building path
+export const getPath = (parents, end, dist) => {
+  let a = parents[end];
+  let path = [];
+  for (let i = 0; i < dist - 1; i++) {
+    path.push(a);
+    a = parents[a];
+  }
+  return path.reverse();
 };
