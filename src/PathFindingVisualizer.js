@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Node from './Node';
-import { getInitialGrid, getNewGridWithWallToggled } from './helpers';
+import {
+  getInitialGrid,
+  getNewGridWithWallToggled,
+  getRandomVertex,
+} from './helpers';
 import Nav from './Nav';
 import './PathFindingVisualizer.css';
 import { wallAnimation } from './animations';
@@ -8,12 +12,13 @@ import { wallAnimation } from './animations';
 export default function PathFindingVisualizer() {
   const [grid, setGrid] = useState([]);
   const [disable, setDisable] = useState(false);
+  const [startVertex, setStarteVertex] = useState(getRandomVertex());
   const [mouseIsPressed, setMouseIsPressed] = useState(false);
 
   useEffect(() => {
-    const n = getInitialGrid();
+    const n = getInitialGrid(startVertex);
     setGrid(n);
-  }, []);
+  }, [startVertex]);
 
   const handleMouseDown = (row, col) => {
     wallAnimation(grid[row][col]);
@@ -40,6 +45,7 @@ export default function PathFindingVisualizer() {
         setGrid={setGrid}
         disable={disable}
         setDisable={setDisable}
+        start={startVertex}
       />
       <div className="grid">
         {grid.map((row, rowIdx) => {

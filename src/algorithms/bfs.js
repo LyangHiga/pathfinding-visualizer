@@ -1,15 +1,9 @@
-import {
-  START_NODE_COL,
-  FINISH_NODE_COL,
-  START_NODE_ROW,
-  FINISH_NODE_ROW,
-} from '../consts';
+import { FINISH_NODE_COL, FINISH_NODE_ROW } from '../consts';
 import Queue from '../structures/queue';
 import { valToIndx, getPath } from '../helpers';
 import { pathAnimation, visitedAnimation } from '../animations';
 
-async function bfs(grid) {
-  const start = grid[START_NODE_ROW][START_NODE_COL];
+async function bfs(grid, start) {
   const end = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
   let visited = {};
   let parents = {};

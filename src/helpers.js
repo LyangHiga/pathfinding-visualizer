@@ -1,22 +1,20 @@
-import {
-  START_NODE_COL,
-  FINISH_NODE_COL,
-  START_NODE_ROW,
-  FINISH_NODE_ROW,
-  NUM_COL,
-  NUM_ROW,
-} from './consts';
+import { FINISH_NODE_COL, FINISH_NODE_ROW, NUM_COL, NUM_ROW } from './consts';
 
 // Node Helpers
 
-const createNode = (col, row) => {
+// returns a random vertex value
+export const getRandomVertex = () => {
+  return Math.floor(Math.random() * NUM_COL * NUM_ROW);
+};
+
+const createNode = (col, row, start) => {
   const val = row * NUM_COL + col;
   const adjList = createAdjList(val, col, row);
 
   return {
     col,
     row,
-    isStart: row === START_NODE_ROW && col === START_NODE_COL,
+    isStart: val === start,
     isFinish: row === FINISH_NODE_ROW && col === FINISH_NODE_COL,
     isWall: false,
     adjList: adjList,
@@ -53,12 +51,12 @@ export const valToIndx = (val) => {
 
 // Grid Helpers
 // returns the initial Grid
-export const getInitialGrid = () => {
+export const getInitialGrid = (start) => {
   const grid = [];
   for (let row = 0; row < NUM_ROW; row++) {
     const currentRow = [];
     for (let col = 0; col < NUM_COL; col++) {
-      currentRow.push(createNode(col, row));
+      currentRow.push(createNode(col, row, start));
     }
     grid.push(currentRow);
   }

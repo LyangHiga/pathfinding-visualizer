@@ -1,15 +1,9 @@
-import {
-  START_NODE_COL,
-  FINISH_NODE_COL,
-  START_NODE_ROW,
-  FINISH_NODE_ROW,
-} from '../consts';
+import { FINISH_NODE_COL, FINISH_NODE_ROW } from '../consts';
 import Stack from '../structures/stack';
 import { valToIndx, getPath } from '../helpers';
 import { pathAnimation, visitedAnimation } from '../animations';
 
-async function dfs(grid) {
-  const start = grid[START_NODE_ROW][START_NODE_COL];
+async function dfs(grid, start) {
   const end = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
   //   stack pop order
   let result = [];
