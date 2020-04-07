@@ -1,10 +1,9 @@
-import { FINISH_NODE_COL, FINISH_NODE_ROW } from '../consts';
-import Stack from '../structures/stack';
-import { valToIndx, getPath } from '../helpers';
-import { pathAnimation, visitedAnimation } from '../animations';
+import Stack from "../structures/stack";
+import { valToIndx, getPath } from "../helpers";
+import { pathAnimation, visitedAnimation } from "../animations";
 
-async function dfs(grid, start) {
-  const end = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+async function dfs(grid, start, end) {
+  //   const end = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
   //   stack pop order
   let result = [];
   let visited = {};
@@ -40,7 +39,7 @@ async function dfs(grid, start) {
     // for every edge of v
     for (const key in v.adjList) {
       const w = v.adjList[key];
-      const { row, col } = valToIndx(w);
+      const [row, col] = valToIndx(w);
       //   wVertex has all properties while w is wVeterx.val
       const wVertex = grid[row][col];
       //   check w is visited, is not null or wall

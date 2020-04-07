@@ -1,4 +1,4 @@
-import { FINISH_NODE_COL, FINISH_NODE_ROW, NUM_COL, NUM_ROW } from './consts';
+import { NUM_COL, NUM_ROW } from "./consts";
 
 // Node Helpers
 
@@ -7,7 +7,7 @@ export const getRandomVertex = () => {
   return Math.floor(Math.random() * NUM_COL * NUM_ROW);
 };
 
-const createNode = (col, row, start) => {
+const createNode = (col, row, start, finish) => {
   const val = row * NUM_COL + col;
   const adjList = createAdjList(val, col, row);
 
@@ -15,7 +15,7 @@ const createNode = (col, row, start) => {
     col,
     row,
     isStart: val === start,
-    isFinish: row === FINISH_NODE_ROW && col === FINISH_NODE_COL,
+    isFinish: val === finish,
     isWall: false,
     adjList: adjList,
     val: val,
@@ -46,17 +46,17 @@ const createAdjList = (val, col, row) => {
 export const valToIndx = (val) => {
   const row = Math.floor(val / NUM_COL);
   const col = val - row * NUM_COL;
-  return { row, col };
+  return [row, col];
 };
 
 // Grid Helpers
 // returns the initial Grid
-export const getInitialGrid = (start) => {
+export const getInitialGrid = (start, finish) => {
   const grid = [];
   for (let row = 0; row < NUM_ROW; row++) {
     const currentRow = [];
     for (let col = 0; col < NUM_COL; col++) {
-      currentRow.push(createNode(col, row, start));
+      currentRow.push(createNode(col, row, start, finish));
     }
     grid.push(currentRow);
   }
