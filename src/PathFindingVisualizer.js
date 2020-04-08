@@ -8,6 +8,7 @@ import {
 import Nav from "./Nav";
 import "./PathFindingVisualizer.css";
 import { wallAnimation } from "./animations";
+import useToggleState from "./hooks/useToggleState";
 
 export default function PathFindingVisualizer() {
   const [grid, setGrid] = useState([]);
@@ -15,13 +16,24 @@ export default function PathFindingVisualizer() {
   const [startVertex, setStarteVertex] = useState(getRandomVertex());
   const [finishVertex, setFinishVertex] = useState(getRandomVertex());
   const [mouseIsPressed, setMouseIsPressed] = useState(false);
+  const [createWall, toggleCreateWall] = useToggleState(false);
 
   useEffect(() => {
     const n = getInitialGrid(startVertex, finishVertex);
     setGrid(n);
   }, [startVertex, finishVertex]);
 
+  const handleKeyPress = (event) => {
+    switch (event.key) {
+      case "w":
+        return toggleCreateWall();
+      default:
+        return;
+    }
+  };
+
   const handleMouseDown = (row, col) => {
+    if (!createWall) return;
     wallAnimation(grid[row][col]);
     const newGrid = getNewGridWithWallToggled(grid, row, col);
     setGrid(newGrid);
@@ -29,7 +41,7 @@ export default function PathFindingVisualizer() {
   };
 
   const handleMouseEnter = (row, col) => {
-    if (!mouseIsPressed) return;
+    if (!mouseIsPressed || !createWall) return;
     wallAnimation(grid[row][col]);
     const newGrid = getNewGridWithWallToggled(grid, row, col);
     setGrid(newGrid);
@@ -40,7 +52,7 @@ export default function PathFindingVisualizer() {
   };
 
   return (
-    <div>
+    <div onKeyDown={handleKeyPress} tabIndex="0">
       <Nav
         grid={grid}
         setGrid={setGrid}
