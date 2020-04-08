@@ -19,7 +19,7 @@ export async function visitedAnimation(v, start, end) {
   vertex.backgroundColor = "blue";
 }
 
-export const clearAnimation = (grid, startVal) => {
+export const clearAnimation = (grid, startVal, finishVal) => {
   for (let i = 0; i < grid.length; i++) {
     for (let j = 0; j < grid[i].length; j++) {
       const v = grid[i][j];
@@ -29,7 +29,7 @@ export const clearAnimation = (grid, startVal) => {
         const start = document.getElementById(`node-${v.val}`).style;
         start.backgroundColor = "green";
       }
-      if (v.isFinish) {
+      if (v.val === finishVal) {
         const start = document.getElementById(`node-${v.val}`).style;
         start.backgroundColor = "red";
       }

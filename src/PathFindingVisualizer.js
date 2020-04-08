@@ -21,7 +21,7 @@ export default function PathFindingVisualizer() {
   const [changeStart, setChangeStart, toggleChangeStart] = useToggleState(
     false
   );
-  const [changeFinish, setChangeFinish, toggleCreateFinish] = useToggleState(
+  const [changeFinish, setChangeFinish, toggleChangeFinish] = useToggleState(
     false
   );
 
@@ -40,6 +40,10 @@ export default function PathFindingVisualizer() {
         setChangeFinish(false);
         setCreatWall(false);
         return toggleChangeStart();
+      case "f":
+        setChangeStart(false);
+        setCreatWall(false);
+        return toggleChangeFinish();
       default:
         return;
     }
@@ -55,8 +59,14 @@ export default function PathFindingVisualizer() {
       const newGrid = getNewGridWitNewStart(grid, row, col, startVertex);
       setStarteVertex(newGrid[row][col].val);
       setGrid(newGrid);
-      clearAnimation(newGrid, grid[row][col].val);
+      clearAnimation(newGrid, grid[row][col].val, finishVertex);
       setChangeStart(false);
+    } else if (changeFinish) {
+      const newGrid = getNewGridWitNewStart(grid, row, col, finishVertex);
+      setFinishVertex(newGrid[row][col].val);
+      setGrid(newGrid);
+      clearAnimation(newGrid, startVertex, grid[row][col].val);
+      setChangeFinish(false);
     }
   };
 

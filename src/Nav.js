@@ -13,7 +13,7 @@ function Nav(props) {
   const { classes, grid, disable, start, end, setGrid, setDisable } = props;
 
   const clear = () => {
-    clearAnimation(grid, start);
+    clearAnimation(grid, start, end);
     const n = getInitialGrid(start, end);
     setGrid(n);
   };

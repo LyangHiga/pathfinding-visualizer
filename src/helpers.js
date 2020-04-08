@@ -86,6 +86,19 @@ export const getNewGridWitNewStart = (grid, row, col, startVal) => {
   return newGrid;
 };
 
+// returns a new grid after a mouse click (wall is created)
+export const getNewGridWitNewFinish = (grid, row, col, finishVal) => {
+  const newGrid = grid.slice();
+  const [r, c] = valToIndx(finishVal);
+  const oldFinish = newGrid[r][c];
+  const oldFinishToggled = toggleNodeProperty(oldFinish, "isFinish");
+  newGrid[r][c] = oldFinishToggled;
+  const node = newGrid[row][col];
+  const newNode = toggleNodeProperty(node, "isFinish");
+  newGrid[row][col] = newNode;
+  return newGrid;
+};
+
 const toggleNodeProperty = (node, prop) => {
   const newNode = {
     ...node,
