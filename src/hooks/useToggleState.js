@@ -6,6 +6,6 @@ function useToggleState(initialVal = false) {
     setState(!state);
   };
   // return piece of state AND a function to toggle it
-  return [state, toggle];
+  return [state, setState, toggle];
 }
 export default useToggleState;

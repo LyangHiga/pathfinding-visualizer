@@ -4,10 +4,11 @@ import {
   getInitialGrid,
   getNewGridWithWallToggled,
   getRandomVertex,
+  getNewGridWitNewStart,
 } from "./helpers";
 import Nav from "./Nav";
 import "./PathFindingVisualizer.css";
-import { wallAnimation } from "./animations";
+import { wallAnimation, clearAnimation } from "./animations";
 import useToggleState from "./hooks/useToggleState";
 
 export default function PathFindingVisualizer() {
@@ -16,7 +17,13 @@ export default function PathFindingVisualizer() {
   const [startVertex, setStarteVertex] = useState(getRandomVertex());
   const [finishVertex, setFinishVertex] = useState(getRandomVertex());
   const [mouseIsPressed, setMouseIsPressed] = useState(false);
-  const [createWall, toggleCreateWall] = useToggleState(false);
+  const [createWall, setCreatWall, toggleCreateWall] = useToggleState(false);
+  const [changeStart, setChangeStart, toggleChangeStart] = useToggleState(
+    false
+  );
+  const [changeFinish, setChangeFinish, toggleCreateFinish] = useToggleState(
+    false
+  );
 
   useEffect(() => {
     const n = getInitialGrid(startVertex, finishVertex);
@@ -26,18 +33,31 @@ export default function PathFindingVisualizer() {
   const handleKeyPress = (event) => {
     switch (event.key) {
       case "w":
+        setChangeStart(false);
+        setChangeFinish(false);
         return toggleCreateWall();
+      case "s":
+        setChangeFinish(false);
+        setCreatWall(false);
+        return toggleChangeStart();
       default:
         return;
     }
   };
 
   const handleMouseDown = (row, col) => {
-    if (!createWall) return;
-    wallAnimation(grid[row][col]);
-    const newGrid = getNewGridWithWallToggled(grid, row, col);
-    setGrid(newGrid);
-    setMouseIsPressed(true);
+    if (createWall) {
+      wallAnimation(grid[row][col]);
+      const newGrid = getNewGridWithWallToggled(grid, row, col);
+      setGrid(newGrid);
+      setMouseIsPressed(true);
+    } else if (changeStart) {
+      const newGrid = getNewGridWitNewStart(grid, row, col, startVertex);
+      setStarteVertex(newGrid[row][col].val);
+      setGrid(newGrid);
+      clearAnimation(newGrid, grid[row][col].val);
+      setChangeStart(false);
+    }
   };
 
   const handleMouseEnter = (row, col) => {

@@ -68,12 +68,30 @@ export const getNewGridWithWallToggled = (grid, row, col) => {
   if (grid[row][col].isStart || grid[row][col].isFinish) return grid;
   const newGrid = grid.slice();
   const node = newGrid[row][col];
-  const newNode = {
-    ...node,
-    isWall: !node.isWall,
-  };
+  const newNode = toggleNodeProperty(node, "isWall");
   newGrid[row][col] = newNode;
   return newGrid;
+};
+
+// returns a new grid after a mouse click (wall is created)
+export const getNewGridWitNewStart = (grid, row, col, startVal) => {
+  const newGrid = grid.slice();
+  const [r, c] = valToIndx(startVal);
+  const oldStart = newGrid[r][c];
+  const oldStartToggled = toggleNodeProperty(oldStart, "isStart");
+  newGrid[r][c] = oldStartToggled;
+  const node = newGrid[row][col];
+  const newNode = toggleNodeProperty(node, "isStart");
+  newGrid[row][col] = newNode;
+  return newGrid;
+};
+
+const toggleNodeProperty = (node, prop) => {
+  const newNode = {
+    ...node,
+    [prop]: !node.prop,
+  };
+  return newNode;
 };
 
 //   building path

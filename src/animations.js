@@ -6,7 +6,7 @@ export async function pathAnimation(path, start) {
     if (path[i] !== start) {
       vertex = document.getElementById(`node-${path[i]}`).style;
       await sleep(1);
-      vertex.backgroundColor = 'yellow';
+      vertex.backgroundColor = "yellow";
     }
   }
 }
@@ -16,16 +16,22 @@ export async function visitedAnimation(v, start, end) {
   if (v === start) return;
   const vertex = document.getElementById(`node-${v}`).style;
   await sleep(5);
-  vertex.backgroundColor = 'blue';
+  vertex.backgroundColor = "blue";
 }
 
-export const clearAnimation = (grid) => {
+export const clearAnimation = (grid, startVal) => {
   for (let i = 0; i < grid.length; i++) {
     for (let j = 0; j < grid[i].length; j++) {
       const v = grid[i][j];
-      if (!v.isStart && !v.isFinish) {
-        const vertex = document.getElementById(`node-${v.val}`).style;
-        vertex.backgroundColor = 'white';
+      const vertex = document.getElementById(`node-${v.val}`).style;
+      vertex.backgroundColor = "white";
+      if (v.val === startVal) {
+        const start = document.getElementById(`node-${v.val}`).style;
+        start.backgroundColor = "green";
+      }
+      if (v.isFinish) {
+        const start = document.getElementById(`node-${v.val}`).style;
+        start.backgroundColor = "red";
       }
     }
   }
@@ -34,5 +40,5 @@ export const clearAnimation = (grid) => {
 export const wallAnimation = (v) => {
   if (v.isStart || v.isFinish) return;
   const vertex = document.getElementById(`node-${v.val}`).style;
-  vertex.backgroundColor = 'rgb(12, 53, 71)';
+  vertex.backgroundColor = "rgb(12, 53, 71)";
 };
