@@ -1,7 +1,7 @@
 import React from "react";
 import bfs from "./algorithms/bfs";
 import dfs from "./algorithms/dfs";
-import { clearAnimation } from "./animations";
+import { clearAnimation, clearPathAnimation } from "./animations";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -44,6 +44,13 @@ function Nav(props) {
             disabled={disable}
           >
             Clear
+          </button>
+          <button
+            className={classes.button}
+            onClick={() => clearPathAnimation(grid)}
+            disabled={disable}
+          >
+            Clear Path
           </button>
           <button
             className={classes.button}

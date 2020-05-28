@@ -41,3 +41,20 @@ export const wallAnimation = async (v) => {
   await sleep(1);
   vertex.backgroundColor = "rgb(12, 53, 71)";
 };
+
+export const clearPathAnimation = (grid) => {
+  let vertex;
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid[i].length; j++) {
+      const v = grid[i][j];
+      vertex = document.getElementById(`node-${v.val}`).style;
+      console.log(vertex);
+      if (
+        vertex.backgroundColor === "blue" ||
+        vertex.backgroundColor === "yellow"
+      ) {
+        vertex.backgroundColor = "white";
+      }
+    }
+  }
+};
