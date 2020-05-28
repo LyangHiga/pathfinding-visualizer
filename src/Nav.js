@@ -23,11 +23,11 @@ function Nav(props) {
     setGrid(newGrid);
   };
 
-  async function handleClick(alg) {
+  const handleClick = async (alg) => {
     setDisable(true);
     await alg;
     setDisable(false);
-  }
+  };
   const [rowEnd, colEnd] = valToIndx(end);
   const [rowStart, colStart] = valToIndx(start);
 
@@ -47,7 +47,7 @@ function Nav(props) {
           </button>
           <button
             className={classes.button}
-            onClick={() => newMaze()}
+            onClick={() => handleClick(newMaze())}
             disabled={disable}
           >
             Maze
