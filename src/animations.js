@@ -37,8 +37,9 @@ export const clearAnimation = (grid, startVal, finishVal) => {
   }
 };
 
-export const wallAnimation = (v) => {
+export const wallAnimation = async (v) => {
   if (v.isStart || v.isFinish) return;
   const vertex = document.getElementById(`node-${v.val}`).style;
+  await sleep(1);
   vertex.backgroundColor = "rgb(12, 53, 71)";
 };

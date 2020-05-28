@@ -1,4 +1,5 @@
 import { NUM_COL, NUM_ROW } from "./consts";
+import { wallAnimation } from "./animations";
 
 // Node Helpers
 
@@ -73,7 +74,7 @@ export const getNewGridWithWallToggled = (grid, row, col) => {
   return newGrid;
 };
 
-// returns a new grid after a mouse click (wall is created)
+// returns a new grid after a mouse click (new start node)
 export const getNewGridWitNewStart = (grid, row, col, startVal) => {
   const newGrid = grid.slice();
   const [r, c] = valToIndx(startVal);
@@ -86,7 +87,7 @@ export const getNewGridWitNewStart = (grid, row, col, startVal) => {
   return newGrid;
 };
 
-// returns a new grid after a mouse click (wall is created)
+// returns a new grid after a mouse click (new finish point)
 export const getNewGridWitNewFinish = (grid, row, col, finishVal) => {
   const newGrid = grid.slice();
   const [r, c] = valToIndx(finishVal);
@@ -96,6 +97,28 @@ export const getNewGridWitNewFinish = (grid, row, col, finishVal) => {
   const node = newGrid[row][col];
   const newNode = toggleNodeProperty(node, "isFinish");
   newGrid[row][col] = newNode;
+  return newGrid;
+};
+
+// returns a new mazed grid
+// a node has eps to be a wall
+export const getNewMazedGrid = async (grid, eps) => {
+  let newGrid = grid.slice();
+  console.log(Math.random() < eps);
+  for (let row = 0; row < NUM_ROW; row++) {
+    for (let col = 0; col < NUM_COL; col++) {
+      if (grid[row][col].isStart || grid[row][col].isFinish) {
+        break;
+      }
+      if (Math.random() <= eps) {
+        const node = newGrid[row][col];
+        const newNode = toggleNodeProperty(node, "isWall");
+        console.log(newNode);
+        newGrid[row][col] = newNode;
+        await wallAnimation(newGrid[row][col]);
+      }
+    }
+  }
   return newGrid;
 };
 

@@ -7,7 +7,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import styles from "./NavStyles";
-import { getInitialGrid, valToIndx } from "./helpers";
+import { getInitialGrid, valToIndx, getNewMazedGrid } from "./helpers";
 
 function Nav(props) {
   const { classes, grid, disable, start, end, setGrid, setDisable } = props;
@@ -16,6 +16,11 @@ function Nav(props) {
     clearAnimation(grid, start, end);
     const n = getInitialGrid(start, end);
     setGrid(n);
+  };
+
+  const newMaze = async () => {
+    const newGrid = await getNewMazedGrid(grid, 0.33);
+    setGrid(newGrid);
   };
 
   async function handleClick(alg) {
@@ -39,6 +44,13 @@ function Nav(props) {
             disabled={disable}
           >
             Clear
+          </button>
+          <button
+            className={classes.button}
+            onClick={() => newMaze()}
+            disabled={disable}
+          >
+            Maze
           </button>
           <button
             className={classes.button}
