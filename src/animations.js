@@ -1,23 +1,21 @@
 const sleep = (m) => new Promise((r) => setTimeout(r, m));
 
-export async function pathAnimation(path, start) {
+export const pathAnimation = async (path) => {
   let vertex;
   for (let i = 0; i < path.length; i++) {
-    if (path[i] !== start) {
-      vertex = document.getElementById(`node-${path[i]}`).style;
-      await sleep(1);
-      vertex.backgroundColor = "yellow";
-    }
+    vertex = document.getElementById(`node-${path[i]}`).style;
+    await sleep(5);
+    vertex.backgroundColor = "yellow";
   }
-}
+};
 
-export async function visitedAnimation(v, start, end) {
+export const visitedAnimation = async (v, start, end) => {
   if (v === end) return;
   if (v === start) return;
   const vertex = document.getElementById(`node-${v}`).style;
   await sleep(5);
   vertex.backgroundColor = "blue";
-}
+};
 
 export const clearAnimation = (grid, startVal, finishVal) => {
   for (let i = 0; i < grid.length; i++) {

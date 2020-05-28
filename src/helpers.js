@@ -104,7 +104,6 @@ export const getNewGridWitNewFinish = (grid, row, col, finishVal) => {
 // a node has eps to be a wall
 export const getNewMazedGrid = async (grid, eps) => {
   let newGrid = grid.slice();
-  console.log(Math.random() < eps);
   for (let row = 0; row < NUM_ROW; row++) {
     for (let col = 0; col < NUM_COL; col++) {
       if (grid[row][col].isStart || grid[row][col].isFinish) {
@@ -113,7 +112,6 @@ export const getNewMazedGrid = async (grid, eps) => {
       if (Math.random() <= eps) {
         const node = newGrid[row][col];
         const newNode = toggleNodeProperty(node, "isWall");
-        console.log(newNode);
         newGrid[row][col] = newNode;
         await wallAnimation(newGrid[row][col]);
       }
