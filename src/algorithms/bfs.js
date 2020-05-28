@@ -2,7 +2,7 @@ import Queue from "../structures/queue";
 import { valToIndx, getPath } from "../helpers";
 import { pathAnimation, visitedAnimation } from "../animations";
 
-async function bfs(grid, start, end) {
+const bfs = async (grid, start, end) => {
   //   const end = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
   let visited = {};
   let parents = {};
@@ -42,7 +42,7 @@ async function bfs(grid, start, end) {
     }
   }
   const path = getPath(parents, end.val, dist[end.val]);
-  pathAnimation(path, start.val);
-}
+  await pathAnimation(path, start.val);
+};
 
 export default bfs;
