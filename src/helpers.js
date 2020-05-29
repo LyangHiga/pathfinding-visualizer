@@ -100,14 +100,13 @@ export const getNewGridWitNewStart = (grid, row, col, startVal) => {
 
 // returns a new grid after a mouse click (new finish point)
 export const getNewGridWitNewFinish = (grid, row, col, finishVal) => {
-  const newGrid = grid.slice();
-  const [r, c] = valToIndx(finishVal);
-  const oldFinish = newGrid[r][c];
-  const oldFinishToggled = toggleNodeProperty(oldFinish, 'isFinish');
-  newGrid[r][c] = oldFinishToggled;
-  const node = newGrid[row][col];
-  const newNode = toggleNodeProperty(node, 'isFinish');
-  newGrid[row][col] = newNode;
+  const newGrid = getNewGridWithNewProperty(
+    grid,
+    row,
+    col,
+    'isFinish',
+    finishVal
+  );
   return newGrid;
 };
 
