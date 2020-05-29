@@ -1,7 +1,6 @@
 const sleep = (m) => new Promise((r) => setTimeout(r, m));
 
 export const pathAnimation = async (path) => {
-  let vertex;
   for (let i = 0; i < path.length; i++) {
     await sleep(12);
     changingPropAnimation(path[i], 'yellow');

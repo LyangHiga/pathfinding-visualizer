@@ -31,12 +31,16 @@ export default function PathFindingVisualizer() {
 
   const sleep = (m) => new Promise((r) => setTimeout(r, m));
 
-  useEffect(async () => {
-    const n = getInitialGrid(startVertex, finishVertex);
-    setGrid(n);
-    await sleep(1);
-    startNodeAnimation(startVertex);
-    finishNodeAnimation(finishVertex);
+  //   useEffect(async () => {
+  useEffect(() => {
+    async function initialGrid() {
+      const n = getInitialGrid(startVertex, finishVertex);
+      setGrid(n);
+      await sleep(1);
+      startNodeAnimation(startVertex);
+      finishNodeAnimation(finishVertex);
+    }
+    initialGrid();
   }, []);
 
   const handleKeyPress = (event) => {
