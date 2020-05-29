@@ -1,5 +1,5 @@
-import { NUM_COL, NUM_ROW } from "./consts";
-import { wallAnimation } from "./animations";
+import { NUM_COL, NUM_ROW } from './consts';
+import { wallAnimation } from './animations';
 
 // Node Helpers
 
@@ -64,26 +64,37 @@ export const getInitialGrid = (start, finish) => {
   return grid;
 };
 
+const getNewGridWithNewProperty = (grid, row, col, prop, val) => {
+  const newGrid = grid.slice();
+  const [r, c] = valToIndx(val);
+  const oldNode = newGrid[r][c];
+  const oldPropToggled = toggleNodeProperty(oldNode, `${prop}`);
+  newGrid[r][c] = oldPropToggled;
+  const node = newGrid[row][col];
+  const newNode = toggleNodeProperty(node, `${prop}`);
+  newGrid[row][col] = newNode;
+  return newGrid;
+};
+
 // returns a new grid after a mouse click (wall is created)
 export const getNewGridWithWallToggled = (grid, row, col) => {
   if (grid[row][col].isStart || grid[row][col].isFinish) return grid;
   const newGrid = grid.slice();
   const node = newGrid[row][col];
-  const newNode = toggleNodeProperty(node, "isWall");
+  const newNode = toggleNodeProperty(node, 'isWall');
   newGrid[row][col] = newNode;
   return newGrid;
 };
 
 // returns a new grid after a mouse click (new start node)
 export const getNewGridWitNewStart = (grid, row, col, startVal) => {
-  const newGrid = grid.slice();
-  const [r, c] = valToIndx(startVal);
-  const oldStart = newGrid[r][c];
-  const oldStartToggled = toggleNodeProperty(oldStart, "isStart");
-  newGrid[r][c] = oldStartToggled;
-  const node = newGrid[row][col];
-  const newNode = toggleNodeProperty(node, "isStart");
-  newGrid[row][col] = newNode;
+  const newGrid = getNewGridWithNewProperty(
+    grid,
+    row,
+    col,
+    'isStart',
+    startVal
+  );
   return newGrid;
 };
 
@@ -92,10 +103,10 @@ export const getNewGridWitNewFinish = (grid, row, col, finishVal) => {
   const newGrid = grid.slice();
   const [r, c] = valToIndx(finishVal);
   const oldFinish = newGrid[r][c];
-  const oldFinishToggled = toggleNodeProperty(oldFinish, "isFinish");
+  const oldFinishToggled = toggleNodeProperty(oldFinish, 'isFinish');
   newGrid[r][c] = oldFinishToggled;
   const node = newGrid[row][col];
-  const newNode = toggleNodeProperty(node, "isFinish");
+  const newNode = toggleNodeProperty(node, 'isFinish');
   newGrid[row][col] = newNode;
   return newGrid;
 };
@@ -111,7 +122,7 @@ export const getNewMazedGrid = async (grid, eps) => {
       }
       if (Math.random() <= eps) {
         const node = newGrid[row][col];
-        const newNode = toggleNodeProperty(node, "isWall");
+        const newNode = toggleNodeProperty(node, 'isWall');
         newGrid[row][col] = newNode;
         await wallAnimation(newGrid[row][col]);
       }

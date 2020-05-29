@@ -1,12 +1,13 @@
-import React from 'react';
-import './Node.css';
+import React from "react";
+import "./Node.css";
 
 export default function Node(props) {
+  // TODO use animation to change start and finish nodes
   const extraClassName = props.isFinish
-    ? 'node-finish'
+    ? "node-finish"
     : props.isStart
-    ? 'node-start'
-    : '';
+    ? "node-start"
+    : "";
   return (
     <div
       id={`node-${props.val}`}

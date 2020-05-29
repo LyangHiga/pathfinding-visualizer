@@ -56,12 +56,14 @@ export default function PathFindingVisualizer() {
       setGrid(newGrid);
       setMouseIsPressed(true);
     } else if (changeStart) {
+      // TODO Change start Node using animation
       const newGrid = getNewGridWitNewStart(grid, row, col, startVertex);
       setStarteVertex(newGrid[row][col].val);
       setGrid(newGrid);
       clearAnimation(newGrid, grid[row][col].val, finishVertex);
       setChangeStart(false);
     } else if (changeFinish) {
+      // TODO Change Finish Node using animation
       const newGrid = getNewGridWitNewStart(grid, row, col, finishVertex);
       setFinishVertex(newGrid[row][col].val);
       setGrid(newGrid);
