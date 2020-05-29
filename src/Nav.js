@@ -1,13 +1,14 @@
-import React from "react";
-import bfs from "./algorithms/bfs";
-import dfs from "./algorithms/dfs";
-import { clearAnimation, clearPathAnimation } from "./animations";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import { withStyles } from "@material-ui/core/styles";
-import styles from "./NavStyles";
-import { getInitialGrid, valToIndx, getNewMazedGrid } from "./helpers";
+import React from 'react';
+import bfs from './algorithms/bfs';
+import dfs from './algorithms/dfs';
+import { clearAnimation, clearPathAnimation } from './animations';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
+import styles from './NavStyles';
+import { valToIndx, getNewMazedGrid } from './helpers/gridPropertiesHelper';
+import { getInitialGrid } from './helpers/initialGridHelper';
 
 function Nav(props) {
   const { classes, grid, disable, start, end, setGrid, setDisable } = props;
@@ -32,9 +33,9 @@ function Nav(props) {
   const [rowStart, colStart] = valToIndx(start);
 
   return (
-    <AppBar position="static" color="inherit" className={classes.Navbar}>
+    <AppBar position='static' color='inherit' className={classes.Navbar}>
       <Toolbar>
-        <Typography className={classes.title} variant="h6" color="inherit">
+        <Typography className={classes.title} variant='h6' color='inherit'>
           Pathfinding Visualizer
         </Typography>
         <div className={classes.button}>
