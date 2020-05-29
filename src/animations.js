@@ -3,58 +3,54 @@ const sleep = (m) => new Promise((r) => setTimeout(r, m));
 export const pathAnimation = async (path) => {
   let vertex;
   for (let i = 0; i < path.length; i++) {
-    vertex = document.getElementById(`node-${path[i]}`).style;
-    await sleep(5);
-    vertex.backgroundColor = 'yellow';
+    await sleep(12);
+    changingPropAnimation(path[i], 'yellow');
   }
 };
 
-export const visitedAnimation = async (v, start, end) => {
-  if (v === end) return;
-  if (v === start) return;
-  const vertex = document.getElementById(`node-${v}`).style;
-  await sleep(5);
-  vertex.backgroundColor = 'blue';
+export const visitedAnimation = async (val, start, end) => {
+  if (val === end) return;
+  if (val === start) return;
+  await sleep(7);
+  changingPropAnimation(val, 'blue');
 };
 
 export const clearAnimation = (grid, startVal, finishVal) => {
   for (let i = 0; i < grid.length; i++) {
     for (let j = 0; j < grid[i].length; j++) {
       const v = grid[i][j];
-      const vertex = document.getElementById(`node-${v.val}`).style;
-      vertex.backgroundColor = 'white';
+      changingPropAnimation(v.val, 'white');
       if (v.val === startVal) {
-        const start = document.getElementById(`node-${v.val}`).style;
-        start.backgroundColor = 'green';
+        changingPropAnimation(v.val, 'green');
       }
       if (v.val === finishVal) {
-        const start = document.getElementById(`node-${v.val}`).style;
-        start.backgroundColor = 'red';
+        changingPropAnimation(v.val, 'red');
       }
     }
   }
 };
 
+const changingPropAnimation = (val, color) => {
+  const vertex = document.getElementById(`node-${val}`).style;
+  vertex.backgroundColor = `${color}`;
+};
+
 export const wallAnimation = async (v) => {
   if (v.isStart || v.isFinish) return;
-  const vertex = document.getElementById(`node-${v.val}`).style;
   await sleep(1);
-  vertex.backgroundColor = 'rgb(12, 53, 71)';
+  changingPropAnimation(v.val, 'rgb(12, 53, 71)');
 };
 
 export const startNodeAnimation = (val) => {
-  const vertex = document.getElementById(`node-${val}`).style;
-  vertex.backgroundColor = 'green';
+  changingPropAnimation(val, 'green');
 };
 
 export const finishNodeAnimation = (val) => {
-  const vertex = document.getElementById(`node-${val}`).style;
-  vertex.backgroundColor = 'red';
+  changingPropAnimation(val, 'red');
 };
 
 export const clearNodeAnimation = (val) => {
-  const vertex = document.getElementById(`node-${val}`).style;
-  vertex.backgroundColor = 'white';
+  changingPropAnimation(val, 'white');
 };
 
 export const clearPathAnimation = (grid) => {
@@ -63,12 +59,11 @@ export const clearPathAnimation = (grid) => {
     for (let j = 0; j < grid[i].length; j++) {
       const v = grid[i][j];
       vertex = document.getElementById(`node-${v.val}`).style;
-      console.log(vertex);
       if (
         vertex.backgroundColor === 'blue' ||
         vertex.backgroundColor === 'yellow'
       ) {
-        vertex.backgroundColor = 'white';
+        clearNodeAnimation(v.val, 'white');
       }
     }
   }
