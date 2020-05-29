@@ -7,7 +7,12 @@ import {
 import { getRandomVertex, getInitialGrid } from './helpers/initialGridHelper';
 import Nav from './Nav';
 import './PathFindingVisualizer.css';
-import { wallAnimation, clearAnimation } from './animations';
+import {
+  wallAnimation,
+  startNodeAnimation,
+  finishNodeAnimation,
+  clearNodeAnimation,
+} from './animations';
 import useToggleState from './hooks/useToggleState';
 
 export default function PathFindingVisualizer() {
@@ -24,10 +29,15 @@ export default function PathFindingVisualizer() {
     false
   );
 
-  useEffect(() => {
+  const sleep = (m) => new Promise((r) => setTimeout(r, m));
+
+  useEffect(async () => {
     const n = getInitialGrid(startVertex, finishVertex);
     setGrid(n);
-  }, [startVertex, finishVertex]);
+    await sleep(1);
+    startNodeAnimation(startVertex);
+    finishNodeAnimation(finishVertex);
+  }, []);
 
   const handleKeyPress = (event) => {
     switch (event.key) {
@@ -55,18 +65,18 @@ export default function PathFindingVisualizer() {
       setGrid(newGrid);
       setMouseIsPressed(true);
     } else if (changeStart) {
-      // TODO Change start Node using animation
+      clearNodeAnimation(startVertex);
       const newGrid = getNewGridWitNewStart(grid, row, col, startVertex);
       setStarteVertex(newGrid[row][col].val);
       setGrid(newGrid);
-      clearAnimation(newGrid, grid[row][col].val, finishVertex);
+      startNodeAnimation(newGrid[row][col].val);
       setChangeStart(false);
     } else if (changeFinish) {
-      // TODO Change Finish Node using animation
+      clearNodeAnimation(finishVertex);
       const newGrid = getNewGridWitNewStart(grid, row, col, finishVertex);
       setFinishVertex(newGrid[row][col].val);
       setGrid(newGrid);
-      clearAnimation(newGrid, startVertex, grid[row][col].val);
+      finishNodeAnimation(newGrid[row][col].val);
       setChangeFinish(false);
     }
   };
@@ -97,24 +107,13 @@ export default function PathFindingVisualizer() {
           return (
             <div key={rowIdx}>
               {row.map((node) => {
-                const {
-                  row,
-                  col,
-                  isStart,
-                  isFinish,
-                  isWall,
-                  val,
-                  adjList,
-                } = node;
+                const { row, col, val, adjList } = node;
                 return (
                   <Node
                     key={val}
                     val={val}
                     col={col}
                     row={row}
-                    isStart={isStart}
-                    isFinish={isFinish}
-                    isWall={isWall}
                     onMouseDown={handleMouseDown}
                     onMouseEnter={handleMouseEnter}
                     onMouseUp={handleMouseUp}
