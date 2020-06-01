@@ -2,8 +2,7 @@ import Queue from '../structures/queue';
 import { valToIndx, getPath } from '../helpers/gridPropertiesHelper';
 import { pathAnimation, visitedAnimation } from '../animations';
 
-const bfs = async (grid, start, end) => {
-  //   const end = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+const bfs = async (grid, start, end, nCols) => {
   let visited = {};
   let parents = {};
   let dist = {};
@@ -26,7 +25,7 @@ const bfs = async (grid, start, end) => {
     // for every edge of v
     for (const key in v.adjList) {
       const w = v.adjList[key];
-      const [row, col] = valToIndx(w);
+      const [row, col] = valToIndx(w, nCols);
       //   wVertex has all properties while w is wVeterx.val
       const wVertex = grid[row][col];
       //   check w is visited, is not null or wall

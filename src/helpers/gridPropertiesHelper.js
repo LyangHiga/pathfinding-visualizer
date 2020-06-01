@@ -1,20 +1,19 @@
-import { NUM_COL, NUM_ROW } from '../consts';
 import { wallAnimation } from '../animations';
 
 // Node Helpers
 
 // returns {row, col} of a vertex val
-export const valToIndx = (val) => {
-  const row = Math.floor(val / NUM_COL);
-  const col = val - row * NUM_COL;
+export const valToIndx = (val, nCols) => {
+  const row = Math.floor(val / nCols);
+  const col = val - row * nCols;
   return [row, col];
 };
 
 // Grid Helpers
 
-const getNewGridWithNewProperty = (grid, row, col, prop, val) => {
+const getNewGridWithNewProperty = (grid, row, col, prop, val, nCols) => {
   const newGrid = grid.slice();
-  const [r, c] = valToIndx(val);
+  const [r, c] = valToIndx(val, nCols);
   const oldNode = newGrid[r][c];
   const oldPropToggled = toggleNodeProperty(oldNode, `${prop}`);
   newGrid[r][c] = oldPropToggled;
@@ -35,25 +34,27 @@ export const getNewGridWithWallToggled = (grid, row, col) => {
 };
 
 // returns a new grid after a mouse click (new start node)
-export const getNewGridWitNewStart = (grid, row, col, startVal) => {
+export const getNewGridWitNewStart = (grid, row, col, startVal, nCols) => {
   const newGrid = getNewGridWithNewProperty(
     grid,
     row,
     col,
     'isStart',
-    startVal
+    startVal,
+    nCols
   );
   return newGrid;
 };
 
 // returns a new grid after a mouse click (new finish point)
-export const getNewGridWitNewFinish = (grid, row, col, finishVal) => {
+export const getNewGridWitNewFinish = (grid, row, col, finishVal, nCols) => {
   const newGrid = getNewGridWithNewProperty(
     grid,
     row,
     col,
     'isFinish',
-    finishVal
+    finishVal,
+    nCols
   );
   return newGrid;
 };
@@ -62,8 +63,8 @@ export const getNewGridWitNewFinish = (grid, row, col, finishVal) => {
 // a node has eps to be a wall
 export const getNewMazedGrid = async (grid, eps) => {
   let newGrid = grid.slice();
-  for (let row = 0; row < NUM_ROW; row++) {
-    for (let col = 0; col < NUM_COL; col++) {
+  for (let row = 0; row < grid.length; row++) {
+    for (let col = 0; col < grid[row].length; col++) {
       if (grid[row][col].isStart || grid[row][col].isFinish) {
         break;
       }
@@ -95,4 +96,19 @@ export const getPath = (parents, end, dist) => {
     a = parents[a];
   }
   return path.reverse();
+};
+
+export const getRowsCols = () => {
+  const width =
+    window.innerWidth ||
+    document.documentElement.clientWidth ||
+    document.body.clientWidth;
+  const height =
+    window.innerHeight ||
+    document.documentElement.clientHeight ||
+    document.body.clientHeight;
+  //   console.log(width, height);
+  const nRows = Math.floor(width / 60);
+  const nCols = Math.floor(height / 15);
+  return [nRows, nCols];
 };

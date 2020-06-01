@@ -11,11 +11,22 @@ import { valToIndx, getNewMazedGrid } from './helpers/gridPropertiesHelper';
 import { getInitialGrid } from './helpers/initialGridHelper';
 
 function Nav(props) {
-  const { classes, grid, disable, start, end, setGrid, setDisable } = props;
+  const {
+    classes,
+    grid,
+    disable,
+    start,
+    end,
+    setGrid,
+    setDisable,
+    nRows,
+    nCols,
+  } = props;
 
   const clear = () => {
     clearAnimation(grid, start, end);
-    const n = getInitialGrid(start, end);
+    // console.log(nRows, nCols);
+    const n = getInitialGrid(start, end, nRows, nCols);
     setGrid(n);
   };
 
@@ -29,8 +40,8 @@ function Nav(props) {
     await alg;
     setDisable(false);
   };
-  const [rowEnd, colEnd] = valToIndx(end);
-  const [rowStart, colStart] = valToIndx(start);
+  const [rowEnd, colEnd] = valToIndx(end, nCols);
+  const [rowStart, colStart] = valToIndx(start, nCols);
 
   return (
     <AppBar position='static' color='inherit' className={classes.Navbar}>
@@ -64,7 +75,7 @@ function Nav(props) {
             className={classes.button}
             onClick={() =>
               handleClick(
-                bfs(grid, grid[rowStart][colStart], grid[rowEnd][colEnd])
+                bfs(grid, grid[rowStart][colStart], grid[rowEnd][colEnd], nCols)
               )
             }
             disabled={disable}
@@ -75,7 +86,7 @@ function Nav(props) {
             className={classes.button}
             onClick={() =>
               handleClick(
-                dfs(grid, grid[rowStart][colStart], grid[rowEnd][colEnd])
+                dfs(grid, grid[rowStart][colStart], grid[rowEnd][colEnd], nCols)
               )
             }
             disabled={disable}

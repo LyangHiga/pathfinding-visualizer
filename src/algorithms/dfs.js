@@ -2,7 +2,7 @@ import Stack from '../structures/stack';
 import { valToIndx } from '../helpers/gridPropertiesHelper';
 import { visitedAnimation } from '../animations';
 
-const dfs = async (grid, start, end) => {
+const dfs = async (grid, start, end, nCols) => {
   //   const end = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
   //   stack pop order
   let result = [];
@@ -27,7 +27,7 @@ const dfs = async (grid, start, end) => {
     // for every edge of v
     for (const key in v.adjList) {
       const w = v.adjList[key];
-      const [row, col] = valToIndx(w);
+      const [row, col] = valToIndx(w, nCols);
       //   wVertex has all properties while w is wVeterx.val
       const wVertex = grid[row][col];
       //   check w is visited, is not null or wall

@@ -3,6 +3,8 @@ import Node from './Node';
 import {
   getNewGridWithWallToggled,
   getNewGridWitNewStart,
+  getNewGridWitNewFinish,
+  getRowsCols,
 } from './helpers/gridPropertiesHelper';
 import { getRandomVertex, getInitialGrid } from './helpers/initialGridHelper';
 import Nav from './Nav';
@@ -12,14 +14,17 @@ import {
   startNodeAnimation,
   finishNodeAnimation,
   clearNodeAnimation,
+  sleep,
 } from './animations';
 import useToggleState from './hooks/useToggleState';
 
 export default function PathFindingVisualizer() {
   const [grid, setGrid] = useState([]);
+  const [nRows, setNRows] = useState();
+  const [nCols, setNCols] = useState();
   const [disable, setDisable] = useState(false);
-  const [startVertex, setStarteVertex] = useState(getRandomVertex());
-  const [finishVertex, setFinishVertex] = useState(getRandomVertex());
+  const [startVertex, setStarteVertex] = useState(getRandomVertex(4, 7));
+  const [finishVertex, setFinishVertex] = useState(getRandomVertex(6, 9));
   const [mouseIsPressed, setMouseIsPressed] = useState(false);
   const [createWall, setCreatWall, toggleCreateWall] = useToggleState(false);
   const [changeStart, setChangeStart, toggleChangeStart] = useToggleState(
@@ -29,12 +34,13 @@ export default function PathFindingVisualizer() {
     false
   );
 
-  const sleep = (m) => new Promise((r) => setTimeout(r, m));
-
   //   useEffect(async () => {
   useEffect(() => {
     async function initialGrid() {
-      const n = getInitialGrid(startVertex, finishVertex);
+      const [nRows, nCols] = getRowsCols();
+      setNRows(nRows);
+      setNCols(nCols);
+      const n = getInitialGrid(startVertex, finishVertex, nRows, nCols);
       setGrid(n);
       await sleep(1);
       startNodeAnimation(startVertex);
@@ -70,14 +76,20 @@ export default function PathFindingVisualizer() {
       setMouseIsPressed(true);
     } else if (changeStart) {
       clearNodeAnimation(startVertex);
-      const newGrid = getNewGridWitNewStart(grid, row, col, startVertex);
+      const newGrid = getNewGridWitNewStart(grid, row, col, startVertex, nCols);
       setStarteVertex(newGrid[row][col].val);
       setGrid(newGrid);
       startNodeAnimation(newGrid[row][col].val);
       setChangeStart(false);
     } else if (changeFinish) {
       clearNodeAnimation(finishVertex);
-      const newGrid = getNewGridWitNewStart(grid, row, col, finishVertex);
+      const newGrid = getNewGridWitNewFinish(
+        grid,
+        row,
+        col,
+        finishVertex,
+        nCols
+      );
       setFinishVertex(newGrid[row][col].val);
       setGrid(newGrid);
       finishNodeAnimation(newGrid[row][col].val);
@@ -105,6 +117,8 @@ export default function PathFindingVisualizer() {
         setDisable={setDisable}
         start={startVertex}
         end={finishVertex}
+        nRows={nRows}
+        nCols={nCols}
       />
       <div className='grid'>
         {grid.map((row, rowIdx) => {

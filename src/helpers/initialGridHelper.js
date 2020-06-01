@@ -1,13 +1,13 @@
-import { NUM_COL, NUM_ROW } from '../consts';
+// import { NUM_COL, NUM_ROW } from '../consts';
 
 // returns a random vertex value
-export const getRandomVertex = () => {
-  return Math.floor(Math.random() * NUM_COL * NUM_ROW);
+export const getRandomVertex = (nRows, nCols) => {
+  return Math.floor(Math.random() * nRows * nCols);
 };
 
-const createNode = (col, row, start, finish) => {
-  const val = row * NUM_COL + col;
-  const adjList = createAdjList(val, col, row);
+const createNode = (col, row, start, finish, nRows, nCols) => {
+  const val = row * nCols + col;
+  const adjList = createAdjList(val, col, row, nRows, nCols);
 
   return {
     col,
@@ -24,29 +24,29 @@ const createNode = (col, row, start, finish) => {
 //    B   VAL  D
 //         C
 // returns all neighbours of VAL
-const createAdjList = (val, col, row) => {
+const createAdjList = (val, col, row, nRows, nCols) => {
   //   neighbours in a line above
   // negative numbers arent a node
-  const a = row !== 0 ? val - NUM_COL : null;
+  const a = row !== 0 ? val - nCols : null;
   // neighbours in the same line
   // check left border
   const b = col !== 0 ? val - 1 : null;
   // check right border
-  const d = col !== NUM_COL - 1 ? val + 1 : null;
+  const d = col !== nCols - 1 ? val + 1 : null;
   //  neighbours in a line bellow
   // check overflow
-  const c = row !== NUM_ROW - 1 ? val + NUM_COL : null;
+  const c = row !== nRows - 1 ? val + nCols : null;
 
   return { a, b, c, d };
 };
 
 // returns the initial Grid
-export const getInitialGrid = (start, finish) => {
+export const getInitialGrid = (start, finish, nRows, nCols) => {
   const grid = [];
-  for (let row = 0; row < NUM_ROW; row++) {
+  for (let row = 0; row < nRows; row++) {
     const currentRow = [];
-    for (let col = 0; col < NUM_COL; col++) {
-      currentRow.push(createNode(col, row, start, finish));
+    for (let col = 0; col < nCols; col++) {
+      currentRow.push(createNode(col, row, start, finish, nRows, nCols));
     }
     grid.push(currentRow);
   }

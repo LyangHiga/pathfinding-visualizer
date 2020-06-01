@@ -1,4 +1,4 @@
-const sleep = (m) => new Promise((r) => setTimeout(r, m));
+export const sleep = (m) => new Promise((r) => setTimeout(r, m));
 
 export const pathAnimation = async (path) => {
   for (let i = 0; i < path.length; i++) {
