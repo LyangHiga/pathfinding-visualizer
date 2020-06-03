@@ -95,9 +95,11 @@ export const getPath = (parents, end, dist) => {
     path.push(a);
     a = parents[a];
   }
+  console.log(`Min Path: ${path.length + 1} squares`);
   return path.reverse();
 };
 
+// return number of rows and cols to display in this screen
 export const getRowsCols = () => {
   const width =
     window.innerWidth ||
@@ -107,7 +109,6 @@ export const getRowsCols = () => {
     window.innerHeight ||
     document.documentElement.clientHeight ||
     document.body.clientHeight;
-  //   console.log(width, height);
   const nRows = Math.floor(width / 60);
   const nCols = Math.floor(height / 15);
   return [nRows, nCols];

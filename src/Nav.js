@@ -25,7 +25,6 @@ function Nav(props) {
 
   const clear = () => {
     clearAnimation(grid, start, end);
-    // console.log(nRows, nCols);
     const n = getInitialGrid(start, end, nRows, nCols);
     setGrid(n);
   };

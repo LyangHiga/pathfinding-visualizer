@@ -34,7 +34,7 @@ export default function PathFindingVisualizer() {
     false
   );
 
-  //   useEffect(async () => {
+  //   run only once, similar to Component Did mount
   useEffect(() => {
     async function initialGrid() {
       const [nRows, nCols] = getRowsCols();
