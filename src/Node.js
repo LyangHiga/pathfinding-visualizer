@@ -9,6 +9,8 @@ export default function Node(props) {
       onMouseDown={() => props.onMouseDown(props.row, props.col)}
       onMouseEnter={() => props.onMouseEnter(props.row, props.col)}
       onMouseUp={() => props.onMouseUp()}
-    ></div>
+    >
+      {props.isWeighted ? <span>{props.w}</span> : ''}
+    </div>
   );
 }

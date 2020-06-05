@@ -19,12 +19,21 @@ import {
 import useToggleState from './hooks/useToggleState';
 
 export default function PathFindingVisualizer() {
+  const minRows = 20;
+  const minCols = 20;
+  const wRange = 50;
   const [grid, setGrid] = useState([]);
   const [nRows, setNRows] = useState();
   const [nCols, setNCols] = useState();
+  const [isWeighted, setIsWeighted] = useState(false);
+  //   disable buttons in nav
   const [disable, setDisable] = useState(false);
-  const [startVertex, setStarteVertex] = useState(getRandomVertex(4, 7));
-  const [finishVertex, setFinishVertex] = useState(getRandomVertex(6, 9));
+  const [startVertex, setStarteVertex] = useState(
+    getRandomVertex(minRows, minCols)
+  );
+  const [finishVertex, setFinishVertex] = useState(
+    getRandomVertex(minRows, minCols)
+  );
   const [mouseIsPressed, setMouseIsPressed] = useState(false);
   const [createWall, setCreatWall, toggleCreateWall] = useToggleState(false);
   const [changeStart, setChangeStart, toggleChangeStart] = useToggleState(
@@ -40,7 +49,7 @@ export default function PathFindingVisualizer() {
       const [nRows, nCols] = getRowsCols();
       setNRows(nRows);
       setNCols(nCols);
-      const n = getInitialGrid(startVertex, finishVertex, nRows, nCols);
+      const n = getInitialGrid(startVertex, finishVertex, nRows, nCols, wRange);
       setGrid(n);
       await sleep(1);
       startNodeAnimation(startVertex);
@@ -119,13 +128,15 @@ export default function PathFindingVisualizer() {
         end={finishVertex}
         nRows={nRows}
         nCols={nCols}
+        isWeighted={isWeighted}
+        setIsWeighted={setIsWeighted}
       />
       <div className='grid'>
         {grid.map((row, rowIdx) => {
           return (
             <div key={rowIdx}>
               {row.map((node) => {
-                const { row, col, val, adjList } = node;
+                const { row, col, val, adjList, w } = node;
                 return (
                   <Node
                     key={val}
@@ -136,6 +147,8 @@ export default function PathFindingVisualizer() {
                     onMouseEnter={handleMouseEnter}
                     onMouseUp={handleMouseUp}
                     adjList={adjList}
+                    w={w}
+                    isWeighted={isWeighted}
                   ></Node>
                 );
               })}

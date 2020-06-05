@@ -5,7 +5,7 @@ export const getRandomVertex = (nRows, nCols) => {
   return Math.floor(Math.random() * nRows * nCols);
 };
 
-const createNode = (col, row, start, finish, nRows, nCols) => {
+const createNode = (col, row, start, finish, nRows, nCols, w = 1) => {
   const val = row * nCols + col;
   const adjList = createAdjList(val, col, row, nRows, nCols);
 
@@ -17,6 +17,7 @@ const createNode = (col, row, start, finish, nRows, nCols) => {
     isWall: false,
     adjList: adjList,
     val: val,
+    w,
   };
 };
 
@@ -41,12 +42,14 @@ const createAdjList = (val, col, row, nRows, nCols) => {
 };
 
 // returns the initial Grid
-export const getInitialGrid = (start, finish, nRows, nCols) => {
+export const getInitialGrid = (start, finish, nRows, nCols, wRange = 0) => {
   const grid = [];
   for (let row = 0; row < nRows; row++) {
     const currentRow = [];
     for (let col = 0; col < nCols; col++) {
-      currentRow.push(createNode(col, row, start, finish, nRows, nCols));
+      // get random weight for all edges of this node
+      const w = Math.floor(Math.random() * wRange + 1);
+      currentRow.push(createNode(col, row, start, finish, nRows, nCols, w));
     }
     grid.push(currentRow);
   }

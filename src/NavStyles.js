@@ -4,7 +4,7 @@ const styles = (theme) => ({
     alignItems: 'space-around',
     justifyContent: 'center',
     height: '6vh',
-    marginBottom: '20px',
+    marginBottom: '12px',
   },
   title: {
     display: 'block',

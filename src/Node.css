@@ -3,4 +3,7 @@
   height: 25px;
   outline: 1px solid rgb(175, 216, 248);
   display: inline-block;
+  font-size: x-small;
+  text-align: center;
+  color: black;
 }
