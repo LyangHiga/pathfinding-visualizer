@@ -23,6 +23,7 @@ function Nav(props) {
     nCols,
     isWeighted,
     setIsWeighted,
+    toggleIsweighted,
   } = props;
 
   const clear = () => {
@@ -35,10 +36,6 @@ function Nav(props) {
   const newMaze = async () => {
     const newGrid = await getNewMazedGrid(grid, 0.33);
     setGrid(newGrid);
-  };
-
-  const weightedGrid = () => {
-    setIsWeighted(true);
   };
 
   const handleClick = async (alg) => {
@@ -79,10 +76,10 @@ function Nav(props) {
           </button>
           <button
             className={classes.button}
-            onClick={() => handleClick(weightedGrid())}
-            disabled={isWeighted ? true : disable}
+            onClick={() => handleClick(toggleIsweighted())}
+            disabled={disable}
           >
-            Weighted Grid
+            Un/Weighted Grid
           </button>
           <button
             className={classes.button}

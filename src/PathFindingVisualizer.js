@@ -25,7 +25,7 @@ export default function PathFindingVisualizer() {
   const [grid, setGrid] = useState([]);
   const [nRows, setNRows] = useState();
   const [nCols, setNCols] = useState();
-  const [isWeighted, setIsWeighted] = useState(false);
+  const [isWeighted, setIsWeighted, toggleIsweighted] = useToggleState(false);
   //   disable buttons in nav
   const [disable, setDisable] = useState(false);
   const [startVertex, setStarteVertex] = useState(
@@ -130,6 +130,7 @@ export default function PathFindingVisualizer() {
         nCols={nCols}
         isWeighted={isWeighted}
         setIsWeighted={setIsWeighted}
+        toggleIsweighted={toggleIsweighted}
       />
       <div className='grid'>
         {grid.map((row, rowIdx) => {
