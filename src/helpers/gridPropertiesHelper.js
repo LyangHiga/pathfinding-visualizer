@@ -90,8 +90,21 @@ const toggleNodeProperty = (node, prop) => {
 //   building path
 export const getPath = (parents, end, dist) => {
   let a = parents[end];
+  console.log(`a = ${a}`);
   let path = [];
   for (let i = 0; i < dist - 1; i++) {
+    path.push(a);
+    a = parents[a];
+  }
+  console.log(`Min Path: ${path.length + 1} squares`);
+  return path.reverse();
+};
+
+//   building path
+export const getPathD = (parents, start, end) => {
+  let a = parents[end];
+  let path = [];
+  while (a !== start) {
     path.push(a);
     a = parents[a];
   }

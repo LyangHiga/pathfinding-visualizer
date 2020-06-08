@@ -1,6 +1,7 @@
 import React from 'react';
 import bfs from './algorithms/bfs';
 import dfs from './algorithms/dfs';
+import dijkstra from './algorithms/dijkstra';
 import { clearAnimation, clearPathAnimation } from './animations';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -102,6 +103,22 @@ function Nav(props) {
             disabled={isWeighted ? true : disable}
           >
             DFS
+          </button>
+          <button
+            className={classes.button}
+            onClick={() =>
+              handleClick(
+                dijkstra(
+                  grid,
+                  grid[rowStart][colStart],
+                  grid[rowEnd][colEnd],
+                  nCols
+                )
+              )
+            }
+            disabled={!isWeighted ? true : disable}
+          >
+            dijkstra
           </button>
         </div>
       </Toolbar>

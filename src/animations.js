@@ -2,6 +2,7 @@ export const sleep = (m) => new Promise((r) => setTimeout(r, m));
 
 export const pathAnimation = async (path) => {
   for (let i = 0; i < path.length; i++) {
+    console.log(`path[i] = ${path[i]}`);
     await sleep(12);
     changingPropAnimation(path[i], 'yellow');
   }

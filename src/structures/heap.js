@@ -82,3 +82,5 @@ class Heap {
     return { element: min, heap: this };
   }
 }
+
+export default Heap;
