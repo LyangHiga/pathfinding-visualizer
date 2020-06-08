@@ -4,8 +4,9 @@ import { pathAnimation, visitedAnimation } from '../animations';
 
 const dijkstra = async (grid, start, end, nCols) => {
   const heap = new Heap();
-  const distances = [];
-  const parents = [];
+  // Initialize distances and parents array with zeros
+  const distances = Array(grid.length * nCols).fill(0);
+  const parents = Array(grid.length * nCols).fill(0);
   let smallestVal;
   //   build heap, adding all nodes
   for (let i = 0; i < grid.length; i++) {
@@ -23,17 +24,21 @@ const dijkstra = async (grid, start, end, nCols) => {
   }
   // while we have nodes to visite:
   while (heap.values.length) {
-    // smallest = heap.dequeue().element.val;
-    smallestVal = heap.dequeue().element.key;
-    if (smallestVal === end.val) {
+    //   get the min value from the heap
+    let s = heap.dequeue().element;
+    // get its vertex
+    smallestVal = s.key;
+    // check if we find the target node or if we are lock in an unconnected component
+    if (smallestVal === end.val || s.val === Infinity) {
       break;
     }
+    // convert smallestVal to a Vertex
     const [r, c] = valToIndx(smallestVal, nCols);
     const smallest = grid[r][c];
     // if there is any vertex in heap with distance !== infinity
     if (smallest || distances[smallest.val] !== Infinity) {
       for (let k in smallest.adjList) {
-        //   neighbour is the val of this <smallest> node
+        // get the val of the neighbour of the smallest node from its adj list
         const neighbour = smallest.adjList[k];
         // check if is not null => grid border
         if (neighbour !== null) {
@@ -41,7 +46,9 @@ const dijkstra = async (grid, start, end, nCols) => {
           //   neighbour as a vertex
           let nextVertex = grid[row][col];
           // calculate Dijkstra's  Greedy Criterium
-          let d = distances[smallestVal] + nextVertex.w;
+          //   distance to smallest (IS short path to it) + smallest to nextVertex edge (W*)
+          // W* : weight of <smallest> edges, all edges from the same node have the same weight in this grid
+          let d = distances[smallestVal] + smallest.w;
           //   compare distance calculated with last distance storaged
           if (d < distances[nextVertex.val] && !nextVertex.isWall) {
             //   updating distances and parents
