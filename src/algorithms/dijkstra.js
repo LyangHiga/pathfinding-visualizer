@@ -1,5 +1,5 @@
 import Heap from '../structures/heap';
-import { valToIndx, getPathD } from '../helpers/gridPropertiesHelper';
+import { valToIndx, getWeightedPath } from '../helpers/gridPropertiesHelper';
 import { pathAnimation, visitedAnimation } from '../animations';
 
 const dijkstra = async (grid, start, end, nCols) => {
@@ -62,7 +62,8 @@ const dijkstra = async (grid, start, end, nCols) => {
       }
     }
   }
-  const path = getPathD(parents, start.val, end.val);
+  const path = getWeightedPath(parents, start.val, end.val);
+  console.log(`Min Distance = ${distances[end.val]}`);
   await pathAnimation(path, start.val);
 };
 

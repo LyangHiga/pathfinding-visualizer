@@ -101,14 +101,13 @@ export const getPath = (parents, end, dist) => {
 };
 
 //   building path
-export const getPathD = (parents, start, end) => {
+export const getWeightedPath = (parents, start, end) => {
   let a = parents[end];
   let path = [];
   while (a !== start) {
     path.push(a);
     a = parents[a];
   }
-  console.log(`Min Path: ${path.length + 1} squares`);
   return path.reverse();
 };
 
