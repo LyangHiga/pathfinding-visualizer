@@ -7,7 +7,7 @@ const dijkstra = async (grid, start, end, nCols) => {
   // Initialize distances and parents array with zeros
   const distances = Array(grid.length * nCols).fill(0);
   const parents = Array(grid.length * nCols).fill(0);
-  let smallestVal;
+  let smallestVal, notFound;
   //   build heap, adding all nodes
   for (let i = 0; i < grid.length; i++) {
     for (let j = 0; j < grid[i].length; j++) {
@@ -29,7 +29,12 @@ const dijkstra = async (grid, start, end, nCols) => {
     // get its vertex
     smallestVal = s.key;
     // check if we find the target node or if we are lock in an unconnected component
-    if (smallestVal === end.val || s.val === Infinity) {
+    console.log(s.val);
+    if (smallestVal === end.val) {
+      break;
+    }
+    if (s.val === Infinity) {
+      notFound = true;
       break;
     }
     // convert smallestVal to a Vertex
@@ -62,6 +67,7 @@ const dijkstra = async (grid, start, end, nCols) => {
       }
     }
   }
+  if (notFound) return;
   const path = getWeightedPath(parents, start.val, end.val);
   console.log(`Min Distance = ${distances[end.val]}`);
   await pathAnimation(path, start.val);

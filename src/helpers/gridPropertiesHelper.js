@@ -60,7 +60,7 @@ export const getNewGridWitNewFinish = (grid, row, col, finishVal, nCols) => {
 };
 
 // returns a new mazed grid
-// a node has eps to be a wall
+// a node has eps prob to become a wall
 export const getNewMazedGrid = async (grid, eps) => {
   let newGrid = grid.slice();
   for (let row = 0; row < grid.length; row++) {
@@ -90,7 +90,6 @@ const toggleNodeProperty = (node, prop, val) => {
 //   building path
 export const getPath = (parents, end, dist) => {
   let a = parents[end];
-  console.log(`a = ${a}`);
   let path = [];
   for (let i = 0; i < dist - 1; i++) {
     path.push(a);
