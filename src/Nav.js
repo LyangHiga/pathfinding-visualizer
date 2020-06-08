@@ -118,7 +118,7 @@ function Nav(props) {
             }
             disabled={!isWeighted ? true : disable}
           >
-            dijkstra
+            Dijkstra
           </button>
         </div>
       </Toolbar>
