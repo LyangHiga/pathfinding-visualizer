@@ -8,7 +8,7 @@ const bestFirstSearch = async (grid, start, end, nCols) => {
   const parents = Array(grid.length * nCols).fill(null);
   //   the distance between start node and any given node
   const realDistance = Array(grid.length * nCols).fill(0);
-  let smallestVal, notFound;
+  let smallestVal, found;
   // this time our heap val will be the manhattan distance to the target node
   heap.enqueue(start.val, manhattan(start.row, end.row, start.col, end.col));
 
@@ -18,12 +18,9 @@ const bestFirstSearch = async (grid, start, end, nCols) => {
     let s = heap.dequeue().element;
     // get its vertex
     smallestVal = s.key;
-    // check if we find the target node or if we are lock in an unconnected component
+    // check if we find the target node
     if (smallestVal === end.val) {
-      break;
-    }
-    if (s.val === Infinity) {
-      notFound = true;
+      found = true;
       break;
     }
     // convert smallestVal to a Vertex
@@ -53,9 +50,8 @@ const bestFirstSearch = async (grid, start, end, nCols) => {
         }
       }
     }
-    // }
   }
-  if (notFound) return;
+  if (!found) return;
   const path = getWeightedPath(parents, start.val, end.val);
   console.log(`Real Distance = ${realDistance[end.val]}`);
   await pathAnimation(path, start.val);
