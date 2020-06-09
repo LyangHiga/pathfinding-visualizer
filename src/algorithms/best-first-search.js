@@ -2,11 +2,13 @@ import Heap from '../structures/heap';
 import { valToIndx, getWeightedPath } from '../helpers/gridPropertiesHelper';
 import { pathAnimation, visitedAnimation } from '../animations';
 
-const dijkstra = async (grid, start, end, nCols) => {
+const bestFirstSearch = async (grid, start, end, nCols) => {
   const heap = new Heap();
   // Initialize distances and parents array with zeros
+  // this time our distances array will be the manhattan distance to the target node
   const distances = Array(grid.length * nCols).fill(0);
   const parents = Array(grid.length * nCols).fill(0);
+  const visited = Array(grid.length * nCols).fill(false);
   let smallestVal, notFound;
   //   build heap, adding all nodes
   for (let i = 0; i < grid.length; i++) {
@@ -15,6 +17,7 @@ const dijkstra = async (grid, start, end, nCols) => {
       if (vertex.isStart) {
         distances[vertex.val] = 0;
         heap.enqueue(vertex.val, 0);
+        visited[vertex.val] = true;
       } else {
         distances[vertex.val] = Infinity;
         heap.enqueue(vertex.val, Infinity);
@@ -49,15 +52,19 @@ const dijkstra = async (grid, start, end, nCols) => {
           const [row, col] = valToIndx(neighbour, nCols);
           //   neighbour as a vertex
           let nextVertex = grid[row][col];
-          // calculate Dijkstra's  Greedy Criterium
-          //   distance to smallest (IS short path to it) + smallest to nextVertex edge (W*)
-          // W* : weight of <smallest> edges, all edges from the same node have the same weight in this grid
-          let d = distances[smallestVal] + smallest.w;
+          // calculate manhattan distance to the target node
+          // |X(smallest) - X(target)| + |Y(smallest) - Y(target)|
+          let d = Math.abs(r - end.row) + Math.abs(c - end.col);
           //   compare distance calculated with last distance storaged
-          if (d < distances[nextVertex.val] && !nextVertex.isWall) {
+          if (
+            d < distances[nextVertex.val] &&
+            !nextVertex.isWall &&
+            !visited[nextVertex.val]
+          ) {
             //   updating distances and parents
             distances[nextVertex.val] = d;
             parents[nextVertex.val] = smallest.val;
+            visited[nextVertex.val] = true;
             // enqueue with new priority
             heap.enqueue(nextVertex.val, d);
             await visitedAnimation(nextVertex.val, start.val, end.val);
@@ -68,8 +75,23 @@ const dijkstra = async (grid, start, end, nCols) => {
   }
   if (notFound) return;
   const path = getWeightedPath(parents, start.val, end.val);
-  console.log(`Min Distance = ${distances[end.val]}`);
+  console.log(
+    `Real Distance = ${getPathDistance(path, grid, start, end, nCols)}`
+  );
   await pathAnimation(path, start.val);
 };
 
-export default dijkstra;
+const getPathDistance = (path, grid, start, end, nCols) => {
+  // start and finish nodes are not in the path (yelow animation)
+  let d = start.w + end.w;
+  console.log(`path = ${path}`);
+  for (let i = 0; i < path.length; i++) {
+    let [r, c] = valToIndx(path[i], nCols);
+    console.log(path[i]);
+    const node = grid[r][c];
+    d += node.w;
+  }
+  return d;
+};
+
+export default bestFirstSearch;
