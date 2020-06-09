@@ -37,7 +37,7 @@ const changingPropAnimation = (val, color) => {
 export const wallAnimation = async (v) => {
   if (v.isStart || v.isFinish) return;
   await sleep(1);
-  changingPropAnimation(v.val, 'rgb(12, 53, 71)');
+  changingPropAnimation(v.val, 'black');
 };
 
 export const startNodeAnimation = (val) => {
