@@ -41,8 +41,8 @@ const bestFirstSearch = async (grid, start, end, nCols) => {
         let nextVertex = grid[row][col];
         //   check if nextVertex is a valid node => not a wall and not visited => realDistance ===0
         if (!nextVertex.isWall && realDistance[nextVertex.val] === 0) {
-          // calculate manhattan distance to the target node
-          let d = manhattan(r, end.row, c, end.col);
+          // calculate manhattan distance from nextVertex to the target node
+          let d = manhattan(row, end.row, col, end.col);
           //   updating distances and parents
           parents[nextVertex.val] = smallest.val;
           // calculate real distance until this node from start node
