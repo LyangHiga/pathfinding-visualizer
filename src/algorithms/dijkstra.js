@@ -9,9 +9,11 @@ const dijkstra = async (grid, start, end, nCols) => {
   const distances = Array(grid.length * nCols).fill(Infinity);
   const parents = Array(grid.length * nCols).fill(null);
   let smallestVal, found;
+  let inspectedNodes = 0;
   distances[start.val] = 0;
   //   add the start node to the heap
   heap.enqueue(start.val, 0);
+  inspectedNodes++;
 
   //   while there are elements in this heap
   while (heap.values.length) {
@@ -48,13 +50,15 @@ const dijkstra = async (grid, start, end, nCols) => {
           // enqueue with new priority
           heap.enqueue(nextVertex.val, d);
           await visitedAnimation(nextVertex.val, start.val, end.val);
+          inspectedNodes++;
         }
       }
     }
   }
   if (!found) return;
   const path = getWeightedPath(parents, start.val, end.val);
-  console.log(`Min Distance = ${distances[end.val]}`);
+  console.log(`dijkstra Min Distance = ${distances[end.val]}`);
+  console.log(`dijkstra inspectedNodes = ${inspectedNodes}`);
   await pathAnimation(path, start.val);
 };
 
