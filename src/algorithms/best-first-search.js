@@ -1,5 +1,9 @@
 import Heap from '../structures/heap';
-import { valToIndx, getWeightedPath } from '../helpers/gridPropertiesHelper';
+import {
+  valToIndx,
+  getWeightedPath,
+  manhattan,
+} from '../helpers/gridPropertiesHelper';
 import { pathAnimation, visitedAnimation } from '../animations';
 
 const bestFirstSearch = async (grid, start, end, nCols) => {
@@ -55,10 +59,6 @@ const bestFirstSearch = async (grid, start, end, nCols) => {
   const path = getWeightedPath(parents, start.val, end.val);
   console.log(`Real Distance = ${realDistance[end.val]}`);
   await pathAnimation(path, start.val);
-};
-
-const manhattan = (a, b, c, d) => {
-  return Math.abs(a - b) + Math.abs(c - d);
 };
 
 export default bestFirstSearch;

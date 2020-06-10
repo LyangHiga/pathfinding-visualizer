@@ -2,6 +2,10 @@ import { wallAnimation } from '../animations';
 
 // Node Helpers
 
+export const manhattan = (a, b, c, d) => {
+  return Math.abs(a - b) + Math.abs(c - d);
+};
+
 // returns {row, col} of a vertex val
 export const valToIndx = (val, nCols) => {
   const row = Math.floor(val / nCols);
