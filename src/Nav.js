@@ -3,6 +3,7 @@ import bfs from './algorithms/bfs';
 import dfs from './algorithms/dfs';
 import dijkstra from './algorithms/dijkstra';
 import bestFisrtSearch from './algorithms/best-first-search';
+import a from './algorithms/a';
 import { clearAnimation, clearPathAnimation } from './animations';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -136,6 +137,23 @@ function Nav(props) {
             disabled={!isWeighted ? true : disable}
           >
             Best-First Search
+          </button>
+          <button
+            className={classes.button}
+            onClick={() =>
+              handleClick(
+                a(
+                  grid,
+                  grid[rowStart][colStart],
+                  grid[rowEnd][colEnd],
+                  nCols,
+                  0.1
+                )
+              )
+            }
+            disabled={!isWeighted ? true : disable}
+          >
+            A*
           </button>
         </div>
       </Toolbar>
