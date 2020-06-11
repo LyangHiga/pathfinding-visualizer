@@ -64,7 +64,9 @@ const a = async (grid, start, end, nCols, alpha) => {
   }
   if (!found) return;
   const path = getWeightedPath(parents, start.val, end.val);
+  //   min distance g() found  by A*
   console.log(`A* Min Distance = ${distances[end.val]}`);
+  //   distance of this path (yellow)
   console.log(
     `A* Distance Calculated = ${getPathDistance(path, grid, start, nCols)}`
   );

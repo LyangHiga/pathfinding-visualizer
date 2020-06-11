@@ -60,6 +60,7 @@ const bestFirstSearch = async (grid, start, end, nCols) => {
   }
   if (!found) return;
   const path = getWeightedPath(parents, start.val, end.val);
+  //   distance of this path (yellow)
   console.log(`bestFirstSearch Real Distance = ${realDistance[end.val]}`);
   console.log(`bestFirstSearch inspectedNodes = ${inspectedNodes}`);
   await pathAnimation(path, start.val);
