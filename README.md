@@ -1,68 +1,47 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# [Pathfinding Visualizer](https://lyanghiga.github.io/pathfinding-visualizer/)
 
-## Available Scripts
+Project inspired by this [video](https://www.youtube.com/watch?v=msttfIHHkak). Some years ago I implemented all of these algorithms for a class at university, after watching this video I decided to do it in a way more visual and not something only in the command line.
 
-In the project directory, you can run:
+In this way, I could see all algorithms working (it is beautiful haha), remember how they work, and have some fun with React as well.
 
-### `npm start`
+---
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Instructions
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+### Grid
 
-### `npm test`
+#### Nodes
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+There are 3 types of nodes: Start (green) , Target (red) , and Wall (black).
+It's allowed only movements in 4 directions: N, E, S, and W.
 
-### `npm run build`
+#### Weighted Grid
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Each node has weighted edges, all edges with the same cost, randomly chosen in [1, 50] range. The number inside each node represents the cost of each edge.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+### Buttons
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Clear: Get a new Grid unweighted.
+- Clear Path: Keep the same grid, same start, target and wall nodes, just to clear paths.
+- Maze: To get a random Maze, Each node has a 0.3 chance to become a wall (start and target nodes not included).
+- Un/Weighted: Toggle between Unweighted and Weighted mode.
 
-### `npm run eject`
+### Keyboard Commands
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Just press one of the keys bellow and click in some node to change something.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- S: Press 'S' and click in a free node to change start Node.
+- F: Press 'F' and click in a free node to change final/ target Node.
+- W: Press 'W' and click and click in free nodes to create as many walls you like.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Algorithms And Data Structures
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+All algorithms and data structures are implemented as they used to be taught [1][2], all code is available in this repo. I think the main observations are in Best-first Search and A*, I use Manhattan Distance as heuristic, in A* to scale the g = edge costs and h= Manhattan Distance I use: f = Alpha _ g + (1 - Alpha) _ h. [3]
 
-## Learn More
+After any algorithm runs you can check the distance of the chosen path (yellow) and how many nodes have been inspected in the browser's console.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### References
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+[1]: [Algorithms Specialization](https://www.coursera.org/specializations/algorithms) by Tim Roughgarden.
+[2]: [JavaScript Algorithms and Data Structures Masterclass](https://www.udemy.com/course/js-algorithms-and-data-structures-masterclass/) by Colt Steele.
+[3]: [Introduction to A\* from Amit’s Thoughts on Pathfinding](http://theory.stanford.edu/~amitp/GameProgramming/AStarComparison.html) by Amit Patel.
