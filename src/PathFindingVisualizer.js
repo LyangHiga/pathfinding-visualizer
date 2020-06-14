@@ -46,6 +46,7 @@ export default function PathFindingVisualizer() {
   //   run only once, similar to Component Did mount
   useEffect(() => {
     async function initialGrid() {
+      document.title = 'Pathfinding Visualizer';
       const [nRows, nCols] = getRowsCols();
       setNRows(nRows);
       setNCols(nCols);
