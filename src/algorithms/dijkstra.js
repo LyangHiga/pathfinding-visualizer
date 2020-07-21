@@ -10,15 +10,17 @@ const dijkstra = async (grid, start, end, nCols) => {
   const parents = Array(grid.length * nCols).fill(null);
   let smallestVal, found;
   let inspectedNodes = 0;
+  let nDeq = 0;
   distances[start.val] = 0;
   //   add the start node to the heap
   heap.enqueue(start.val, 0);
-  inspectedNodes++;
 
   //   while there are elements in this heap
   while (heap.values.length) {
     //   get the min value from the heap
     let s = heap.dequeue().element;
+    nDeq++;
+
     // get its vertex
     smallestVal = s.key;
     // check if we find the target node
@@ -47,8 +49,11 @@ const dijkstra = async (grid, start, end, nCols) => {
           //   updating distances and parents
           distances[nextVertex.val] = d;
           parents[nextVertex.val] = smallest.val;
-          // enqueue with new priority
-          heap.enqueue(nextVertex.val, d);
+          let decrease = heap.decrease(nextVertex.val, d);
+          if (!decrease) {
+            // enqueue with new priority
+            heap.enqueue(nextVertex.val, d);
+          }
           await visitedAnimation(nextVertex.val, start.val, end.val);
           inspectedNodes++;
         }
@@ -59,6 +64,7 @@ const dijkstra = async (grid, start, end, nCols) => {
   const path = getWeightedPath(parents, start.val, end.val);
   console.log(`dijkstra Min Distance = ${distances[end.val]}`);
   console.log(`dijkstra inspectedNodes = ${inspectedNodes}`);
+  console.log(`dijkstra dequeues = ${nDeq}`);
   await pathAnimation(path, start.val);
 };
 

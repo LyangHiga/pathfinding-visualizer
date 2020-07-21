@@ -14,14 +14,15 @@ const bestFirstSearch = async (grid, start, end, nCols) => {
   const realDistance = Array(grid.length * nCols).fill(0);
   let smallestVal, found;
   let inspectedNodes = 0;
+  let nDeq = 0;
   // this time our heap val will be the manhattan distance to the target node
   heap.enqueue(start.val, manhattan(start.row, end.row, start.col, end.col));
-  inspectedNodes++;
 
   //   while there are elements in this heap
   while (heap.values.length) {
     //   get the min value from the heap
     let s = heap.dequeue().element;
+    nDeq++;
     // get its vertex
     smallestVal = s.key;
     // check if we find the target node
@@ -50,8 +51,11 @@ const bestFirstSearch = async (grid, start, end, nCols) => {
           // calculate real distance until this node from start node
           realDistance[nextVertex.val] =
             realDistance[smallest.val] + smallest.w;
-          // enqueue with new priority
-          heap.enqueue(nextVertex.val, d);
+          let decrease = heap.decrease(nextVertex.val, d);
+          if (!decrease) {
+            // enqueue with new priority
+            heap.enqueue(nextVertex.val, d);
+          }
           inspectedNodes++;
           await visitedAnimation(nextVertex.val, start.val, end.val);
         }
@@ -63,6 +67,7 @@ const bestFirstSearch = async (grid, start, end, nCols) => {
   //   distance of this path (yellow)
   console.log(`bestFirstSearch Real Distance = ${realDistance[end.val]}`);
   console.log(`bestFirstSearch inspectedNodes = ${inspectedNodes}`);
+  console.log(`bestFirstSearch dequeues = ${nDeq}`);
   await pathAnimation(path, start.val);
 };
 

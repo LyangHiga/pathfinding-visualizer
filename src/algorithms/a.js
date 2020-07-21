@@ -14,6 +14,7 @@ const a = async (grid, start, end, nCols, alpha) => {
   const parents = Array(grid.length * nCols).fill(null);
   let smallestVal, found;
   let inspectedNodes = 0;
+  let nDeq = 0;
   distances[start.val] = 0;
   //   add the start node to the heap
   //   we will use f(n) = alpha * distance + ( 1 - alpha) * Manhattan distance
@@ -26,6 +27,7 @@ const a = async (grid, start, end, nCols, alpha) => {
   while (heap.values.length) {
     //   get the min value from the heap
     let s = heap.dequeue().element;
+    nDeq++;
     // get its vertex
     smallestVal = s.key;
     // check if we find the target node
@@ -54,8 +56,11 @@ const a = async (grid, start, end, nCols, alpha) => {
           //   updating distances and parents
           distances[nextVertex.val] = d;
           parents[nextVertex.val] = smallest.val;
-          // enqueue with new priority
-          heap.enqueue(nextVertex.val, newF);
+          let decrease = heap.decrease(nextVertex.val, newF);
+          if (!decrease) {
+            // enqueue with new priority
+            heap.enqueue(nextVertex.val, newF);
+          }
           await visitedAnimation(nextVertex.val, start.val, end.val);
           inspectedNodes++;
         }
@@ -71,6 +76,7 @@ const a = async (grid, start, end, nCols, alpha) => {
     `A* Distance Calculated = ${getPathDistance(path, grid, start, nCols)}`
   );
   console.log(`A* inspectedNodes = ${inspectedNodes}`);
+  console.log(`A* Dequeues = ${nDeq}`);
   await pathAnimation(path, start.val);
 };
 
