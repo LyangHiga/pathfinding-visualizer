@@ -49,11 +49,9 @@ I use Alpha = 0.1 as default value.
 
 ### Using Decrease Key instead of Reinsert
 
-In this last commit I decided to use Decrease key when we found a new min distance to any node instead of reinserting the same node with its new distance, this means that we only make n dequeues because we insert each node just one time. [4]
+In this last commit I decided to use Decrease key when we found a new min distance to any node instead of reinserting the same node with its new distance, this means that we only make n dequeues because we insert each node just one time, in the worst case. [4]
 
-To implement Decrease Key I use a hash table (javascript object) to map keys to indexes. [5]
-
-PS: In my Heap implementation I changed 'keys' with 'values', how they are usually named, but it works as expected
+To implement Decrease Key I use a hash table (javascript object) to map Vals to indexes. [5]
 
 ### Browser Console
 
