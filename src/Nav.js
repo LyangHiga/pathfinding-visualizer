@@ -155,6 +155,17 @@ function Nav(props) {
           >
             A*
           </button>
+          <button
+            className={classes.button}
+            onClick={() => {
+              window.open(
+                'https://github.com/LyangHiga/pathfinding-visualizer#instructions',
+                '_blank'
+              );
+            }}
+          >
+            Instructions
+          </button>
         </div>
       </Toolbar>
     </AppBar>
