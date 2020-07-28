@@ -14,6 +14,7 @@ const a = async (grid, start, end, nCols, alpha) => {
   const parents = Array(grid.length * nCols).fill(null);
   let smallestVal, found;
   let inspectedNodes = 0;
+  let decrease = false;
   let nDeq = 0;
   distances[start.val] = 0;
   //   add the start node to the heap
@@ -29,7 +30,7 @@ const a = async (grid, start, end, nCols, alpha) => {
     let s = heap.dequeue().element;
     nDeq++;
     // get its vertex
-    smallestVal = s.key;
+    smallestVal = s.val;
     // check if we find the target node
     if (smallestVal === end.val) {
       found = true;
@@ -56,7 +57,7 @@ const a = async (grid, start, end, nCols, alpha) => {
           //   updating distances and parents
           distances[nextVertex.val] = d;
           parents[nextVertex.val] = smallest.val;
-          let decrease = heap.decrease(nextVertex.val, newF);
+          decrease = heap.decreaseKey(nextVertex.val, newF);
           if (!decrease) {
             // enqueue with new priority
             heap.enqueue(nextVertex.val, newF);

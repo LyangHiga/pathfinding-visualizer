@@ -11,6 +11,7 @@ const dijkstra = async (grid, start, end, nCols) => {
   let smallestVal, found;
   let inspectedNodes = 0;
   let nDeq = 0;
+  let decrease = false;
   distances[start.val] = 0;
   //   add the start node to the heap
   heap.enqueue(start.val, 0);
@@ -22,7 +23,7 @@ const dijkstra = async (grid, start, end, nCols) => {
     nDeq++;
 
     // get its vertex
-    smallestVal = s.key;
+    smallestVal = s.val;
     // check if we find the target node
     if (smallestVal === end.val) {
       found = true;
@@ -49,7 +50,7 @@ const dijkstra = async (grid, start, end, nCols) => {
           //   updating distances and parents
           distances[nextVertex.val] = d;
           parents[nextVertex.val] = smallest.val;
-          let decrease = heap.decrease(nextVertex.val, d);
+          decrease = heap.decreaseKey(nextVertex.val, d);
           if (!decrease) {
             // enqueue with new priority
             heap.enqueue(nextVertex.val, d);
