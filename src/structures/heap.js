@@ -1,15 +1,22 @@
 class Node {
-  constructor(val, key) {
-    this.val = val;
+  constructor(key, val) {
     this.key = key;
+    this.val = val;
   }
 }
 
 class Heap {
   constructor() {
     this.values = [];
-    // dict: val to array idx => you say the val it returns the idx
+    // dict: key to array idx => you say the key it returns the idx
     this.idxs = {};
+  }
+
+  //   return true if this heap constains this key
+  //   otherwise returns false
+  contains(key) {
+    if (this.values[this.idxs[key]] === undefined) return false;
+    return true;
   }
 
   // return true if the element from index i is smaller than k idx element
@@ -17,9 +24,9 @@ class Heap {
     // out of bounds
     if (i < 0 || k < 0) return false;
     if (i > this.values.length - 1 || k > this.values.length - 1) return false;
-    let key = this.values[i].key;
-    let parent = this.values[k].key;
-    if (key < parent) return true;
+    let val = this.values[i].val;
+    let parent = this.values[k].val;
+    if (val < parent) return true;
     return false;
   }
 
@@ -34,32 +41,58 @@ class Heap {
     return [2 * i + 1, 2 * i + 2];
   }
 
-  // insert an element in the next free spot and then sort the Heap if it's needed
-  //   return Heap sorted
-  enqueue(val, key) {
-    let node = new Node(val, key);
+  bubbleUp(i, j) {
+    //swap i and j
+    [this.values[i], this.values[j]] = [this.values[j], this.values[i]];
+
+    // swap idxs elements in dict key to idx
+    [this.idxs[this.values[i].key], this.idxs[this.values[j].key]] = [
+      this.idxs[this.values[j].key],
+      this.idxs[this.values[i].key],
+    ];
+  }
+
+  //   also returns the smmaller child idx
+  bubbleDown(idx, l, r) {
+    let smallIdx;
+    if (this.lessThan(l, r)) {
+      smallIdx = l;
+    } else if (this.lessThan(r, l)) {
+      smallIdx = r;
+    } else {
+      smallIdx = l;
+    }
+    // swap element from idx with greater
+    [this.values[idx], this.values[smallIdx]] = [
+      this.values[smallIdx],
+      this.values[idx],
+    ];
+
+    // swap idxs elements in dict key to idx
+    [this.idxs[this.values[idx].key], this.idxs[this.values[smallIdx].key]] = [
+      this.idxs[this.values[smallIdx].key],
+      this.idxs[this.values[idx].key],
+    ];
+
+    return smallIdx;
+  }
+
+  // insert an element in the next free spot and rearrange
+  //   return Heap
+  enqueue(key, val) {
+    // check whether this val belongs to this heap
+    // to avoid duplicate keys
+    if (this.contains(key)) return false;
+    let node = new Node(key, val);
     this.values.push(node);
     // last position to insert this new node
     let idx = this.values.length - 1;
-    // add the idx of this val on the dict
-    this.idxs[val] = idx;
+    // add the idx of this key on the dict
+    this.idxs[key] = idx;
     let parentIdx = this.myParentIdx(idx);
-    // sort (while this new node is smaller than its parent)
+    // bubble-up (while this new node is smaller than its parent)
     while (this.lessThan(idx, parentIdx)) {
-      //swap
-      [this.values[idx], this.values[parentIdx]] = [
-        this.values[parentIdx],
-        this.values[idx],
-      ];
-
-      // swap idxs elements in dict val to idx
-      [
-        this.idxs[this.values[idx].val],
-        this.idxs[this.values[parentIdx].val],
-      ] = [
-        this.idxs[this.values[parentIdx].val],
-        this.idxs[this.values[idx].val],
-      ];
+      this.bubbleUp(idx, parentIdx);
       //   recalculate node idx, parent idx position
       idx = parentIdx;
       parentIdx = this.myParentIdx(idx);
@@ -67,32 +100,20 @@ class Heap {
     return this;
   }
 
-  //   update key of this node and return this heap sorted
-  //   if there is not any node with this val in this heap return false
-  decreaseKey(val, newKey) {
-    // check whether this val belongs to this heap
-    if (this.values[this.idxs[val]] === undefined) return false;
-    //   get idx of this val
-    let idx = this.idxs[val];
-    //   update node with new key
-    this.values[idx].key = newKey;
+  //   update val of this key and return this heap
+  //   if there is not any node with this key in this heap return false
+  decreaseKey(key, newVal) {
+    // check whether this key belongs to this heap
+    if (!this.contains(key)) return false;
+    //   get idx of this key
+    let idx = this.idxs[key];
+    //   update node with new val
+    this.values[idx].val = newVal;
     let parentIdx = this.myParentIdx(idx);
     if (parentIdx < 0) return this;
+    // bubble-up (while this new node is smaller than its parent)
     while (this.lessThan(idx, parentIdx)) {
-      //swap
-      [this.values[idx], this.values[parentIdx]] = [
-        this.values[parentIdx],
-        this.values[idx],
-      ];
-
-      // swap idxs elements in dict val to idx
-      [
-        this.idxs[this.values[idx].val],
-        this.idxs[this.values[parentIdx].val],
-      ] = [
-        this.idxs[this.values[parentIdx].val],
-        this.idxs[this.values[idx].val],
-      ];
+      this.bubbleUp(idx, parentIdx);
       //   recalculate node idx, parent idx position
       idx = parentIdx;
       parentIdx = this.myParentIdx(idx);
@@ -112,40 +133,16 @@ class Heap {
     // replace the root with the last element
     this.values[0] = this.values.pop();
     // delete from dict
-    delete this.idxs[min.val];
+    delete this.idxs[min.key];
     // update idx of the 'new root' in the dict
-    this.idxs[this.values[0].val] = 0;
-    // index of this node we have to sort and the idx of its children
+    this.idxs[this.values[0].key] = 0;
+    // index of this node we have to rearrange and the idx of its children
     let idx = 0;
     let [lChild, rChild] = this.myChildrenIdx(idx);
-    // to keep the smaller
-    let smallIdx;
-    // sort (while any child is smaller than the parent)
+    // bubble-down (while any child is smaller than the parent)
     while (this.lessThan(lChild, idx) || this.lessThan(rChild, idx)) {
-      if (this.lessThan(lChild, rChild)) {
-        smallIdx = lChild;
-      } else if (this.lessThan(rChild, lChild)) {
-        smallIdx = rChild;
-      } else {
-        smallIdx = lChild;
-      }
-      // swap element from idx with greater
-      [this.values[idx], this.values[smallIdx]] = [
-        this.values[smallIdx],
-        this.values[idx],
-      ];
-
-      // swap idxs elements in dict val to idx
-      [
-        this.idxs[this.values[idx].val],
-        this.idxs[this.values[smallIdx].val],
-      ] = [
-        this.idxs[this.values[smallIdx].val],
-        this.idxs[this.values[idx].val],
-      ];
-
       // update idx and its children
-      idx = smallIdx;
+      idx = this.bubbleDown(idx, lChild, rChild);
       [lChild, rChild] = this.myChildrenIdx(idx);
     }
     return { element: min, heap: this };

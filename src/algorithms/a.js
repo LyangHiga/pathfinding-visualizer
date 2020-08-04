@@ -30,7 +30,7 @@ const a = async (grid, start, end, nCols, alpha) => {
     let s = heap.dequeue().element;
     nDeq++;
     // get its vertex
-    smallestVal = s.val;
+    smallestVal = s.key;
     // check if we find the target node
     if (smallestVal === end.val) {
       found = true;
