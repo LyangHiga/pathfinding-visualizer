@@ -1,17 +1,18 @@
-import React from 'react';
-import bfs from './algorithms/bfs';
-import dfs from './algorithms/dfs';
-import dijkstra from './algorithms/dijkstra';
-import bestFisrtSearch from './algorithms/best-first-search';
-import a from './algorithms/a';
-import { clearAnimation, clearPathAnimation } from './animations';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
-import styles from './NavStyles';
-import { valToIndx, getNewMazedGrid } from './helpers/gridPropertiesHelper';
-import { getInitialGrid } from './helpers/initialGridHelper';
+import React, { useState } from "react";
+import "rc-slider/assets/index.css";
+import bfs from "./algorithms/bfs";
+import dfs from "./algorithms/dfs";
+import a from "./algorithms/a";
+import { clearAnimation, clearPathAnimation } from "./animations";
+import Slider from "rc-slider";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import { withStyles } from "@material-ui/core/styles";
+import styles from "./NavStyles";
+import { valToIndx, getNewMazedGrid } from "./helpers/gridPropertiesHelper";
+import { getInitialGrid } from "./helpers/initialGridHelper";
 
 function Nav(props) {
   const {
@@ -46,45 +47,57 @@ function Nav(props) {
     await alg;
     setDisable(false);
   };
+
+  const hanldeSliderChange = () => {
+    if (alpha !== 0 && alpha !== 1) setFName("A*");
+    else {
+      if (alpha === 0) setFName("Best Fisrt Search");
+      if (alpha === 1) setFName("Dijkstra");
+    }
+  };
+
   const [rowEnd, colEnd] = valToIndx(end, nCols);
   const [rowStart, colStart] = valToIndx(start, nCols);
+  const [alpha, setAlpha] = useState(0.1);
+  const [fName, setFName] = useState("A*");
+  const changeAlpha = (alpha) => setAlpha(alpha);
 
   return (
-    <AppBar position='static' color='inherit' className={classes.Navbar}>
+    <AppBar position="static" color="inherit" className={classes.Navbar}>
       <Toolbar>
-        <Typography className={classes.title} variant='h6' color='inherit'>
+        <Typography className={classes.title} variant="h6" color="inherit">
           Pathfinding Visualizer
         </Typography>
         <div className={classes.button}>
-          <button
+          <Button
             className={classes.button}
             onClick={() => clear()}
             disabled={disable}
           >
             Clear
-          </button>
-          <button
+          </Button>
+          <Button
             className={classes.button}
             onClick={() => clearPathAnimation(grid)}
             disabled={disable}
           >
             Clear Path
-          </button>
-          <button
+          </Button>
+          <Button
             className={classes.button}
             onClick={() => handleClick(newMaze())}
             disabled={disable}
           >
             Maze
-          </button>
-          <button
+          </Button>
+          <Button
             className={classes.button}
             onClick={() => handleClick(toggleIsweighted())}
             disabled={disable}
           >
             Un/Weighted Grid
-          </button>
-          <button
+          </Button>
+          <Button
             className={classes.button}
             onClick={() =>
               handleClick(
@@ -94,8 +107,8 @@ function Nav(props) {
             disabled={isWeighted ? true : disable}
           >
             BFS
-          </button>
-          <button
+          </Button>
+          <Button
             className={classes.button}
             onClick={() =>
               handleClick(
@@ -105,40 +118,20 @@ function Nav(props) {
             disabled={isWeighted ? true : disable}
           >
             DFS
-          </button>
-          <button
-            className={classes.button}
-            onClick={() =>
-              handleClick(
-                dijkstra(
-                  grid,
-                  grid[rowStart][colStart],
-                  grid[rowEnd][colEnd],
-                  nCols
-                )
-              )
-            }
-            disabled={!isWeighted ? true : disable}
-          >
-            Dijkstra
-          </button>
-          <button
-            className={classes.button}
-            onClick={() =>
-              handleClick(
-                bestFisrtSearch(
-                  grid,
-                  grid[rowStart][colStart],
-                  grid[rowEnd][colEnd],
-                  nCols
-                )
-              )
-            }
-            disabled={!isWeighted ? true : disable}
-          >
-            Best-First Search
-          </button>
-          <button
+          </Button>
+          <div className={classes.slider}>
+            <Slider
+              defaultValue={alpha}
+              min={0}
+              max={1}
+              onAfterChange={hanldeSliderChange}
+              onChange={changeAlpha}
+              step={0.01}
+              disabled={!isWeighted ? true : disable}
+            />
+          </div>
+          {!isWeighted ? true : <span>Alpha: {alpha}</span>}
+          <Button
             className={classes.button}
             onClick={() =>
               handleClick(
@@ -147,25 +140,25 @@ function Nav(props) {
                   grid[rowStart][colStart],
                   grid[rowEnd][colEnd],
                   nCols,
-                  0.1
+                  alpha
                 )
               )
             }
             disabled={!isWeighted ? true : disable}
           >
-            A*
-          </button>
-          <button
+            {fName}
+          </Button>
+          <Button
             className={classes.button}
             onClick={() => {
               window.open(
-                'https://github.com/LyangHiga/pathfinding-visualizer#instructions',
-                '_blank'
+                "https://github.com/LyangHiga/pathfinding-visualizer#instructions",
+                "_blank"
               );
             }}
           >
             Instructions
-          </button>
+          </Button>
         </div>
       </Toolbar>
     </AppBar>
