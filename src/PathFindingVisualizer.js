@@ -1,27 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import Node from './Node';
+import React, { useState, useEffect } from "react";
+import Node from "./Node";
 import {
   getNewGridWithWallToggled,
   getNewGridWitNewStart,
   getNewGridWitNewFinish,
   getRowsCols,
-} from './helpers/gridPropertiesHelper';
-import { getRandomVertex, getInitialGrid } from './helpers/initialGridHelper';
-import Nav from './Nav';
-import './PathFindingVisualizer.css';
+} from "./helpers/gridPropertiesHelper";
+import { getRandomVertex, getInitialGrid } from "./helpers/initialGridHelper";
+import Nav from "./Nav";
+import "./PathFindingVisualizer.css";
 import {
   wallAnimation,
   startNodeAnimation,
   finishNodeAnimation,
   clearNodeAnimation,
   sleep,
-} from './animations';
-import useToggleState from './hooks/useToggleState';
+} from "./animations";
+import useToggleState from "./hooks/useToggleState";
 
 export default function PathFindingVisualizer() {
+  // fundamental CONSTS
   const minRows = 20;
   const minCols = 20;
   const wRange = 50;
+
   const [grid, setGrid] = useState([]);
   const [nRows, setNRows] = useState();
   const [nCols, setNCols] = useState();
@@ -46,7 +48,7 @@ export default function PathFindingVisualizer() {
   //   run only once, similar to Component Did mount
   useEffect(() => {
     async function initialGrid() {
-      document.title = 'Pathfinding Visualizer';
+      document.title = "Pathfinding Visualizer";
       const [nRows, nCols] = getRowsCols();
       setNRows(nRows);
       setNCols(nCols);
@@ -61,15 +63,15 @@ export default function PathFindingVisualizer() {
 
   const handleKeyPress = (event) => {
     switch (event.key) {
-      case 'w':
+      case "w":
         setChangeStart(false);
         setChangeFinish(false);
         return toggleCreateWall();
-      case 's':
+      case "s":
         setChangeFinish(false);
         setCreatWall(false);
         return toggleChangeStart();
-      case 'f':
+      case "f":
         setChangeStart(false);
         setCreatWall(false);
         return toggleChangeFinish();
@@ -119,7 +121,7 @@ export default function PathFindingVisualizer() {
   };
 
   return (
-    <div onKeyDown={handleKeyPress} tabIndex='0'>
+    <div onKeyDown={handleKeyPress} tabIndex="0">
       <Nav
         grid={grid}
         setGrid={setGrid}
@@ -129,11 +131,12 @@ export default function PathFindingVisualizer() {
         end={finishVertex}
         nRows={nRows}
         nCols={nCols}
+        wRange={wRange}
         isWeighted={isWeighted}
         setIsWeighted={setIsWeighted}
         toggleIsweighted={toggleIsweighted}
       />
-      <div className='grid'>
+      <div className="grid">
         {grid.map((row, rowIdx) => {
           return (
             <div key={rowIdx}>

@@ -25,6 +25,7 @@ function Nav(props) {
     setDisable,
     nRows,
     nCols,
+    wRange,
     isWeighted,
     setIsWeighted,
     toggleIsweighted,
@@ -58,7 +59,7 @@ function Nav(props) {
 
   const [rowEnd, colEnd] = valToIndx(end, nCols);
   const [rowStart, colStart] = valToIndx(start, nCols);
-  const [alpha, setAlpha] = useState(0.1);
+  const [alpha, setAlpha] = useState(0.57);
   const [fName, setFName] = useState("A*");
   const changeAlpha = (alpha) => setAlpha(alpha);
 
@@ -140,6 +141,7 @@ function Nav(props) {
                   grid[rowStart][colStart],
                   grid[rowEnd][colEnd],
                   nCols,
+                  wRange,
                   alpha
                 )
               )
