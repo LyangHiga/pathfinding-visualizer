@@ -28,6 +28,9 @@ Each node has weighted edges, all edges with the same cost, randomly chosen in [
 - Clear Path: Keep the same grid, same start, target and wall nodes, just to clear paths.
 - Maze: Get a random Maze, Each node has a eps = 0.3 chance to become a wall (start and target nodes not included).
 - Un/Weighted: Toggle between Unweighted and Weighted mode.
+- Slider to change Alpha Value
+  - Alpha == 0 : Best First Search
+  - Alpha == 1 : Dijkstra
 
 ### Keyboard Commands
 
@@ -43,9 +46,18 @@ All algorithms and data structures are implemented as they used to be taught [1]
 
 g: edge costs and h: Manhattan Distance
 
-f = Alpha \* g + (1 - Alpha) \* h. [3]
+f = Alpha \* g + (1 - Alpha) \* h \* sf . [3]
 
-I use Alpha = 0.1 as default value.
+sf: Scaling Factor
+g is measured in 'edge costs' and its value can be in the range [1, maxWeight*] while h is measured in 'node distances' given by Manhattan Norm.
+To scale I used the expected value of the random variable of the weights, given by:
+sum / maxWeight ; where sum is of the N terms from 1 to maxWeight, thus:
+sum = (maxWeight + 1) \* (maxWeight/2)
+
+\*maxWeight is a const defined equals to 50. But we can use any maxWeight > 1.
+I use Alpha = 0.57 as default value.
+If Alpha == 0 => To use only h (Best First Search)
+If Alpha == 1 => to use only g (Dijkstra)
 
 ### Using Decrease Key instead of Reinsert
 

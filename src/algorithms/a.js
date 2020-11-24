@@ -93,7 +93,7 @@ const a = async (grid, start, end, nCols, wRange, alpha) => {
 
 //   we will use f(n) = (alpha * distance + ( 1 - alpha) * Manhattan distance) * SCALING FACTOR
 //      we use a scaling factor because we compare nodes' weights with distances
-//      weight: [1, wRange] ; while Manhattan d. is calculated in '[nodes distance] units': [1, sqrt(2)] (for adj nodes)
+//      weight: [1, wRange] ; while Manhattan d. is calculated in '[nodes distance] units': 1 (for adj nodes)
 // as val to be minimized in the heap
 const f = (distance, a, b, alpha, sf) => {
   const g = distance;
