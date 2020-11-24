@@ -9,14 +9,12 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import { withStyles } from "@material-ui/core/styles";
 import styles from "./NavStyles";
 import { valToIndx, getNewMazedGrid } from "./helpers/gridPropertiesHelper";
 import { getInitialGrid } from "./helpers/initialGridHelper";
 
 function Nav(props) {
   const {
-    classes,
     grid,
     disable,
     start,
@@ -62,6 +60,8 @@ function Nav(props) {
   const [alpha, setAlpha] = useState(0.57);
   const [fName, setFName] = useState("A*");
   const changeAlpha = (alpha) => setAlpha(alpha);
+
+  const classes = styles();
 
   return (
     <AppBar position="static" color="inherit" className={classes.Navbar}>
@@ -167,4 +167,4 @@ function Nav(props) {
   );
 }
 
-export default withStyles(styles)(Nav);
+export default Nav;

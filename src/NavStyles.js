@@ -1,4 +1,6 @@
-const styles = () => ({
+import { makeStyles } from "@material-ui/core/styles";
+
+const styles = makeStyles(() => ({
   Navbar: {
     display: "flex",
     alignItems: "space-around",
@@ -35,6 +37,6 @@ const styles = () => ({
       marginTop: "-3px",
     },
   },
-});
+}));
 
 export default styles;
