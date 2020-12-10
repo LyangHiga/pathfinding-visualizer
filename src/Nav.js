@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import "rc-slider/assets/index.css";
 import bfs from "./algorithms/bfs";
 import dfs from "./algorithms/dfs";
@@ -6,6 +6,8 @@ import a from "./algorithms/a";
 import { clearAnimation, clearPathAnimation } from "./animations";
 import Slider from "rc-slider";
 import AppBar from "@material-ui/core/AppBar";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
@@ -28,6 +30,17 @@ function Nav(props) {
     setIsWeighted,
     toggleIsweighted,
   } = props;
+
+  const classes = styles();
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const [rowEnd, colEnd] = valToIndx(end, nCols);
+  const [rowStart, colStart] = valToIndx(start, nCols);
+  const [alpha, setAlpha] = useState(0.57);
+  const [fName, setFName] = useState("A*");
+
+  const changeAlpha = (alpha) => setAlpha(alpha);
 
   const clear = () => {
     clearAnimation(grid, start, end);
@@ -55,13 +68,105 @@ function Nav(props) {
     }
   };
 
-  const [rowEnd, colEnd] = valToIndx(end, nCols);
-  const [rowStart, colStart] = valToIndx(start, nCols);
-  const [alpha, setAlpha] = useState(0.57);
-  const [fName, setFName] = useState("A*");
-  const changeAlpha = (alpha) => setAlpha(alpha);
+  const btnOptList = [
+    { name: "Clear", click: () => clear(), disabled: disable },
+    {
+      name: "Clear Path",
+      click: () => clearPathAnimation(grid),
+      disabled: disable,
+    },
+    { name: "Maze", click: () => handleClick(newMaze()), disabled: disable },
+    {
+      name: isWeighted ? "Unweighted Grid" : "Weighted Grid",
+      click: () => handleClick(toggleIsweighted()),
+      disabled: disable,
+    },
+    { name: "Negative", click: undefined, disabled: disable },
+  ];
 
-  const classes = styles();
+  const unWBtnList = [
+    {
+      name: "BFS",
+      click: () =>
+        handleClick(
+          bfs(grid, grid[rowStart][colStart], grid[rowEnd][colEnd], nCols)
+        ),
+      disabled: isWeighted ? true : disable,
+    },
+    {
+      name: "DFS",
+      click: () =>
+        handleClick(
+          dfs(grid, grid[rowStart][colStart], grid[rowEnd][colEnd], nCols)
+        ),
+      disabled: isWeighted ? true : disable,
+    },
+  ];
+
+  const btnOpts = (
+    <Fragment>
+      {btnOptList.map((btn) => (
+        <Button
+          key={`btnOpt-${btn.name}`}
+          className={classes.button}
+          onClick={btn.click}
+          disabled={btn.disabled}
+        >
+          {btn.name}
+        </Button>
+      ))}
+    </Fragment>
+  );
+
+  const unWBtn = (
+    <Fragment>
+      {unWBtnList.map((btn) => (
+        <Button
+          key={`unWBtn-${btn.name}`}
+          className={classes.button}
+          onClick={btn.click}
+          disabled={btn.disabled}
+        >
+          {btn.name}
+        </Button>
+      ))}
+    </Fragment>
+  );
+
+  const wBtbs = (
+    <Fragment>
+      <div className={classes.slider}>
+        <Slider
+          defaultValue={alpha}
+          min={0}
+          max={1}
+          onAfterChange={hanldeSliderChange}
+          onChange={changeAlpha}
+          step={0.01}
+          disabled={disable}
+        />
+      </div>
+      <span>Alpha: {alpha}</span>
+      <Button
+        className={classes.button}
+        onClick={() =>
+          handleClick(
+            a(
+              grid,
+              grid[rowStart][colStart],
+              grid[rowEnd][colEnd],
+              nCols,
+              wRange,
+              alpha
+            )
+          )
+        }
+        disabled={disable}
+      >
+        {fName}
+      </Button>
+    </Fragment>
+  );
 
   return (
     <AppBar position="static" color="inherit" className={classes.Navbar}>
@@ -69,99 +174,21 @@ function Nav(props) {
         <Typography className={classes.title} variant="h6" color="inherit">
           Pathfinding Visualizer
         </Typography>
-        <div className={classes.button}>
-          <Button
-            className={classes.button}
-            onClick={() => clear()}
-            disabled={disable}
-          >
-            Clear
-          </Button>
-          <Button
-            className={classes.button}
-            onClick={() => clearPathAnimation(grid)}
-            disabled={disable}
-          >
-            Clear Path
-          </Button>
-          <Button
-            className={classes.button}
-            onClick={() => handleClick(newMaze())}
-            disabled={disable}
-          >
-            Maze
-          </Button>
-          <Button
-            className={classes.button}
-            onClick={() => handleClick(toggleIsweighted())}
-            disabled={disable}
-          >
-            Un/Weighted Grid
-          </Button>
-          <Button
-            className={classes.button}
-            onClick={() =>
-              handleClick(
-                bfs(grid, grid[rowStart][colStart], grid[rowEnd][colEnd], nCols)
-              )
-            }
-            disabled={isWeighted ? true : disable}
-          >
-            BFS
-          </Button>
-          <Button
-            className={classes.button}
-            onClick={() =>
-              handleClick(
-                dfs(grid, grid[rowStart][colStart], grid[rowEnd][colEnd], nCols)
-              )
-            }
-            disabled={isWeighted ? true : disable}
-          >
-            DFS
-          </Button>
-          <div className={classes.slider}>
-            <Slider
-              defaultValue={alpha}
-              min={0}
-              max={1}
-              onAfterChange={hanldeSliderChange}
-              onChange={changeAlpha}
-              step={0.01}
-              disabled={!isWeighted ? true : disable}
-            />
-          </div>
-          {!isWeighted ? true : <span>Alpha: {alpha}</span>}
-          <Button
-            className={classes.button}
-            onClick={() =>
-              handleClick(
-                a(
-                  grid,
-                  grid[rowStart][colStart],
-                  grid[rowEnd][colEnd],
-                  nCols,
-                  wRange,
-                  alpha
-                )
-              )
-            }
-            disabled={!isWeighted ? true : disable}
-          >
-            {fName}
-          </Button>
-          <Button
-            className={classes.button}
-            onClick={() => {
-              window.open(
-                "https://github.com/LyangHiga/pathfinding-visualizer#instructions",
-                "_blank"
-              );
-            }}
-          >
-            Instructions
-          </Button>
-        </div>
+        <div className={classes.btnOpt}>{matches ? null : btnOpts}</div>
+        <div>{matches ? null : isWeighted ? null : unWBtn}</div>
+        <div>{matches ? null : isWeighted ? wBtbs : null}</div>
+
+        <Button
+          className={classes.button}
+          onClick={() => {
+            window.open(
+              "https://github.com/LyangHiga/pathfinding-visualizer#instructions",
+              "_blank"
+            );
+          }}
+        >
+          Instructions
+        </Button>
       </Toolbar>
     </AppBar>
   );

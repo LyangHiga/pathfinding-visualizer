@@ -80,13 +80,18 @@ const a = async (grid, start, end, nCols, wRange, alpha) => {
   if (!found) return;
   const path = getWeightedPath(parents, start.val, end.val);
   //   min distance g() found  by A*
-  console.log(`A* Min Distance = ${distances[end.val]}`);
+  console.log(`A* with Alpha= ${alpha} Min Distance = ${distances[end.val]}`);
   //   distance of this path (yellow)
   console.log(
-    `A* Distance Calculated = ${getPathDistance(path, grid, start, nCols)}`
+    `A* with Alpha= ${alpha} Distance Calculated = ${getPathDistance(
+      path,
+      grid,
+      start,
+      nCols
+    )}`
   );
-  console.log(`A* inspectedNodes = ${inspectedNodes}`);
-  console.log(`A* Dequeues = ${nDeq}`);
+  console.log(`A* with Alpha= ${alpha} inspectedNodes = ${inspectedNodes}`);
+  console.log(`A* with Alpha= ${alpha} Dequeues = ${nDeq}`);
   console.log(`scaling factor: ${SCALING_FACTOR}`);
   await pathAnimation(path, start.val);
 };

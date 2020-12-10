@@ -1,15 +1,23 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-const styles = makeStyles(() => ({
+const styles = makeStyles((theme) => ({
   Navbar: {
-    display: "flex",
-    alignItems: "space-around",
-    justifyContent: "center",
     height: "8vh",
     marginBottom: "10px",
   },
   title: {
-    display: "block",
+    [theme.breakpoints.up("md")]: {
+      marginRight: "1vw",
+      paddingRight: "2vw",
+      borderRight: "1px solid black",
+      padding: "0.5em",
+    },
+  },
+  btnOpt: {
+    marginRight: "1vw",
+    paddingRight: "1vw",
+    borderRight: "1px solid black",
+    padding: "0.5em",
   },
   button: {
     margin: "0 6px",
