@@ -1,4 +1,4 @@
-import { wallAnimation } from '../animations';
+import { wallAnimation } from "../animations";
 
 // Node Helpers
 
@@ -32,7 +32,7 @@ export const getNewGridWithWallToggled = (grid, row, col) => {
   if (grid[row][col].isStart || grid[row][col].isFinish) return grid;
   const newGrid = grid.slice();
   const node = newGrid[row][col];
-  const newNode = toggleNodeProperty(node, 'isWall', !node.isWall);
+  const newNode = toggleNodeProperty(node, "isWall", !node.isWall);
   newGrid[row][col] = newNode;
   return newGrid;
 };
@@ -43,7 +43,7 @@ export const getNewGridWitNewStart = (grid, row, col, startVal, nCols) => {
     grid,
     row,
     col,
-    'isStart',
+    "isStart",
     startVal,
     nCols
   );
@@ -56,7 +56,7 @@ export const getNewGridWitNewFinish = (grid, row, col, finishVal, nCols) => {
     grid,
     row,
     col,
-    'isFinish',
+    "isFinish",
     finishVal,
     nCols
   );
@@ -74,7 +74,7 @@ export const getNewMazedGrid = async (grid, eps) => {
       }
       if (Math.random() <= eps) {
         const node = newGrid[row][col];
-        const newNode = toggleNodeProperty(node, 'isWall', true);
+        const newNode = toggleNodeProperty(node, "isWall", true);
         newGrid[row][col] = newNode;
         await wallAnimation(newGrid[row][col]);
       }
@@ -112,19 +112,4 @@ export const getWeightedPath = (parents, start, end) => {
     a = parents[a];
   }
   return path.reverse();
-};
-
-// return number of rows and cols to display in this screen
-export const getRowsCols = () => {
-  const width =
-    window.innerWidth ||
-    document.documentElement.clientWidth ||
-    document.body.clientWidth;
-  const height =
-    window.innerHeight ||
-    document.documentElement.clientHeight ||
-    document.body.clientHeight;
-  const nRows = Math.floor(width / 60);
-  const nCols = Math.floor(height / 15);
-  return [nRows, nCols];
 };

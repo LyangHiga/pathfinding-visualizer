@@ -4,7 +4,6 @@ import {
   getNewGridWithWallToggled,
   getNewGridWitNewStart,
   getNewGridWitNewFinish,
-  getRowsCols,
 } from "./helpers/gridPropertiesHelper";
 import { getRandomVertex, getInitialGrid } from "./helpers/initialGridHelper";
 import Nav from "./Nav";
@@ -17,24 +16,24 @@ import {
   sleep,
 } from "./animations";
 import useToggleState from "./hooks/useToggleState";
+import useWindowDimensions from "./hooks/useWindowDim";
 
 export default function PathFindingVisualizer() {
-  // fundamental CONSTS
-  const minRows = 20;
-  const minCols = 20;
+  // max edge weight
   const wRange = 50;
-
   const [grid, setGrid] = useState([]);
-  const [nRows, setNRows] = useState();
-  const [nCols, setNCols] = useState();
+  const { height, width } = useWindowDimensions();
+  // 87% of total height: discount nav height
+  const nRows = Math.floor((height * 0.87) / 27);
+  const nCols = Math.floor(width / 27);
   const [isWeighted, setIsWeighted, toggleIsweighted] = useToggleState(false);
   //   disable buttons in nav
   const [disable, setDisable] = useState(false);
   const [startVertex, setStarteVertex] = useState(
-    getRandomVertex(minRows, minCols)
+    getRandomVertex(nRows, nCols)
   );
   const [finishVertex, setFinishVertex] = useState(
-    getRandomVertex(minRows, minCols)
+    getRandomVertex(nRows, nCols)
   );
   const [mouseIsPressed, setMouseIsPressed] = useState(false);
   const [createWall, setCreatWall, toggleCreateWall] = useToggleState(false);
@@ -49,9 +48,6 @@ export default function PathFindingVisualizer() {
   useEffect(() => {
     async function initialGrid() {
       document.title = "Pathfinding Visualizer";
-      const [nRows, nCols] = getRowsCols();
-      setNRows(nRows);
-      setNCols(nCols);
       const n = getInitialGrid(startVertex, finishVertex, nRows, nCols, wRange);
       setGrid(n);
       await sleep(1);
