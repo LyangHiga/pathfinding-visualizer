@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
 import Node from "./Node";
 import {
   getNewGridWithWallToggled,
@@ -23,8 +25,12 @@ export default function PathFindingVisualizer() {
   const wRange = 50;
   const [grid, setGrid] = useState([]);
   const { height, width } = useWindowDimensions();
-  // 87% of total height: discount nav height
-  const nRows = Math.floor((height * 0.87) / 27);
+  const theme = useTheme();
+  const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
+  // 87% or 80%(SM display) of total height: discount nav height
+  const nRows = matchesSM
+    ? Math.floor((height * 0.8) / 27)
+    : Math.floor((height * 0.87) / 27);
   const nCols = Math.floor(width / 27);
   const [isWeighted, setIsWeighted, toggleIsweighted] = useToggleState(false);
   //   disable buttons in nav

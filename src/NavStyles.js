@@ -4,6 +4,9 @@ const styles = makeStyles((theme) => ({
   Navbar: {
     height: "8vh",
     marginBottom: "10px",
+    [theme.breakpoints.down("sm")]: {
+      height: "10vh",
+    },
   },
   title: {
     [theme.breakpoints.up("md")]: {
@@ -27,6 +30,10 @@ const styles = makeStyles((theme) => ({
   slider: {
     width: "12vw",
     margin: "0 10px",
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+      margin: 0,
+    },
     display: "inline-block",
     "& .rc-slider-track": {
       backgroundColor: "transparent",
@@ -43,6 +50,12 @@ const styles = makeStyles((theme) => ({
       height: "13px",
       marginLeft: "-7px",
       marginTop: "-3px",
+    },
+  },
+  drawerIconContainer: {
+    marginLeft: "auto",
+    "&:hover": {
+      backgroundColor: "transparent",
     },
   },
 }));

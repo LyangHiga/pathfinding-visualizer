@@ -11,6 +11,13 @@ import { useTheme } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+
 import styles from "./NavStyles";
 import { valToIndx, getNewMazedGrid } from "./helpers/gridPropertiesHelper";
 import { getInitialGrid } from "./helpers/initialGridHelper";
@@ -33,7 +40,9 @@ function Nav(props) {
 
   const classes = styles();
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.down("sm"));
+  const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
   const [rowEnd, colEnd] = valToIndx(end, nCols);
   const [rowStart, colStart] = valToIndx(start, nCols);
@@ -81,10 +90,10 @@ function Nav(props) {
       click: () => handleClick(toggleIsweighted()),
       disabled: disable,
     },
-    { name: "Negative", click: undefined, disabled: disable },
+    // { name: "Negative", click: undefined, disabled: disable },
   ];
 
-  const unWBtnList = [
+  const unWBtnsList = [
     {
       name: "BFS",
       click: () =>
@@ -118,9 +127,9 @@ function Nav(props) {
     </Fragment>
   );
 
-  const unWBtn = (
+  const unWBtns = (
     <Fragment>
-      {unWBtnList.map((btn) => (
+      {unWBtnsList.map((btn) => (
         <Button
           key={`unWBtn-${btn.name}`}
           className={classes.button}
@@ -133,7 +142,7 @@ function Nav(props) {
     </Fragment>
   );
 
-  const wBtbs = (
+  const wBtns = (
     <Fragment>
       <div className={classes.slider}>
         <Slider
@@ -168,27 +177,141 @@ function Nav(props) {
     </Fragment>
   );
 
+  const btns = (
+    <Fragment>
+      <div className={classes.btnOpt}> {btnOpts}</div>
+      <div>{isWeighted ? null : unWBtns}</div>
+      <div>{isWeighted ? wBtns : null}</div>
+      <Button
+        className={classes.button}
+        onClick={() => {
+          window.open(
+            "https://github.com/LyangHiga/pathfinding-visualizer#instructions",
+            "_blank"
+          );
+        }}
+      >
+        Instructions
+      </Button>
+    </Fragment>
+  );
+
+  const drawer = (
+    <Fragment>
+      <SwipeableDrawer
+        disableBackdropTransition={!iOS}
+        disableDiscovery={iOS}
+        open={openDrawer}
+        onClose={() => setOpenDrawer(false)}
+        onOpen={() => setOpenDrawer(true)}
+      >
+        <List disablePadding>
+          {btnOptList.map((btn) => (
+            <ListItem
+              key={`list-${btn.name}`}
+              onClick={() => {
+                setOpenDrawer(false);
+                btn.click();
+              }}
+              divider
+              button
+              className={classes.button}
+              disabled={disable}
+            >
+              <ListItemText>{btn.name}</ListItemText>
+            </ListItem>
+          ))}
+        </List>
+        {isWeighted ? (
+          <List disablePadding>
+            <ListItem divider>
+              <Slider
+                defaultValue={alpha}
+                min={0}
+                max={1}
+                onAfterChange={hanldeSliderChange}
+                onChange={changeAlpha}
+                step={0.01}
+                disabled={disable}
+                className={classes.slider}
+              />
+            </ListItem>
+            <ListItem divider className={classes.button}>
+              <ListItemText>Alpha: {alpha}</ListItemText>
+            </ListItem>
+            <ListItem
+              onClick={() => {
+                setOpenDrawer(false);
+                handleClick(
+                  a(
+                    grid,
+                    grid[rowStart][colStart],
+                    grid[rowEnd][colEnd],
+                    nCols,
+                    wRange,
+                    alpha
+                  )
+                );
+              }}
+              divider
+              button
+              className={classes.button}
+              disabled={disable}
+            >
+              <ListItemText>{fName}</ListItemText>
+            </ListItem>
+          </List>
+        ) : (
+          <List disablePadding>
+            {unWBtnsList.map((btn) => (
+              <ListItem
+                key={`list-${btn.name}`}
+                onClick={() => {
+                  setOpenDrawer(false);
+                  btn.click();
+                }}
+                divider
+                button
+                className={classes.button}
+                disabled={disable}
+              >
+                <ListItemText>{btn.name}</ListItemText>
+              </ListItem>
+            ))}
+          </List>
+        )}
+        <List>
+          <ListItem
+            divider
+            className={classes.button}
+            onClick={() => {
+              window.open(
+                "https://github.com/LyangHiga/pathfinding-visualizer#instructions",
+                "_blank"
+              );
+            }}
+          >
+            <ListItemText>Instructions</ListItemText>
+          </ListItem>
+        </List>
+      </SwipeableDrawer>
+      <IconButton
+        className={classes.drawerIconContainer}
+        onClick={() => setOpenDrawer(!openDrawer)}
+        disableRipple
+      >
+        <MenuIcon></MenuIcon>
+      </IconButton>
+    </Fragment>
+  );
+
   return (
     <AppBar position="static" color="inherit" className={classes.Navbar}>
       <Toolbar>
         <Typography className={classes.title} variant="h6" color="inherit">
           Pathfinding Visualizer
         </Typography>
-        <div className={classes.btnOpt}>{matches ? null : btnOpts}</div>
-        <div>{matches ? null : isWeighted ? null : unWBtn}</div>
-        <div>{matches ? null : isWeighted ? wBtbs : null}</div>
-
-        <Button
-          className={classes.button}
-          onClick={() => {
-            window.open(
-              "https://github.com/LyangHiga/pathfinding-visualizer#instructions",
-              "_blank"
-            );
-          }}
-        >
-          Instructions
-        </Button>
+        {matchesSM ? drawer : btns}
       </Toolbar>
     </AppBar>
   );
