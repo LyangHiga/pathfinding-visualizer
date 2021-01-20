@@ -22,6 +22,8 @@ import styles from "./NavStyles";
 import { valToIndx, getNewMazedGrid } from "./helpers/gridPropertiesHelper";
 import { getInitialGrid } from "./helpers/initialGridHelper";
 
+const MIN = -5;
+
 function Nav(props) {
   const {
     grid,
@@ -36,6 +38,8 @@ function Nav(props) {
     isWeighted,
     setIsWeighted,
     toggleIsweighted,
+    isNegative,
+    toggleIsNegative,
   } = props;
 
   const classes = styles();
@@ -53,7 +57,7 @@ function Nav(props) {
 
   const clear = () => {
     clearAnimation(grid, start, end);
-    const n = getInitialGrid(start, end, nRows, nCols, 50);
+    const n = getInitialGrid(start, end, nRows, nCols, wRange);
     setGrid(n);
     setIsWeighted(false);
   };
@@ -61,6 +65,19 @@ function Nav(props) {
   const newMaze = async () => {
     const newGrid = await getNewMazedGrid(grid, 0.33);
     setGrid(newGrid);
+  };
+
+  const negativeWeight = () => {
+    clearAnimation(grid, start, end);
+    let n;
+    if (!isNegative) {
+      n = getInitialGrid(start, end, nRows, nCols, wRange, MIN);
+    } else {
+      n = getInitialGrid(start, end, nRows, nCols, wRange);
+    }
+    setGrid(n);
+    setIsWeighted(true);
+    toggleIsNegative();
   };
 
   const handleClick = async (alg) => {
@@ -90,7 +107,11 @@ function Nav(props) {
       click: () => handleClick(toggleIsweighted()),
       disabled: disable,
     },
-    // { name: "Negative", click: undefined, disabled: disable },
+    {
+      name: isNegative ? "Positive" : "Negative",
+      click: negativeWeight,
+      disabled: disable,
+    },
   ];
 
   const unWBtnsList = [
@@ -177,11 +198,24 @@ function Nav(props) {
     </Fragment>
   );
 
+  const negBtns = (
+    <Fragment>
+      <Button
+        key={`negBtn-BF`}
+        className={classes.button}
+        onClick={() => {}}
+        disabled={disable}
+      >
+        Bellman-Ford
+      </Button>
+    </Fragment>
+  );
+
   const btns = (
     <Fragment>
       <div className={classes.btnOpt}> {btnOpts}</div>
       <div>{isWeighted ? null : unWBtns}</div>
-      <div>{isWeighted ? wBtns : null}</div>
+      <div>{!isWeighted ? null : isNegative ? negBtns : wBtns}</div>
       <Button
         className={classes.button}
         onClick={() => {

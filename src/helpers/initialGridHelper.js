@@ -42,13 +42,20 @@ const createAdjList = (val, col, row, nRows, nCols) => {
 };
 
 // returns the initial Grid
-export const getInitialGrid = (start, finish, nRows, nCols, wRange = 0) => {
+export const getInitialGrid = (
+  start,
+  finish,
+  nRows,
+  nCols,
+  max = 1,
+  min = 1
+) => {
   const grid = [];
   for (let row = 0; row < nRows; row++) {
     const currentRow = [];
     for (let col = 0; col < nCols; col++) {
       // get random weight for all edges of this node
-      const w = Math.floor(Math.random() * wRange + 1);
+      const w = Math.floor(Math.random() * (max - min) + min);
       currentRow.push(createNode(col, row, start, finish, nRows, nCols, w));
     }
     grid.push(currentRow);

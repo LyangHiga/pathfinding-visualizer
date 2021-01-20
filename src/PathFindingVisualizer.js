@@ -22,7 +22,7 @@ import useWindowDimensions from "./hooks/useWindowDim";
 
 export default function PathFindingVisualizer() {
   // max edge weight
-  const wRange = 50;
+  const wRange = 51;
   const [grid, setGrid] = useState([]);
   const { height, width } = useWindowDimensions();
   const theme = useTheme();
@@ -33,6 +33,7 @@ export default function PathFindingVisualizer() {
     : Math.floor((height * 0.87) / 27);
   const nCols = Math.floor(width / 27);
   const [isWeighted, setIsWeighted, toggleIsweighted] = useToggleState(false);
+  const [isNegative, setIsNegative, toggleIsNegative] = useToggleState(false);
   //   disable buttons in nav
   const [disable, setDisable] = useState(false);
   const [startVertex, setStarteVertex] = useState(
@@ -137,6 +138,8 @@ export default function PathFindingVisualizer() {
         isWeighted={isWeighted}
         setIsWeighted={setIsWeighted}
         toggleIsweighted={toggleIsweighted}
+        isNegative={isNegative}
+        toggleIsNegative={toggleIsNegative}
       />
       <div className="grid">
         {grid.map((row, rowIdx) => {
