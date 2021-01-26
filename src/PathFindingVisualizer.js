@@ -22,7 +22,7 @@ import useWindowDimensions from "./hooks/useWindowDim";
 
 export default function PathFindingVisualizer() {
   // max edge weight
-  const wRange = 51;
+  const wRange = 201;
   const [grid, setGrid] = useState([]);
   const { height, width } = useWindowDimensions();
   const theme = useTheme();

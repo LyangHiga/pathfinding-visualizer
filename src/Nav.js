@@ -1,9 +1,17 @@
+// TODO: Refactoring
 import React, { Fragment, useState } from "react";
 import "rc-slider/assets/index.css";
 import bfs from "./algorithms/bfs";
 import dfs from "./algorithms/dfs";
 import a from "./algorithms/a";
+import bellmanFord from "./algorithms/bellmanFord";
 import { clearAnimation, clearPathAnimation } from "./animations";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+
 import Slider from "rc-slider";
 import AppBar from "@material-ui/core/AppBar";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -52,6 +60,15 @@ function Nav(props) {
   const [rowStart, colStart] = valToIndx(start, nCols);
   const [alpha, setAlpha] = useState(0.57);
   const [fName, setFName] = useState("A*");
+  const [openAlert, setOpenAlert] = useState(false);
+
+  const handleClickOpenAlert = () => {
+    setOpenAlert(true);
+  };
+
+  const handleCloseAlert = () => {
+    setOpenAlert(false);
+  };
 
   const changeAlpha = (alpha) => setAlpha(alpha);
 
@@ -201,13 +218,69 @@ function Nav(props) {
   const negBtns = (
     <Fragment>
       <Button
-        key={`negBtn-BF`}
-        className={classes.button}
-        onClick={() => {}}
+        onClick={handleClickOpenAlert}
         disabled={disable}
+        className={classes.button}
       >
         Bellman-Ford
       </Button>
+      <Dialog
+        open={openAlert}
+        onClose={handleCloseAlert}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          How to run Bellman-Ford?
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            * Recommended Mode: Will Clear Grid, add to layers of walls and then
+            run Bellman-Ford. PS: Put both start and finsih node in the same
+            connected component is necessary for search min Path. * Free-Style:
+            Won't change any grid property and you can run as you want.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={async () => {
+              handleCloseAlert();
+              clear();
+              await newMaze();
+              await newMaze();
+              setIsWeighted(true);
+              handleClick(
+                bellmanFord(
+                  grid,
+                  grid[rowStart][colStart],
+                  grid[rowEnd][colEnd],
+                  nCols
+                )
+              );
+            }}
+            color="primary"
+          >
+            Recommended
+          </Button>
+          <Button
+            onClick={() => {
+              handleCloseAlert();
+              handleClick(
+                bellmanFord(
+                  grid,
+                  grid[rowStart][colStart],
+                  grid[rowEnd][colEnd],
+                  nCols
+                )
+              );
+            }}
+            color="primary"
+            autoFocus
+          >
+            Free-Style
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Fragment>
   );
 
