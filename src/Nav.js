@@ -174,7 +174,7 @@ function Nav(props) {
           onClick={btn.click}
           disabled={btn.disabled}
         >
-          {btn.name}
+          <Typography className={classes.text}>{btn.name}</Typography>
         </Button>
       ))}
     </Fragment>
@@ -193,7 +193,7 @@ function Nav(props) {
           disabled={disable}
         />
       </div>
-      <span>Alpha: {alpha}</span>
+      <span className={classes.text}>Alpha: {alpha}</span>
       <Button
         className={classes.button}
         onClick={() =>
@@ -222,7 +222,7 @@ function Nav(props) {
         disabled={disable}
         className={classes.button}
       >
-        Bellman-Ford
+        <Typography className={classes.text}>Bellman-Ford</Typography>
       </Button>
       <Dialog
         open={openAlert}
@@ -237,8 +237,11 @@ function Nav(props) {
           <DialogContentText id="alert-dialog-description">
             * Recommended Mode: Will Clear Grid, add to layers of walls and then
             run Bellman-Ford. PS: Put both start and finsih node in the same
-            connected component is necessary for search min Path. * Free-Style:
-            Won't change any grid property and you can run as you want.
+            connected component is necessary for search min Path.
+          </DialogContentText>
+          <DialogContentText>
+            * Free-Style: Won't change any grid property and you can run as you
+            want.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -263,7 +266,7 @@ function Nav(props) {
             Recommended
           </Button>
           <Button
-            onClick={() => {
+            onClick={async () => {
               handleCloseAlert();
               handleClick(
                 bellmanFord(

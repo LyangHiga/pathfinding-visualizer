@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const styles = makeStyles((theme) => ({
   Navbar: {
-    height: "8vh",
+    height: "10vh",
     marginBottom: "10px",
     [theme.breakpoints.down("sm")]: {
       height: "10vh",
@@ -21,15 +21,30 @@ const styles = makeStyles((theme) => ({
     paddingRight: "1vw",
     borderRight: "1px solid black",
     padding: "0.5em",
+    [theme.breakpoints.down("md")]: {
+      marginRight: "0.7vw",
+      paddingRight: "1.6vw",
+      borderRight: "1px solid black",
+      padding: "0.3em",
+    },
   },
   button: {
     margin: "0 6px",
     fontSize: "1rem",
     textTransform: "none",
+    [theme.breakpoints.down("md")]: {
+      margin: "0 4px",
+      fontSize: "0.8rem",
+      textTransform: "none",
+    },
   },
   slider: {
     width: "12vw",
     margin: "0 10px",
+    [theme.breakpoints.down("md")]: {
+      width: "8vw",
+      margin: "0 6px",
+    },
     [theme.breakpoints.down("sm")]: {
       width: "100%",
       margin: 0,
@@ -56,6 +71,12 @@ const styles = makeStyles((theme) => ({
     marginLeft: "auto",
     "&:hover": {
       backgroundColor: "transparent",
+    },
+  },
+  text: {
+    fontSize: "1em",
+    [theme.breakpoints.down("md")]: {
+      fontSize: "0.8rem",
     },
   },
 }));
