@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const styles = makeStyles((theme) => ({
   Navbar: {
-    height: "10vh",
+    height: "8vh",
     marginBottom: "10px",
     [theme.breakpoints.down("sm")]: {
       height: "10vh",

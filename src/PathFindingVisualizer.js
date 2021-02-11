@@ -1,3 +1,5 @@
+// TODO: Change start and finish node in mobile node, reorganize files
+
 import React, { useState, useEffect } from "react";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";

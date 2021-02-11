@@ -1,4 +1,4 @@
-// TODO: Refactoring
+// TODO: Refactoring Drawer and btns
 import React, { Fragment, useState } from "react";
 import "rc-slider/assets/index.css";
 import bfs from "./algorithms/bfs";
@@ -333,44 +333,121 @@ function Nav(props) {
           ))}
         </List>
         {isWeighted ? (
-          <List disablePadding>
-            <ListItem divider>
-              <Slider
-                defaultValue={alpha}
-                min={0}
-                max={1}
-                onAfterChange={hanldeSliderChange}
-                onChange={changeAlpha}
-                step={0.01}
+          !isNegative ? (
+            <List disablePadding>
+              <ListItem divider>
+                <Slider
+                  defaultValue={alpha}
+                  min={0}
+                  max={1}
+                  onAfterChange={hanldeSliderChange}
+                  onChange={changeAlpha}
+                  step={0.01}
+                  disabled={disable}
+                  className={classes.slider}
+                />
+              </ListItem>
+              <ListItem divider className={classes.button}>
+                <ListItemText>Alpha: {alpha}</ListItemText>
+              </ListItem>
+              <ListItem
+                onClick={() => {
+                  setOpenDrawer(false);
+                  handleClick(
+                    a(
+                      grid,
+                      grid[rowStart][colStart],
+                      grid[rowEnd][colEnd],
+                      nCols,
+                      wRange,
+                      alpha
+                    )
+                  );
+                }}
+                divider
+                button
+                className={classes.button}
                 disabled={disable}
-                className={classes.slider}
-              />
-            </ListItem>
-            <ListItem divider className={classes.button}>
-              <ListItemText>Alpha: {alpha}</ListItemText>
-            </ListItem>
-            <ListItem
-              onClick={() => {
-                setOpenDrawer(false);
-                handleClick(
-                  a(
-                    grid,
-                    grid[rowStart][colStart],
-                    grid[rowEnd][colEnd],
-                    nCols,
-                    wRange,
-                    alpha
-                  )
-                );
-              }}
-              divider
-              button
-              className={classes.button}
-              disabled={disable}
-            >
-              <ListItemText>{fName}</ListItemText>
-            </ListItem>
-          </List>
+              >
+                <ListItemText>{fName}</ListItemText>
+              </ListItem>
+            </List>
+          ) : (
+            <List disablePadding>
+              <ListItem
+                onClick={handleClickOpenAlert}
+                divider
+                button
+                className={classes.button}
+                disabled={disable}
+              >
+                <ListItemText>Bellman-Ford</ListItemText>
+              </ListItem>
+              <Dialog
+                open={openAlert}
+                onClose={handleCloseAlert}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">
+                  How to run Bellman-Ford?
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    * Recommended Mode: Will Clear Grid, add to layers of walls
+                    and then run Bellman-Ford. PS: Put both start and finsih
+                    node in the same connected component is necessary for search
+                    min Path.
+                  </DialogContentText>
+                  <DialogContentText>
+                    * Free-Style: Won't change any grid property and you can run
+                    as you want.
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button
+                    onClick={async () => {
+                      setOpenDrawer(false);
+                      handleCloseAlert();
+                      clear();
+                      await newMaze();
+                      await newMaze();
+                      setIsWeighted(true);
+                      handleClick(
+                        bellmanFord(
+                          grid,
+                          grid[rowStart][colStart],
+                          grid[rowEnd][colEnd],
+                          nCols
+                        )
+                      );
+                    }}
+                    color="primary"
+                  >
+                    Recommended
+                  </Button>
+                  <Button
+                    onClick={async () => {
+                      setOpenDrawer(false);
+                      handleCloseAlert();
+                      handleClick(
+                        bellmanFord(
+                          grid,
+                          grid[rowStart][colStart],
+                          grid[rowEnd][colEnd],
+                          nCols
+                        )
+                      );
+                    }}
+                    color="primary"
+                    autoFocus
+                  >
+                    Free-Style
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </List>
+          )
         ) : (
           <List disablePadding>
             {unWBtnsList.map((btn) => (
