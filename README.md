@@ -1,3 +1,5 @@
+<!-- TODO: Update Add for Bellman-Ford and instructions for new buttons -->
+
 # [Pathfinding Visualizer](https://lyanghiga.github.io/pathfinding-visualizer/)
 
 Project inspired by this [video](https://www.youtube.com/watch?v=msttfIHHkak). Some years ago I implemented all of these algorithms for a class at UFRJ, after watching this video I decided to do it in a way more visual and not something only in the command line.

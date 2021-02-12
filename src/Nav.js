@@ -48,6 +48,8 @@ function Nav(props) {
     toggleIsweighted,
     isNegative,
     toggleIsNegative,
+    handleChangeStart,
+    handleChangeFinish,
   } = props;
 
   const classes = styles();
@@ -119,6 +121,16 @@ function Nav(props) {
       disabled: disable,
     },
     { name: "Maze", click: () => handleClick(newMaze()), disabled: disable },
+    {
+      name: "Change Start",
+      click: () => handleChangeStart(),
+      disabled: disable,
+    },
+    {
+      name: "Change Finish",
+      click: () => handleChangeFinish(),
+      disabled: disable,
+    },
     {
       name: isWeighted ? "Unweighted Grid" : "Weighted Grid",
       click: () => handleClick(toggleIsweighted()),

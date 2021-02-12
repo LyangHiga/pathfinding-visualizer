@@ -1,4 +1,7 @@
 // TODO: Change start and finish node in mobile node, reorganize files
+// TODO: Refactoring with TypeSCript
+// TODO: Handle state with useReducer !? is probably better
+// TODO: Context api to global state is probably better than share state using props
 
 import React, { useState, useEffect } from "react";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -53,6 +56,18 @@ export default function PathFindingVisualizer() {
     false
   );
 
+  const handleChangeStart = () => {
+    setChangeFinish(false);
+    setCreatWall(false);
+    toggleChangeStart();
+  };
+
+  const handleChangeFinish = () => {
+    setChangeStart(false);
+    setCreatWall(false);
+    toggleChangeFinish();
+  };
+
   //   run only once, similar to Component Did mount
   useEffect(() => {
     async function initialGrid() {
@@ -73,13 +88,9 @@ export default function PathFindingVisualizer() {
         setChangeFinish(false);
         return toggleCreateWall();
       case "s":
-        setChangeFinish(false);
-        setCreatWall(false);
-        return toggleChangeStart();
+        return handleChangeStart();
       case "f":
-        setChangeStart(false);
-        setCreatWall(false);
-        return toggleChangeFinish();
+        return handleChangeFinish();
       default:
         return;
     }
@@ -142,6 +153,8 @@ export default function PathFindingVisualizer() {
         toggleIsweighted={toggleIsweighted}
         isNegative={isNegative}
         toggleIsNegative={toggleIsNegative}
+        handleChangeStart={handleChangeStart}
+        handleChangeFinish={handleChangeFinish}
       />
       <div className="grid">
         {grid.map((row, rowIdx) => {
