@@ -164,16 +164,18 @@ function Nav(props) {
 
   const btnOpts = (
     <Fragment>
-      {btnOptList.map((btn) => (
-        <Button
-          key={`btnOpt-${btn.name}`}
-          className={classes.button}
-          onClick={btn.click}
-          disabled={btn.disabled}
-        >
-          {btn.name}
-        </Button>
-      ))}
+      {btnOptList.map((btn) =>
+        btn.name === "Change Start" || btn.name === "Change Target" ? null : (
+          <Button
+            key={`btnOpt-${btn.name}`}
+            className={classes.button}
+            onClick={btn.click}
+            disabled={btn.disabled}
+          >
+            {btn.name}
+          </Button>
+        )
+      )}
     </Fragment>
   );
 
