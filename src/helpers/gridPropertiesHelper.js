@@ -1,4 +1,4 @@
-import { wallAnimation } from "../animations";
+import { wallAnimation } from "./animations";
 
 // Node Helpers
 

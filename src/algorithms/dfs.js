@@ -1,6 +1,6 @@
-import Stack from '../structures/stack';
-import { valToIndx } from '../helpers/gridPropertiesHelper';
-import { visitedAnimation } from '../animations';
+import Stack from "../structures/stack";
+import { valToIndx } from "../helpers/gridPropertiesHelper";
+import { visitedAnimation } from "../helpers/animations";
 
 const dfs = async (grid, start, end, nCols) => {
   //   const end = grid[FINISH_NODE_ROW][FINISH_NODE_COL];

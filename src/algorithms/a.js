@@ -4,7 +4,7 @@ import {
   getWeightedPath,
   manhattan,
 } from "../helpers/gridPropertiesHelper";
-import { pathAnimation, visitedAnimation } from "../animations";
+import { pathAnimation, visitedAnimation } from "../helpers/animations";
 
 const a = async (grid, start, end, nCols, wRange, alpha) => {
   const heap = new Heap();

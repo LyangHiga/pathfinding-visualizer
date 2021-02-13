@@ -1,6 +1,6 @@
-import Queue from '../structures/queue';
-import { valToIndx, getPath } from '../helpers/gridPropertiesHelper';
-import { pathAnimation, visitedAnimation } from '../animations';
+import Queue from "../structures/queue";
+import { valToIndx, getPath } from "../helpers/gridPropertiesHelper";
+import { pathAnimation, visitedAnimation } from "../helpers/animations";
 
 const bfs = async (grid, start, end, nCols) => {
   let visited = {};

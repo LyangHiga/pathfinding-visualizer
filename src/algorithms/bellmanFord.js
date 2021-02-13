@@ -3,7 +3,7 @@ import {
   pathAnimation,
   visitedAnimation,
   clearPathAnimation,
-} from "../animations";
+} from "../helpers/animations";
 
 // Returns the distance from s to each vertex and their parents O(mn)
 // negative costs are allowed

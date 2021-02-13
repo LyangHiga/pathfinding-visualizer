@@ -5,7 +5,7 @@ import bfs from "./algorithms/bfs";
 import dfs from "./algorithms/dfs";
 import a from "./algorithms/a";
 import bellmanFord from "./algorithms/bellmanFord";
-import { clearAnimation, clearPathAnimation } from "./animations";
+import { clearAnimation, clearPathAnimation } from "./helpers/animations";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -28,7 +28,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 
 import styles from "./NavStyles";
 import { valToIndx, getNewMazedGrid } from "./helpers/gridPropertiesHelper";
-import { getInitialGrid } from "./helpers/initialGridHelper";
+// import { getInitialGrid } from "./helpers/initialGridHelper";
+import Grid from "./models/Grid";
 
 const MIN = -5;
 
@@ -76,8 +77,9 @@ function Nav(props) {
 
   const clear = () => {
     clearAnimation(grid, start, end);
-    const n = getInitialGrid(start, end, nRows, nCols, wRange);
-    setGrid(n);
+    // const n = getInitialGrid(start, end, nRows, nCols, wRange);
+    const n = new Grid(start, end, nRows, nCols, wRange, MIN);
+    setGrid(n.grid);
     setIsWeighted(false);
   };
 
@@ -90,11 +92,13 @@ function Nav(props) {
     clearAnimation(grid, start, end);
     let n;
     if (!isNegative) {
-      n = getInitialGrid(start, end, nRows, nCols, wRange, MIN);
+      // n = getInitialGrid(start, end, nRows, nCols, wRange, MIN);
+      n = new Grid(start, end, nRows, nCols, wRange, MIN);
     } else {
-      n = getInitialGrid(start, end, nRows, nCols, wRange);
+      // n = getInitialGrid(start, end, nRows, nCols, wRange);
+      n = new Grid(start, end, nRows, nCols, wRange);
     }
-    setGrid(n);
+    setGrid(n.grid);
     setIsWeighted(true);
     toggleIsNegative();
   };

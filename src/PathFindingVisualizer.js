@@ -12,7 +12,7 @@ import {
   getNewGridWitNewStart,
   getNewGridWitNewFinish,
 } from "./helpers/gridPropertiesHelper";
-import { getRandomVertex, getInitialGrid } from "./helpers/initialGridHelper";
+import { getRandomVertex } from "./helpers/initialGridHelper";
 import Nav from "./Nav";
 import "./PathFindingVisualizer.css";
 import {
@@ -21,13 +21,15 @@ import {
   finishNodeAnimation,
   clearNodeAnimation,
   sleep,
-} from "./animations";
+} from "./helpers/animations";
 import useToggleState from "./hooks/useToggleState";
 import useWindowDimensions from "./hooks/useWindowDim";
+import { MAX } from "./helpers/consts";
+import Grid from "./models/Grid";
 
 export default function PathFindingVisualizer() {
   // max edge weight
-  const wRange = 201;
+  const wRange = MAX;
   const [grid, setGrid] = useState([]);
   const { height, width } = useWindowDimensions();
   const theme = useTheme();
@@ -72,8 +74,9 @@ export default function PathFindingVisualizer() {
   useEffect(() => {
     async function initialGrid() {
       document.title = "Pathfinding Visualizer";
-      const n = getInitialGrid(startVertex, finishVertex, nRows, nCols, wRange);
-      setGrid(n);
+      // const n = getInitialGrid(startVertex, finishVertex, nRows, nCols, wRange);
+      const n = new Grid(startVertex, finishVertex, nRows, nCols, wRange);
+      setGrid(n.grid);
       await sleep(1);
       startNodeAnimation(startVertex);
       finishNodeAnimation(finishVertex);
