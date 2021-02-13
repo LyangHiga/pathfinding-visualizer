@@ -1,5 +1,3 @@
-<!-- TODO: Update Add for Bellman-Ford and instructions for new buttons -->
-
 # [Pathfinding Visualizer](https://lyanghiga.github.io/pathfinding-visualizer/)
 
 Project inspired by this [video](https://www.youtube.com/watch?v=msttfIHHkak). Some years ago I implemented all of these algorithms for a class at UFRJ, after watching this video I decided to do it in a way more visual and not something only in the command line.
@@ -22,7 +20,7 @@ It's allowed only movements in 4 directions: N, E, S, and W.
 
 #### Weighted Grid
 
-Each node has weighted edges, all edges with the same cost, randomly chosen in [1, 50] range. The number inside each node represents the cost of each edge.
+Each node has weighted edges, all edges with the same cost, randomly chosen in [1, 200] range for "positive" and [-5,200] renge for negative option. The number inside each node represents the cost of each edge.
 
 ### Buttons
 
@@ -30,6 +28,8 @@ Each node has weighted edges, all edges with the same cost, randomly chosen in [
 - Clear Path: Keep the same grid, same start, target and wall nodes, just to clear paths.
 - Maze: Get a random Maze, Each node has a eps = 0.3 chance to become a wall (start and target nodes not included).
 - Un/Weighted: Toggle between Unweighted and Weighted mode.
+- Negative/ Positive: Toggle between Negative and Positive Weigth.
+- Change start/ target: Available only in mobile version. Just click in a free node to change start or target node.
 - Slider to change Alpha Value
   - Alpha == 0 : Best First Search
   - Alpha == 1 : Dijkstra
@@ -44,7 +44,7 @@ Just press one of the keys bellow and click in some node to change something.
 
 ### Algorithms And Data Structures
 
-All algorithms and data structures are implemented as they used to be taught [1][2], all code is available in this repo. I think the main observations are in Best-first Search and A*, I use Manhattan Distance as heuristic, in A* to scale the function f, which we want to minimize:
+All algorithms and data structures are implemented as they used to be taught [1][2][6][7], all code is available in this repo. I think the main observations are in Best-first Search and A*, I use Manhattan Distance as heuristic, in A* to scale the function f, which we want to minimize:
 
 g: edge costs and h: Manhattan Distance
 
@@ -84,4 +84,10 @@ After any algorithm runs you can check the distance of the chosen path (yellow) 
 [5]: [How to implement O(logn) decrease-key operation for min-heap based Priority Queue? - Stack Overflow
 ](https://stackoverflow.com/questions/17009056/how-to-implement-ologn-decrease-key-operation-for-min-heap-based-priority-queu)
 
+[6]: [Algorithm Design 1st Edition](https://www.amazon.com/Algorithm-Design-Jon-Kleinberg/dp/0321295358)
+
+[7]: [Introduction to Algorithms, 3rd Edition](https://www.amazon.com/Introduction-Algorithms-3rd-MIT-Press/dp/0262033844)
+
 Also check the [repo](https://github.com/clementmihailescu/Pathfinding-Visualizer-Tutorial) from Clement's video.
+
+For more algorithms and data structures implementations check my other repo [TypeScript-Algorithms-and-Data-Structures](https://github.com/LyangHiga/typescript-algorithms-data-structures).

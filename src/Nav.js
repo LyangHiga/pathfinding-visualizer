@@ -127,7 +127,7 @@ function Nav(props) {
       disabled: disable,
     },
     {
-      name: "Change Finish",
+      name: "Change Target",
       click: () => handleChangeFinish(),
       disabled: disable,
     },
