@@ -10,9 +10,10 @@ import Node from "./Node";
 import {
   getNewGridWithWallToggled,
   getNewGridWitNewStart,
-  getNewGridWitNewFinish,
-} from "./helpers/gridPropertiesHelper";
-import { getRandomVertex } from "./helpers/initialGridHelper";
+  getNewGridWitNewTarget,
+  getNRowsandNCols,
+} from "./helpers/gridHelper";
+import { getRandomNode } from "./helpers/gridHelper";
 import Nav from "./Nav";
 import "./PathFindingVisualizer.css";
 import {
@@ -34,21 +35,13 @@ export default function PathFindingVisualizer() {
   const { height, width } = useWindowDimensions();
   const theme = useTheme();
   const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
-  // 87% or 80%(SM display) of total height: discount nav height
-  const nRows = matchesSM
-    ? Math.floor((height * 0.8) / 27)
-    : Math.floor((height * 0.87) / 27);
-  const nCols = Math.floor(width / 27);
+  const [nRows, nCols] = getNRowsandNCols(matchesSM, height, width);
   const [isWeighted, setIsWeighted, toggleIsweighted] = useToggleState(false);
   const [isNegative, setIsNegative, toggleIsNegative] = useToggleState(false);
   //   disable buttons in nav
   const [disable, setDisable] = useState(false);
-  const [startVertex, setStarteVertex] = useState(
-    getRandomVertex(nRows, nCols)
-  );
-  const [finishVertex, setFinishVertex] = useState(
-    getRandomVertex(nRows, nCols)
-  );
+  const [startVertex, setStarteVertex] = useState(getRandomNode(nRows, nCols));
+  const [finishVertex, setFinishVertex] = useState(getRandomNode(nRows, nCols));
   const [mouseIsPressed, setMouseIsPressed] = useState(false);
   const [createWall, setCreatWall, toggleCreateWall] = useToggleState(false);
   const [changeStart, setChangeStart, toggleChangeStart] = useToggleState(
@@ -74,9 +67,9 @@ export default function PathFindingVisualizer() {
   useEffect(() => {
     async function initialGrid() {
       document.title = "Pathfinding Visualizer";
-      // const n = getInitialGrid(startVertex, finishVertex, nRows, nCols, wRange);
       const n = new Grid(startVertex, finishVertex, nRows, nCols, wRange);
-      setGrid(n.grid);
+      // setGrid(n.grid);
+      setGrid(n);
       await sleep(1);
       startNodeAnimation(startVertex);
       finishNodeAnimation(finishVertex);
@@ -114,7 +107,7 @@ export default function PathFindingVisualizer() {
       setChangeStart(false);
     } else if (changeFinish) {
       clearNodeAnimation(finishVertex);
-      const newGrid = getNewGridWitNewFinish(
+      const newGrid = getNewGridWitNewTarget(
         grid,
         row,
         col,
@@ -160,29 +153,31 @@ export default function PathFindingVisualizer() {
         handleChangeFinish={handleChangeFinish}
       />
       <div className="grid">
-        {grid.map((row, rowIdx) => {
-          return (
-            <div key={rowIdx}>
-              {row.map((node) => {
-                const { row, col, val, adjList, w } = node;
-                return (
-                  <Node
-                    key={val}
-                    val={val}
-                    col={col}
-                    row={row}
-                    onMouseDown={handleMouseDown}
-                    onMouseEnter={handleMouseEnter}
-                    onMouseUp={handleMouseUp}
-                    adjList={adjList}
-                    w={w}
-                    isWeighted={isWeighted}
-                  ></Node>
-                );
-              })}
-            </div>
-          );
-        })}
+        {!grid.grid
+          ? null
+          : grid.grid.map((row, rowIdx) => {
+              return (
+                <div key={rowIdx}>
+                  {row.map((node) => {
+                    const { row, col, val, adjList, weight } = node;
+                    return (
+                      <Node
+                        key={val}
+                        val={val}
+                        col={col}
+                        row={row}
+                        onMouseDown={handleMouseDown}
+                        onMouseEnter={handleMouseEnter}
+                        onMouseUp={handleMouseUp}
+                        adjList={adjList}
+                        weight={weight}
+                        isWeighted={isWeighted}
+                      ></Node>
+                    );
+                  })}
+                </div>
+              );
+            })}
       </div>
     </div>
   );

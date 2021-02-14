@@ -27,8 +27,9 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 
 import styles from "./NavStyles";
-import { valToIndx, getNewMazedGrid } from "./helpers/gridPropertiesHelper";
-// import { getInitialGrid } from "./helpers/initialGridHelper";
+// import { getNewMazedGrid } from "./helpers/gridPropertiesHelper";
+import { valToIndx, getNewMazedGrid } from "./helpers/gridHelper";
+
 import Grid from "./models/Grid";
 
 const MIN = -5;
@@ -84,8 +85,12 @@ function Nav(props) {
   };
 
   const newMaze = async () => {
+    // console.log("hello from nav");
+    // console.log(grid);
     const newGrid = await getNewMazedGrid(grid, 0.33);
+    // console.log(newGrid);
     setGrid(newGrid);
+    // console.log(grid === newGrid)
   };
 
   const negativeWeight = () => {
@@ -150,10 +155,17 @@ function Nav(props) {
   const unWBtnsList = [
     {
       name: "BFS",
-      click: () =>
+      click: () => {
+        console.log("bfs cliked");
         handleClick(
-          bfs(grid, grid[rowStart][colStart], grid[rowEnd][colEnd], nCols)
-        ),
+          bfs(
+            grid,
+            grid.grid[rowStart][colStart],
+            grid.grid[rowEnd][colEnd],
+            nCols
+          )
+        );
+      },
       disabled: isWeighted ? true : disable,
     },
     {

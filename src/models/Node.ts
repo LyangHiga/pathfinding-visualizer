@@ -5,12 +5,12 @@ export default class Node {
   private row: number;
   // converting row x col to a single vector
   // unique id
-  private val: number;
-  private weight: number;
-  private isStart: boolean;
-  private isTarget: boolean;
-  private isWall: boolean;
-  private adjList: AdjList;
+  public val: number;
+  public weight: number;
+  public isStart: boolean;
+  public isTarget: boolean;
+  public isWall: boolean;
+  public adjList: AdjList;
 
   constructor(
     col: number,

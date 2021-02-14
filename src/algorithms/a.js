@@ -1,9 +1,6 @@
 import Heap from "../structures/heap";
-import {
-  valToIndx,
-  getWeightedPath,
-  manhattan,
-} from "../helpers/gridPropertiesHelper";
+import { getWeightedPath } from "../helpers/gridPropertiesHelper";
+import { valToIndx, manhattan } from "../helpers/gridHelper";
 import { pathAnimation, visitedAnimation } from "../helpers/animations";
 
 const a = async (grid, start, end, nCols, wRange, alpha) => {

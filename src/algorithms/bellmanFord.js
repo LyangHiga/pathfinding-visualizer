@@ -1,4 +1,5 @@
-import { valToIndx, getWeightedPath } from "../helpers/gridPropertiesHelper";
+import { getWeightedPath } from "../helpers/gridPropertiesHelper";
+import { valToIndx } from "../helpers/gridHelper";
 import {
   pathAnimation,
   visitedAnimation,

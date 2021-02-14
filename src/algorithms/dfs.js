@@ -1,5 +1,5 @@
 import Stack from "../structures/stack";
-import { valToIndx } from "../helpers/gridPropertiesHelper";
+import { valToIndx } from "../helpers/gridHelper";
 import { visitedAnimation } from "../helpers/animations";
 
 const dfs = async (grid, start, end, nCols) => {

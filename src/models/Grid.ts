@@ -1,17 +1,22 @@
 import Node from "./Node";
-import { createAdjList, getVal } from "../helpers/initialGridHelper";
+import { createAdjList, getVal } from "../helpers/gridHelper";
 
 export default class Grid {
   public grid: Node[][];
+  public readonly nRows: number;
+  public readonly nCols: number;
   constructor(
     start: number,
     target: number,
     nRows: number,
     nCols: number,
+    // min and max weight
     max = 1,
     min = 1
   ) {
     this.grid = [];
+    this.nCols = nCols;
+    this.nRows = nRows;
     for (let row = 0; row < nRows; row++) {
       const currentRow: Node[] = [];
       for (let col = 0; col < nCols; col++) {
