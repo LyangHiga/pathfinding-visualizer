@@ -84,10 +84,7 @@ function Nav(props) {
   };
 
   const newMaze = async () => {
-    // console.log("hello from nav");
-    // console.log(grid);
     const newGrid = await getNewMazedGrid(grid, 0.33);
-    // console.log(newGrid);
     setGrid(newGrid);
     // console.log(grid === newGrid)
   };
@@ -96,13 +93,11 @@ function Nav(props) {
     clearAnimation(grid, start, end);
     let n;
     if (!isNegative) {
-      // n = getInitialGrid(start, end, nRows, nCols, wRange, MIN);
       n = new Grid(start, end, nRows, nCols, wRange, MIN);
     } else {
-      // n = getInitialGrid(start, end, nRows, nCols, wRange);
       n = new Grid(start, end, nRows, nCols, wRange);
     }
-    setGrid(n.grid);
+    setGrid(n);
     setIsWeighted(true);
     toggleIsNegative();
   };
