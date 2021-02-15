@@ -272,9 +272,8 @@ function Nav(props) {
               handleClick(
                 bellmanFord(
                   grid,
-                  grid[rowStart][colStart],
-                  grid[rowEnd][colEnd],
-                  nCols
+                  grid.grid[rowStart][colStart],
+                  grid.grid[rowEnd][colEnd]
                 )
               );
             }}

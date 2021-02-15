@@ -10,7 +10,9 @@ import {
 // SSSP (Single Source Shortest Problem)
 // detect negative cycles: boolean output (cycle)
 // use parents (predecessor pointers) to traverse the path
-const bellmanFord = async (grid, start, end, nCols) => {
+// const bellmanFord = async (grid, start, end, nCols) => {
+const bellmanFord = async (g, start, end) => {
+  const { grid, nCols } = g;
   // O(m) space => to reconstruct path from s to (any) v
   // parents  (predecessor pointers)
   const distances = Array(grid.length * nCols).fill(Infinity);
@@ -47,7 +49,7 @@ const bellmanFord = async (grid, start, end, nCols) => {
           //   neighbour as a vertex
           let nextVertex = grid[row][col];
           if (!nextVertex.isWall) {
-            let d = distances[val] + nextVertex.w;
+            let d = distances[val] + nextVertex.weight;
             // vertex checked
             await visitedAnimation(neighbour, start.val, end.val, "#c5c9ca");
             //   to check if is not wall
