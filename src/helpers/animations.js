@@ -42,7 +42,7 @@ const changingPropAnimation = (val, color) => {
 };
 
 export const wallAnimation = async (v) => {
-  if (v.isStart || v.isFinish) return;
+  if (v.isStart || v.isTarget) return;
   await sleep(1);
   changingPropAnimation(v.val, colors.black);
 };
@@ -63,7 +63,7 @@ export const clearPathAnimation = (grid) => {
   for (let i = 0; i < grid.length; i++) {
     for (let j = 0; j < grid[i].length; j++) {
       const v = grid[i][j];
-      if (!v.isStart && !v.isFinish && !v.isWall) {
+      if (!v.isStart && !v.isTarget && !v.isWall) {
         clearNodeAnimation(v.val);
       }
     }
