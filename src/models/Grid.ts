@@ -5,6 +5,9 @@ export default class Grid {
   public grid: Node[][];
   public readonly nRows: number;
   public readonly nCols: number;
+  // min and max weight allowed
+  public readonly min: number;
+  public readonly max: number;
   constructor(
     start: number,
     target: number,
@@ -17,6 +20,8 @@ export default class Grid {
     this.grid = [];
     this.nCols = nCols;
     this.nRows = nRows;
+    this.min = min;
+    this.max = max;
     for (let row = 0; row < nRows; row++) {
       const currentRow: Node[] = [];
       for (let col = 0; col < nCols; col++) {

@@ -219,10 +219,8 @@ function Nav(props) {
           handleClick(
             a(
               grid,
-              grid[rowStart][colStart],
-              grid[rowEnd][colEnd],
-              nCols,
-              wRange,
+              grid.grid[rowStart][colStart],
+              grid.grid[rowEnd][colEnd],
               alpha
             )
           )

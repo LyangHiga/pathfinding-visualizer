@@ -1,18 +1,18 @@
 import Heap from "../structures/heap";
-// import { getWeightedPath } from "../helpers/gridPropertiesHelper";
 import { valToIndx, manhattan, getPath } from "../helpers/gridHelper";
 import { pathAnimation, visitedAnimation } from "../helpers/animations";
 
-const a = async (grid, start, end, nCols, wRange, alpha) => {
+const a = async (g, start, end, alpha) => {
+  const { grid, nCols, max } = g;
   const heap = new Heap();
   // expected value of a random (uniformily) weight :
   //    sum of all possible values <sum of N first terms of AP> / max value
-  const SCALING_FACTOR = ((wRange + 1) * (wRange / 2)) / wRange;
+  const SCALING_FACTOR = ((max + 1) * (max / 2)) / max;
   // Initialize distances with Infinity and parents array with null
   // Distance between any given node to the start node
   const distances = Array(grid.length * nCols).fill(Infinity);
   const parents = Array(grid.length * nCols).fill(null);
-  let smallestVal, found;
+  let smallestVal;
   let inspectedNodes = 0;
   let decrease = false;
   let nDeq = 0;
@@ -33,7 +33,6 @@ const a = async (grid, start, end, nCols, wRange, alpha) => {
     smallestVal = s.key;
     // check if we find the target node
     if (smallestVal === end.val) {
-      found = true;
       break;
     }
     // convert smallestVal to a Vertex
@@ -49,7 +48,7 @@ const a = async (grid, start, end, nCols, wRange, alpha) => {
         //   neighbour as a vertex
         let nextVertex = grid[row][col];
         // calculate Dijkstra's  Greedy Criterium and manhattan distance
-        let d = distances[smallestVal] + smallest.w;
+        let d = distances[smallestVal] + smallest.weight;
         let newF = f(d, nextVertex, end, alpha, SCALING_FACTOR);
         let oldF = f(
           distances[nextVertex.val],
@@ -74,7 +73,9 @@ const a = async (grid, start, end, nCols, wRange, alpha) => {
       }
     }
   }
-  if (!found) return;
+  if (distances[end.val] === Infinity) {
+    return;
+  }
   const path = getPath(parents, start.val, end.val);
   //   min distance g() found  by A*
   console.log(`A* with Alpha= ${alpha} Min Distance = ${distances[end.val]}`);
@@ -95,7 +96,7 @@ const a = async (grid, start, end, nCols, wRange, alpha) => {
 
 //   we will use f(n) = (alpha * distance + ( 1 - alpha) * Manhattan distance) * SCALING FACTOR
 //      we use a scaling factor because we compare nodes' weights with distances
-//      weight: [1, wRange] ; while Manhattan d. is calculated in '[nodes distance] units': 1 (for adj nodes)
+//      weight: [1, max] ; while Manhattan d. is calculated in '[nodes distance] units': 1 (for adj nodes)
 // as val to be minimized in the heap
 const f = (distance, a, b, alpha, sf) => {
   const g = distance;
