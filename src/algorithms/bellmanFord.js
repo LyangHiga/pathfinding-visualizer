@@ -1,5 +1,4 @@
-import { getWeightedPath } from "../helpers/gridPropertiesHelper";
-import { valToIndx } from "../helpers/gridHelper";
+import { valToIndx, getPath } from "../helpers/gridHelper";
 import {
   pathAnimation,
   visitedAnimation,
@@ -72,7 +71,7 @@ const bellmanFord = async (grid, start, end, nCols) => {
 
   console.log(`cycle: ${!stop}`);
   if (parents[end.val] && stop) {
-    const path = getWeightedPath(parents, start.val, end.val);
+    const path = getPath(parents, start.val, end.val);
     await pathAnimation(path, start.val);
   }
 };

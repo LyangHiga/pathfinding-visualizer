@@ -1,6 +1,6 @@
 import Heap from "../structures/heap";
-import { getWeightedPath } from "../helpers/gridPropertiesHelper";
-import { valToIndx, manhattan } from "../helpers/gridHelper";
+// import { getWeightedPath } from "../helpers/gridPropertiesHelper";
+import { valToIndx, manhattan, getPath } from "../helpers/gridHelper";
 import { pathAnimation, visitedAnimation } from "../helpers/animations";
 
 const a = async (grid, start, end, nCols, wRange, alpha) => {
@@ -75,7 +75,7 @@ const a = async (grid, start, end, nCols, wRange, alpha) => {
     }
   }
   if (!found) return;
-  const path = getWeightedPath(parents, start.val, end.val);
+  const path = getPath(parents, start.val, end.val);
   //   min distance g() found  by A*
   console.log(`A* with Alpha= ${alpha} Min Distance = ${distances[end.val]}`);
   //   distance of this path (yellow)
