@@ -77,10 +77,9 @@ function Nav(props) {
   const changeAlpha = (alpha) => setAlpha(alpha);
 
   const clear = () => {
-    clearAnimation(grid, start, end);
-    // const n = getInitialGrid(start, end, nRows, nCols, wRange);
+    clearAnimation(grid.grid, start, end);
     const n = new Grid(start, end, nRows, nCols, wRange, MIN);
-    setGrid(n.grid);
+    setGrid(grid);
     setIsWeighted(false);
   };
 
