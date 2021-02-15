@@ -120,7 +120,7 @@ function Nav(props) {
     { name: "Clear", click: () => clear(), disabled: disable },
     {
       name: "Clear Path",
-      click: () => clearPathAnimation(grid),
+      click: () => clearPathAnimation(grid.grid),
       disabled: disable,
     },
     { name: "Maze", click: () => handleClick(newMaze()), disabled: disable },
