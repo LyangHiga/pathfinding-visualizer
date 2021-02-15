@@ -41,9 +41,10 @@ const bfs = async (g, start, end) => {
       }
     }
   }
-
-  const path = getPath(parents, start.val, end.val);
-  await pathAnimation(path, start.val);
+  if (visited[end.val]) {
+    const path = getPath(parents, start.val, end.val);
+    await pathAnimation(path, start.val);
+  }
 };
 
 export default bfs;
