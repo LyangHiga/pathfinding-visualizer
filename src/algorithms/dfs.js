@@ -2,8 +2,8 @@ import Stack from "../structures/stack";
 import { valToIndx } from "../helpers/gridHelper";
 import { visitedAnimation } from "../helpers/animations";
 
-const dfs = async (grid, start, end, nCols) => {
-  //   const end = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+const dfs = async (g, start, end) => {
+  const { grid, nCols } = g;
   //   stack pop order
   let result = [];
   let visited = {};

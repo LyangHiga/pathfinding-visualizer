@@ -79,7 +79,7 @@ function Nav(props) {
   const clear = () => {
     clearAnimation(grid.grid, start, end);
     const n = new Grid(start, end, nRows, nCols, wRange, MIN);
-    setGrid(grid);
+    setGrid(n);
     setIsWeighted(false);
   };
 
@@ -152,12 +152,7 @@ function Nav(props) {
       click: () => {
         console.log("bfs cliked");
         handleClick(
-          bfs(
-            grid,
-            grid.grid[rowStart][colStart],
-            grid.grid[rowEnd][colEnd],
-            nCols
-          )
+          bfs(grid, grid.grid[rowStart][colStart], grid.grid[rowEnd][colEnd])
         );
       },
       disabled: isWeighted ? true : disable,
@@ -166,7 +161,7 @@ function Nav(props) {
       name: "DFS",
       click: () =>
         handleClick(
-          dfs(grid, grid[rowStart][colStart], grid[rowEnd][colEnd], nCols)
+          dfs(grid, grid.grid[rowStart][colStart], grid.grid[rowEnd][colEnd])
         ),
       disabled: isWeighted ? true : disable,
     },
