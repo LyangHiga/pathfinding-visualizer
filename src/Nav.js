@@ -150,7 +150,6 @@ function Nav(props) {
     {
       name: "BFS",
       click: () => {
-        console.log("bfs cliked");
         handleClick(
           bfs(grid, grid.grid[rowStart][colStart], grid.grid[rowEnd][colEnd])
         );
@@ -287,9 +286,8 @@ function Nav(props) {
               handleClick(
                 bellmanFord(
                   grid,
-                  grid[rowStart][colStart],
-                  grid[rowEnd][colEnd],
-                  nCols
+                  grid.grid[rowStart][colStart],
+                  grid.grid[rowEnd][colEnd]
                 )
               );
             }}
