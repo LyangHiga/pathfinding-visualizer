@@ -77,7 +77,7 @@ function Nav(props) {
   const changeAlpha = (alpha) => setAlpha(alpha);
 
   const clear = () => {
-    clearAnimation(grid.grid, start, end);
+    clearAnimation(grid, start, end);
     const n = new Grid(start, end, nRows, nCols, wRange, MIN);
     setGrid(n);
     setIsWeighted(false);
@@ -120,7 +120,7 @@ function Nav(props) {
     { name: "Clear", click: () => clear(), disabled: disable },
     {
       name: "Clear Path",
-      click: () => clearPathAnimation(grid.grid),
+      click: () => clearPathAnimation(grid),
       disabled: disable,
     },
     { name: "Maze", click: () => handleClick(newMaze()), disabled: disable },
