@@ -17,7 +17,7 @@ const bfs = async (g, start, end) => {
   // vertex that will be deQueue
   let v;
   while (q.size !== 0) {
-    v = q.deQueue().val;
+    v = q.deQueue().key;
     // check if v is the end vertex
     if (v.val === end.val) {
       //   we find the target

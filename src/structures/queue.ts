@@ -1,13 +1,19 @@
 // linked list Node
 class Node {
-  constructor(val) {
-    this.val = val;
+  next: null | Node;
+  key: any;
+
+  constructor(key: any) {
     this.next = null;
+    this.key = key;
   }
 }
 
 // Queue implementation, FIFO, through linked list
 class Queue {
+  first: null | Node;
+  last: null | Node;
+  size: number;
   constructor() {
     this.first = null;
     this.last = null;
@@ -15,13 +21,13 @@ class Queue {
   }
 
   // add to the end and return the size of this queue
-  enQueue(val) {
-    let node = new Node(val);
+  enQueue(key: any) {
+    let node: Node = new Node(key);
     if (this.size === 0) {
       this.first = node;
       this.last = node;
     } else {
-      this.last.next = node;
+      this.last!.next = node;
       this.last = node;
     }
     this.size++;
@@ -36,8 +42,8 @@ class Queue {
       this.first = null;
       this.last = null;
     } else {
-      this.first = removed.next;
-      removed.next = null;
+      this.first = removed!.next;
+      removed!.next = null;
     }
     this.size--;
     return removed;
