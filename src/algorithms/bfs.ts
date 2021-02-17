@@ -4,7 +4,7 @@ import Queue from "../structures/queue";
 import { valToIndx, getPath } from "../helpers/gridHelper";
 import { pathAnimation, visitedAnimation } from "../helpers/animations";
 
-const bfs = async (g: Grid, start: Node, target: Node) => {
+const bfs = async (g: Grid, start: Node, target: Node, test = false) => {
   const { grid, nCols } = g;
   // maps node val to is viseted or not
   let visited = new Map<number, boolean>();
@@ -43,7 +43,7 @@ const bfs = async (g: Grid, start: Node, target: Node) => {
         if (visited.get(w) !== true && !wNode.isWall) {
           //mark  w as visited
           visited.set(w, true);
-          await visitedAnimation(w, start.val, target.val);
+          if (!test) await visitedAnimation(w, start.val, target.val);
           //   enQueue vertex w, update dist and parents
           q.enQueue(wNode);
           parents.set(w, v.val);
@@ -54,8 +54,10 @@ const bfs = async (g: Grid, start: Node, target: Node) => {
   }
   if (visited.get(target.val)) {
     const path = getPath(parents, start.val, target.val);
-    await pathAnimation(path);
+    if (!test) await pathAnimation(path);
+    return { path, parents };
   }
+  return { path: null, parents };
 };
 
 export default bfs;

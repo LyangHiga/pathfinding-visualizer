@@ -82,7 +82,12 @@ const changeNodeProperty = (node: Node, prop: string, newPropVal: boolean) => {
   }
 };
 
+export const toggleIsWall = (node: Node) => {
+  changeNodeProperty(node, "isWall", !node.isWall);
+};
+
 // returns a new grid after a mouse click (wall is created)
+// probably dont need this function
 export const getNewGridWithWallToggled = (
   grid: Grid,
   // row and col of the node to toggle isWall property
