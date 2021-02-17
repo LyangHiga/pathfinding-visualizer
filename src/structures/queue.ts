@@ -3,7 +3,7 @@ class Node<T> {
   next: null | Node<T>;
   key: T;
 
-  constructor(key: any) {
+  constructor(key: T) {
     this.next = null;
     this.key = key;
   }
@@ -21,7 +21,7 @@ class Queue<T> {
   }
 
   // add to the end and return the size of this queue
-  enQueue(key: any) {
+  enQueue(key: T) {
     let node: Node<T> = new Node(key);
     if (this.size === 0) {
       this.first = node;
