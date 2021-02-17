@@ -1,12 +1,12 @@
 import Queue from "../../structures/queue";
 
 const FIRST = 1;
-const SECOND = "2";
-const THIRD = false;
+const SECOND = 2;
+const THIRD = 3;
 
 // just to make a habit
 test("testing enQueues and deQueues", () => {
-  const queue = new Queue();
+  const queue = new Queue<number>();
   queue.enQueue(FIRST);
   expect(queue.size).toEqual(1);
   queue.enQueue(SECOND);

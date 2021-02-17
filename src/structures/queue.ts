@@ -1,7 +1,7 @@
 // linked list Node
-class Node {
-  next: null | Node;
-  key: any;
+class Node<T> {
+  next: null | Node<T>;
+  key: T;
 
   constructor(key: any) {
     this.next = null;
@@ -10,9 +10,9 @@ class Node {
 }
 
 // Queue implementation, FIFO, through linked list
-class Queue {
-  first: null | Node;
-  last: null | Node;
+class Queue<T> {
+  first: null | Node<T>;
+  last: null | Node<T>;
   size: number;
   constructor() {
     this.first = null;
@@ -22,7 +22,7 @@ class Queue {
 
   // add to the end and return the size of this queue
   enQueue(key: any) {
-    let node: Node = new Node(key);
+    let node: Node<T> = new Node(key);
     if (this.size === 0) {
       this.first = node;
       this.last = node;

@@ -208,17 +208,18 @@ export const getNewMazedGrid = async (grid: Grid, eps: number) => {
 //   building path
 export const getPath = (
   // array of nodes by val representation
-  parents: number[],
+  // parents: number[],
+  parents: Map<number, number | null>,
   // start node val representation
   startVal: number,
   // target node val representation
   targetVal: number
 ) => {
-  let a = parents[targetVal];
+  let a = parents.get(targetVal)!;
   let path = [];
   while (a !== startVal) {
     path.push(a);
-    a = parents[a];
+    a = parents.get(a)!;
   }
   return path.reverse();
 };
