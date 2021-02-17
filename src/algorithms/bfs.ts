@@ -7,12 +7,12 @@ import { pathAnimation, visitedAnimation } from "../helpers/animations";
 const bfs = async (g: Grid, start: Node, target: Node, test = false) => {
   const { grid, nCols } = g;
   // maps node val to is viseted or not
-  let visited = new Map<number, boolean>();
+  const visited = new Map<number, boolean>();
   // maps child val to parent val
-  let parents = new Map<number, number | null>();
+  const parents = new Map<number, number | null>();
   // maps node val to distance from start node val
-  let dist = new Map<number, number>();
-  let q = new Queue<Node>();
+  const dist = new Map<number, number>();
+  const q = new Queue<Node>();
   // add start node to the queue
   q.enQueue(start);
   // start node is already visited

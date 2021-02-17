@@ -22,7 +22,7 @@ class Stack<T> {
   }
 
   // add a node at the beginning and return the size of this stack
-  push(key: any) {
+  push(key: T) {
     let node = new Node(key);
     if (this.size === 0) {
       this.first = node;

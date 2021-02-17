@@ -1,5 +1,5 @@
 import Grid from "../../models/Grid";
-import bfs from "../../algorithms/bfs";
+import dfs from "../../algorithms/dfs";
 import { valToIndx, toggleIsWall } from "../../helpers/gridHelper";
 
 const START = 11;
@@ -18,7 +18,7 @@ const NROWS = 5;
 // g =  10  S   12  T   14  => 10  S   X   T   14
 //      15  16  17  18  19     15  16  X   18  19
 //      20  21  22  23  24     20  21  X   23  24
-test("BFS: start and target nodes are not in the same connected component", async () => {
+test("DFS: start and target nodes are not in the same connected component", async () => {
   // create grid
   const g = new Grid(START, TARGET, NROWS, NCOLS);
 
@@ -38,12 +38,11 @@ test("BFS: start and target nodes are not in the same connected component", asyn
   toggleIsWall(g.grid[xRow][xCol]);
   toggleIsWall(g.grid[yRow][yCol]);
   toggleIsWall(g.grid[zRow][zCol]);
-  const { path, parents } = await bfs(
+  const visited = await dfs(
     g,
     g.grid[startRow][startCol],
     g.grid[targetRow][targetCol],
     true
   );
-  expect(path).toBeNull();
-  expect(parents.get(TARGET)).toBeUndefined();
+  expect(visited.get(TARGET)).toBeUndefined();
 });
