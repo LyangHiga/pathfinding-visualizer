@@ -18,7 +18,7 @@ const NROWS = 5;
 // g =  10  S   12  T   14  => 10  S   X   T   14
 //      15  16  17  18  19     15  16  X   18  19
 //      20  21  22  23  24     20  21  X   23  24
-test("start and target nodes are not in the same conected component", async () => {
+test("start and target nodes are not in the same connected component", async () => {
   // create grid
   const g = new Grid(START, TARGET, NROWS, NCOLS);
 
