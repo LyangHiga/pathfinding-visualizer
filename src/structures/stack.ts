@@ -1,14 +1,20 @@
 // linked list Node
-class Node {
-  constructor(val) {
-    this.val = val;
+class Node<T> {
+  next: null | Node<T>;
+  key: T;
+
+  constructor(key: T) {
     this.next = null;
+    this.key = key;
   }
 }
 
 // simple implementation using SLL, shift and unshift, here called as push and pop
 // First in Last Out
-class Stack {
+class Stack<T> {
+  first: null | Node<T>;
+  last: null | Node<T>;
+  size: number;
   constructor() {
     this.first = null;
     this.last = null;
@@ -16,8 +22,8 @@ class Stack {
   }
 
   // add a node at the beginning and return the size of this stack
-  push(val) {
-    let node = new Node(val);
+  push(key: any) {
+    let node = new Node(key);
     if (this.size === 0) {
       this.first = node;
       this.last = node;
@@ -28,6 +34,7 @@ class Stack {
     this.size++;
     return this.size;
   }
+
   // remove the first node and return it
   pop() {
     // empty stack
@@ -37,8 +44,8 @@ class Stack {
       this.first = null;
       this.last = null;
     } else {
-      this.first = removed.next;
-      removed.next = null;
+      this.first = removed!.next;
+      removed!.next = null;
     }
     this.size--;
     return removed;
