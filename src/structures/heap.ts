@@ -125,13 +125,13 @@ class Heap<T> {
   // Returns true if works
   // Returns false if there is not any node with this key in this heap
   // Returns undefined if newVal is equal to the actual val of key
-  // Returns -1 if newVal is greater than the actual val of key
+  // Returns undefined if newVal is greater than the actual val of key
   decreaseKey = (key: T, newVal: number) => {
     // check whether this key belongs to this heap
     if (!this.contains(key)) return false;
     let idx = this.idxs.get(key)!;
     // to ensure newVal < val
-    if (newVal > this.values[idx].val) return -1;
+    if (newVal > this.values[idx].val) return;
     // if they are the same just return
     if (newVal === this.values[idx].val) return;
     //   update node with new val

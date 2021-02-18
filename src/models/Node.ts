@@ -1,8 +1,8 @@
 import AdjList from "./AdjList";
 
 export default class Node {
-  private col: number;
-  private row: number;
+  public readonly col: number;
+  public readonly row: number;
   // converting row x col to a single vector
   // unique id
   public val: number;

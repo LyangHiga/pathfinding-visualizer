@@ -1,41 +1,54 @@
+import Grid from "../models/Grid";
+import Node from "../models/Node";
 import Heap from "../structures/heap";
 import { valToIndx, manhattan, getPath } from "../helpers/gridHelper";
 import { pathAnimation, visitedAnimation } from "../helpers/animations";
 
-const a = async (g, start, end, alpha) => {
+const a = async (
+  g: Grid,
+  start: Node,
+  end: Node,
+  alpha: number,
+  test = false
+) => {
   const { grid, nCols, max } = g;
-  const heap = new Heap();
+  const heap = new Heap<number>();
   // expected value of a random (uniformily) weight :
+  //  range:[1,max), rememebr sum of 1st 100 int = (100+1) * 50
+  //  => (100+1)+ (99+2) + (98+3) ... this is (101) 50 times
   //    sum of all possible values <sum of N first terms of AP> / max value
-  const SCALING_FACTOR = ((max + 1) * (max / 2)) / max;
-  // Initialize distances with Infinity and parents array with null
+  const SCALING_FACTOR = ((max - 1 + 1) * (max / 2)) / max;
+  // Initialize distances(weight cost) with Infinity and parents array with null
   // Distance between any given node to the start node
+  // maps node val to weight cost
   const distances = Array(grid.length * nCols).fill(Infinity);
-  const parents = Array(grid.length * nCols).fill(null);
+  const parents = new Map<number, number | null>();
   let smallestVal;
   let inspectedNodes = 0;
   let decrease = false;
+  // number of dequeues
   let nDeq = 0;
   distances[start.val] = 0;
+  // distances[start.val] = 0;
   //   add the start node to the heap
   //   we will use f(n) = alpha * distance + ( 1 - alpha) * Manhattan distance
   // as val to be minimized in the heap
-  //   f for the start node
-  heap.enqueue(start.val, f(0, start, end, alpha));
+  //   f for the start node is zero anyway
+  // heap.enqueue(start.val, f(0, start, end, alpha));
+  heap.enqueue(start.val, 0);
   inspectedNodes++;
 
   //   while there are elements in this heap
   while (heap.values.length) {
     //   get the min value from the heap
-    let s = heap.dequeue().element;
+    let s = heap.dequeue()!;
     nDeq++;
-    // get its vertex
     smallestVal = s.key;
-    // check if we find the target node
+    // check if it is the target node
     if (smallestVal === end.val) {
       break;
     }
-    // convert smallestVal to a Vertex
+    // convert smallestVal to a Node
     const [r, c] = valToIndx(smallestVal, nCols);
     const smallest = grid[r][c];
     // for all neighbour of smallest
@@ -43,38 +56,38 @@ const a = async (g, start, end, alpha) => {
       // get the val of the neighbour
       const neighbour = smallest.adjList[k];
       // check if is not null => grid border
-      if (neighbour !== null) {
+      if (neighbour) {
         const [row, col] = valToIndx(neighbour, nCols);
-        //   neighbour as a vertex
-        let nextVertex = grid[row][col];
+        // neighbour as a node
+        let nextNode = grid[row][col];
         // calculate Dijkstra's  Greedy Criterium and manhattan distance
         let d = distances[smallestVal] + smallest.weight;
-        let newF = f(d, nextVertex, end, alpha, SCALING_FACTOR);
+        let newF = f(d, nextNode, end, alpha, SCALING_FACTOR);
         let oldF = f(
-          distances[nextVertex.val],
-          nextVertex,
+          distances[nextNode.val],
+          nextNode,
           end,
           alpha,
           SCALING_FACTOR
         );
         //   compare f(d,next,end) with f calculated with last distance storaged
-        if (newF < oldF && !nextVertex.isWall) {
+        if (newF < oldF && !nextNode.isWall) {
           //   updating distances and parents
-          distances[nextVertex.val] = d;
-          parents[nextVertex.val] = smallest.val;
-          decrease = heap.decreaseKey(nextVertex.val, newF);
+          distances[nextNode.val] = d;
+          parents.set(nextNode.val, smallest.val);
+          decrease = heap.decreaseKey(nextNode.val, newF)!;
           if (!decrease) {
             // enqueue with new priority
-            heap.enqueue(nextVertex.val, newF);
+            heap.enqueue(nextNode.val, newF);
           }
-          await visitedAnimation(nextVertex.val, start.val, end.val);
+          if (!test) await visitedAnimation(nextNode.val, start.val, end.val);
           inspectedNodes++;
         }
       }
     }
   }
   if (distances[end.val] === Infinity) {
-    return;
+    return { parents, path: null };
   }
   const path = getPath(parents, start.val, end.val);
   //   min distance g() found  by A*
@@ -83,22 +96,22 @@ const a = async (g, start, end, alpha) => {
   console.log(
     `A* with Alpha= ${alpha} Distance Calculated = ${getPathDistance(
       path,
-      grid,
-      start,
-      nCols
+      g,
+      start
     )}`
   );
   console.log(`A* with Alpha= ${alpha} inspectedNodes = ${inspectedNodes}`);
   console.log(`A* with Alpha= ${alpha} Dequeues = ${nDeq}`);
   console.log(`scaling factor: ${SCALING_FACTOR}`);
-  await pathAnimation(path, start.val);
+  if (!test) await pathAnimation(path);
+  return { parents, path };
 };
 
 //   we will use f(n) = (alpha * distance + ( 1 - alpha) * Manhattan distance) * SCALING FACTOR
 //      we use a scaling factor because we compare nodes' weights with distances
 //      weight: [1, max] ; while Manhattan d. is calculated in '[nodes distance] units': 1 (for adj nodes)
 // as val to be minimized in the heap
-const f = (distance, a, b, alpha, sf) => {
+const f = (distance: number, a: Node, b: Node, alpha: number, sf: number) => {
   const g = distance;
   const h = manhattan(a.row, b.row, a.col, b.col) * sf;
   const w = g === Infinity && alpha === 0 ? Infinity : alpha * g;
@@ -106,13 +119,14 @@ const f = (distance, a, b, alpha, sf) => {
   return w + z;
 };
 
-const getPathDistance = (path, grid, start, nCols) => {
+const getPathDistance = (path: number[], g: Grid, start: Node) => {
+  const { grid, nCols } = g;
   // start and finish nodes are not in the path (yelow animation)
-  let d = start.w;
+  let d = start.weight;
   for (let i = 0; i < path.length; i++) {
     let [r, c] = valToIndx(path[i], nCols);
     const node = grid[r][c];
-    d += node.w;
+    d += node.weight;
   }
   return d;
 };
