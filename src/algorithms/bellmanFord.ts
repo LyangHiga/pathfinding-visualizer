@@ -1,3 +1,5 @@
+import Grid from "../models/Grid";
+import Node from "../models/Node";
 import { valToIndx, getPath } from "../helpers/gridHelper";
 import {
   pathAnimation,
@@ -5,22 +7,23 @@ import {
   clearPathAnimation,
 } from "../helpers/animations";
 
-// Returns the distance from s to each vertex and their parents O(mn)
+// Returns the distance from s to each node and their parents O(mn)
 // negative costs are allowed
 // SSSP (Single Source Shortest Problem)
 // detect negative cycles: boolean output (cycle)
 // use parents (predecessor pointers) to traverse the path
 // const bellmanFord = async (grid, start, end, nCols) => {
-const bellmanFord = async (g, start, end) => {
+const bellmanFord = async (g: Grid, start: Node, end: Node, test = false) => {
   const { grid, nCols } = g;
   // O(m) space => to reconstruct path from s to (any) v
   // parents  (predecessor pointers)
   const distances = Array(grid.length * nCols).fill(Infinity);
-  const parents = Array(grid.length * nCols).fill(null);
+  // const parents = Array(grid.length * nCols).fill(null);
+  const parents = new Map<number, number | null>();
   // to stop earlier
   let stop = true;
   // i: number of edges allowed
-  // for i =0, all dist from s to vertex are infinity
+  // for i =0, all dist from s to node are infinity
   // dist s to s
   distances[start.val] = 0;
   // i edges allowed, (n-1) at most => O(n)
@@ -28,8 +31,8 @@ const bellmanFord = async (g, start, end) => {
   // if costs get smaller indefinitely (OPT(n,v) !== OPT(n-1,v))
   // There is a negative cycle
   for (let i = 1; i < grid.length * nCols; i++) {
-    clearPathAnimation(g);
-    // if any distance get smaller, we can stop early
+    if (!test) clearPathAnimation(g);
+    // if no distance get smaller, we can stop early
     // if after n-1 steps: the costs still get smaller (with n edges allowed)
     // negative cycle detected!
     stop = true;
@@ -46,20 +49,26 @@ const bellmanFord = async (g, start, end) => {
         // check if is not null => grid border
         if (neighbour !== null) {
           const [row, col] = valToIndx(neighbour, nCols);
-          //   neighbour as a vertex
-          let nextVertex = grid[row][col];
-          if (!nextVertex.isWall) {
-            let d = distances[val] + nextVertex.weight;
-            // vertex checked
-            await visitedAnimation(neighbour, start.val, end.val, "#c5c9ca");
+          //   neighbour as a node
+          let nextNode = grid[row][col];
+          if (!nextNode.isWall) {
+            let d = distances[val] + nextNode.weight;
+            // node checked
+            if (!test) {
+              await visitedAnimation(neighbour, start.val, end.val, "#c5c9ca");
+            }
+
             //   to check if is not wall
             if (d < distances[neighbour]) {
               distances[neighbour] = d;
-              parents[neighbour] = val;
+              // parents[neighbour] = val;
+              parents.set(neighbour, val);
               // still getting costs update => dont stop!
               stop = false;
-              // vertex with cost decreased
-              await visitedAnimation(neighbour, start.val, end.val);
+              // node with cost decreased
+              if (!test) {
+                await visitedAnimation(neighbour, start.val, end.val);
+              }
             }
           }
         }
@@ -67,15 +76,20 @@ const bellmanFord = async (g, start, end) => {
     }
     if (stop) break;
   }
-  if (!stop) {
+  if (!stop && !test) {
     alert("Negative Cycle was found!");
   }
 
   console.log(`cycle: ${!stop}`);
-  if (parents[end.val] && stop) {
+  if (parents.get(end.val) && stop) {
     const path = getPath(parents, start.val, end.val);
-    await pathAnimation(path, start.val);
+    if (!test) {
+      await pathAnimation(path);
+    }
+    return { cycle: !stop, path, parents };
   }
+
+  return { cycle: !stop, path: null, parents };
 };
 
 export default bellmanFord;
