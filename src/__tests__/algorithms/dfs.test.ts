@@ -38,11 +38,13 @@ test("DFS: start and target nodes are not in the same connected component", asyn
   toggleIsWall(g.grid[xRow][xCol]);
   toggleIsWall(g.grid[yRow][yCol]);
   toggleIsWall(g.grid[zRow][zCol]);
-  const visited = await dfs(
+  const { path, parents, visited } = await dfs(
     g,
     g.grid[startRow][startCol],
     g.grid[targetRow][targetCol],
     true
   );
   expect(visited.get(TARGET)).toBeUndefined();
+  expect(parents.get(TARGET)).toBeUndefined();
+  expect(path).toBeNull();
 });
