@@ -55,9 +55,9 @@ const bfs = async (g: Grid, start: Node, target: Node, test = false) => {
   if (visited.get(target.val)) {
     const path = getPath(parents, start.val, target.val);
     if (!test) await pathAnimation(path);
-    return { path, parents };
+    return { path, parents, visited };
   }
-  return { path: null, parents };
+  return { path: null, parents, visited };
 };
 
 export default bfs;
