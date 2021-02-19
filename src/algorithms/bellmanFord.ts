@@ -1,11 +1,7 @@
 import Grid from "../models/Grid";
 import Node from "../models/Node";
 import { valToIndx, getPath } from "../helpers/gridHelper";
-import {
-  pathAnimation,
-  visitedAnimation,
-  clearPathAnimation,
-} from "../helpers/animations";
+import { pathAnimation, visitedAnimation } from "../helpers/animations";
 
 // Returns the distance from s to each node and their parents O(mn)
 // negative costs are allowed
