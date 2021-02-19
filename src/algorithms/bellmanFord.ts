@@ -1,7 +1,12 @@
 import Grid from "../models/Grid";
 import Node from "../models/Node";
 import { valToIndx, getPath } from "../helpers/gridHelper";
-import { pathAnimation, visitedAnimation } from "../helpers/animations";
+import {
+  pathAnimation,
+  visitedAnimation,
+  clearPathAnimation,
+} from "../helpers/animations";
+import { colors } from "../helpers/consts";
 
 // Returns the distance from s to each node and their parents O(mn)
 // negative costs are allowed
@@ -27,6 +32,7 @@ const bellmanFord = async (g: Grid, start: Node, end: Node, test = false) => {
   // if costs get smaller indefinitely (OPT(n,v) !== OPT(n-1,v))
   // There is a negative cycle
   for (let i = 1; i < grid.length * nCols; i++) {
+    if (!test) clearPathAnimation(g);
     // if no distance get smaller, we can stop early
     // if after n-1 steps: the costs still get smaller (with n edges allowed)
     // negative cycle detected!
@@ -50,7 +56,12 @@ const bellmanFord = async (g: Grid, start: Node, end: Node, test = false) => {
             let d = distances[val] + nextNode.weight;
             // node checked
             if (!test) {
-              await visitedAnimation(neighbour, start.val, end.val, "#c5c9ca");
+              await visitedAnimation(
+                neighbour,
+                start.val,
+                end.val,
+                colors.light_gray
+              );
             }
 
             //   to check if is not wall
