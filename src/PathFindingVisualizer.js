@@ -6,7 +6,7 @@
 import React, { useState, useEffect } from "react";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
-import Node from "./Node";
+import Node from "./components/Node";
 import {
   getNewGridWithWallToggled,
   getNewGridWitNewStart,
