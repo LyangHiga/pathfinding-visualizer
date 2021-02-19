@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Node renders correctly 1`] = `
+<div
+  className="makeStyles-node-1"
+  id="node-1"
+  onMouseDown={[Function]}
+  onMouseEnter={[Function]}
+  onMouseUp={[Function]}
+>
+  <span>
+    10
+  </span>
+</div>
+`;
