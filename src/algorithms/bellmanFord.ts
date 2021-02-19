@@ -31,7 +31,6 @@ const bellmanFord = async (g: Grid, start: Node, end: Node, test = false) => {
   // if costs get smaller indefinitely (OPT(n,v) !== OPT(n-1,v))
   // There is a negative cycle
   for (let i = 1; i < grid.length * nCols; i++) {
-    if (!test) clearPathAnimation(g);
     // if no distance get smaller, we can stop early
     // if after n-1 steps: the costs still get smaller (with n edges allowed)
     // negative cycle detected!
