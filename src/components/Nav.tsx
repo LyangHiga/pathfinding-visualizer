@@ -1,11 +1,13 @@
-// TODO: Refactoring Drawer and btns
+// TODO: Refactoring Drawer and btns, break down in smaller components
+// TODO: remove types from here
+// TODO: Refactoring with context api, too much props
 import React, { Fragment, useState } from "react";
 import "rc-slider/assets/index.css";
-import bfs from "./algorithms/bfs";
-import dfs from "./algorithms/dfs";
-import a from "./algorithms/a";
-import bellmanFord from "./algorithms/bellmanFord";
-import { clearAnimation, clearPathAnimation } from "./helpers/animations";
+import bfs from "../algorithms/bfs";
+import dfs from "../algorithms/dfs";
+import a from "../algorithms/a";
+import bellmanFord from "../algorithms/bellmanFord";
+import { clearAnimation, clearPathAnimation } from "../helpers/animations";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -26,41 +28,38 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 
-import styles from "./NavStyles";
-// import { getNewMazedGrid } from "./helpers/gridPropertiesHelper";
-import { valToIndx, getNewMazedGrid } from "./helpers/gridHelper";
+import styles from "../styles/NavStyles";
+import { valToIndx, getNewMazedGrid } from "../helpers/gridHelper";
 
-import Grid from "./models/Grid";
+import Grid from "../models/Grid";
+import { NavProps, FunctionHandled } from "./types/NavTypes";
 
-const MIN = -5;
-
-function Nav(props) {
+function Nav(props: NavProps) {
   const {
     grid,
     disable,
     start,
-    end,
+    target,
     setGrid,
     setDisable,
-    nRows,
-    nCols,
-    wRange,
     isWeighted,
     setIsWeighted,
     toggleIsweighted,
     isNegative,
     toggleIsNegative,
     handleChangeStart,
-    handleChangeFinish,
+    handleChangeTarget,
   } = props;
+
+  const { nCols, nRows, max, min } = grid;
 
   const classes = styles();
   const theme = useTheme();
   const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
   const [openDrawer, setOpenDrawer] = useState(false);
-  const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
+  // const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
-  const [rowEnd, colEnd] = valToIndx(end, nCols);
+  const [rowTarget, colTarget] = valToIndx(target, nCols);
   const [rowStart, colStart] = valToIndx(start, nCols);
   const [alpha, setAlpha] = useState(0.57);
   const [fName, setFName] = useState("A*");
@@ -74,11 +73,11 @@ function Nav(props) {
     setOpenAlert(false);
   };
 
-  const changeAlpha = (alpha) => setAlpha(alpha);
+  const changeAlpha = (alpha: number) => setAlpha(alpha);
 
   const clear = () => {
-    clearAnimation(grid, start, end);
-    const n = new Grid(start, end, nRows, nCols, wRange, MIN);
+    clearAnimation(grid, start, target);
+    const n = new Grid(start, target, nRows, nCols, max, min);
     setGrid(n);
     setIsWeighted(false);
   };
@@ -90,19 +89,19 @@ function Nav(props) {
   };
 
   const negativeWeight = () => {
-    clearAnimation(grid, start, end);
+    clearAnimation(grid, start, target);
     let n;
     if (!isNegative) {
-      n = new Grid(start, end, nRows, nCols, wRange, MIN);
+      n = new Grid(start, target, nRows, nCols, max, min);
     } else {
-      n = new Grid(start, end, nRows, nCols, wRange);
+      n = new Grid(start, target, nRows, nCols, max);
     }
     setGrid(n);
     setIsWeighted(true);
     toggleIsNegative();
   };
 
-  const handleClick = async (alg) => {
+  const handleClick = async (alg: FunctionHandled) => {
     setDisable(true);
     await alg;
     setDisable(false);
@@ -131,12 +130,12 @@ function Nav(props) {
     },
     {
       name: "Change Target",
-      click: () => handleChangeFinish(),
+      click: () => handleChangeTarget(),
       disabled: disable,
     },
     {
       name: isWeighted ? "Unweighted Grid" : "Weighted Grid",
-      click: () => handleClick(toggleIsweighted()),
+      click: () => toggleIsweighted(),
       disabled: disable,
     },
     {
@@ -151,7 +150,11 @@ function Nav(props) {
       name: "BFS",
       click: () => {
         handleClick(
-          bfs(grid, grid.grid[rowStart][colStart], grid.grid[rowEnd][colEnd])
+          bfs(
+            grid,
+            grid.grid[rowStart][colStart],
+            grid.grid[rowTarget][colTarget]
+          )
         );
       },
       disabled: isWeighted ? true : disable,
@@ -160,7 +163,11 @@ function Nav(props) {
       name: "DFS",
       click: () =>
         handleClick(
-          dfs(grid, grid.grid[rowStart][colStart], grid.grid[rowEnd][colEnd])
+          dfs(
+            grid,
+            grid.grid[rowStart][colStart],
+            grid.grid[rowTarget][colTarget]
+          )
         ),
       disabled: isWeighted ? true : disable,
     },
@@ -219,7 +226,7 @@ function Nav(props) {
             a(
               grid,
               grid.grid[rowStart][colStart],
-              grid.grid[rowEnd][colEnd],
+              grid.grid[rowTarget][colTarget],
               alpha
             )
           )
@@ -272,7 +279,7 @@ function Nav(props) {
                 bellmanFord(
                   grid,
                   grid.grid[rowStart][colStart],
-                  grid.grid[rowEnd][colEnd]
+                  grid.grid[rowTarget][colTarget]
                 )
               );
             }}
@@ -287,7 +294,7 @@ function Nav(props) {
                 bellmanFord(
                   grid,
                   grid.grid[rowStart][colStart],
-                  grid.grid[rowEnd][colEnd]
+                  grid.grid[rowTarget][colTarget]
                 )
               );
             }}
@@ -323,8 +330,8 @@ function Nav(props) {
   const drawer = (
     <Fragment>
       <SwipeableDrawer
-        disableBackdropTransition={!iOS}
-        disableDiscovery={iOS}
+        // disableBackdropTransition={!iOS}
+        // disableDiscovery={iOS}
         open={openDrawer}
         onClose={() => setOpenDrawer(false)}
         onOpen={() => setOpenDrawer(true)}
@@ -370,10 +377,8 @@ function Nav(props) {
                   handleClick(
                     a(
                       grid,
-                      grid[rowStart][colStart],
-                      grid[rowEnd][colEnd],
-                      nCols,
-                      wRange,
+                      grid.grid[rowStart][colStart],
+                      grid.grid[rowTarget][colTarget],
                       alpha
                     )
                   );
@@ -430,9 +435,8 @@ function Nav(props) {
                       handleClick(
                         bellmanFord(
                           grid,
-                          grid[rowStart][colStart],
-                          grid[rowEnd][colEnd],
-                          nCols
+                          grid.grid[rowStart][colStart],
+                          grid.grid[rowTarget][colTarget]
                         )
                       );
                     }}
@@ -447,9 +451,8 @@ function Nav(props) {
                       handleClick(
                         bellmanFord(
                           grid,
-                          grid[rowStart][colStart],
-                          grid[rowEnd][colEnd],
-                          nCols
+                          grid.grid[rowStart][colStart],
+                          grid.grid[rowTarget][colTarget]
                         )
                       );
                     }}

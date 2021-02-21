@@ -14,7 +14,7 @@ import {
   getNRowsandNCols,
 } from "./helpers/gridHelper";
 import { getRandomNode } from "./helpers/gridHelper";
-import Nav from "./Nav";
+import Nav from "./components/Nav";
 import "./PathFindingVisualizer.css";
 import {
   wallAnimation,
@@ -140,7 +140,7 @@ export default function PathFindingVisualizer() {
         disable={disable}
         setDisable={setDisable}
         start={startVertex}
-        end={finishVertex}
+        target={finishVertex}
         nRows={nRows}
         nCols={nCols}
         wRange={wRange}
