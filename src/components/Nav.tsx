@@ -1,11 +1,10 @@
 // TODO: Refactoring Drawer and btns, break down in smaller components
-// TODO: remove types from here
 // TODO: Refactoring with context api, too much props
 import React, { Fragment, useState } from "react";
 import "rc-slider/assets/index.css";
 import bfs from "../algorithms/bfs";
 import dfs from "../algorithms/dfs";
-import a from "../algorithms/a";
+// import a from "../algorithms/a";
 import bellmanFord from "../algorithms/bellmanFord";
 import { clearAnimation, clearPathAnimation } from "../helpers/animations";
 import Dialog from "@material-ui/core/Dialog";
@@ -14,7 +13,6 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
-import Slider from "rc-slider";
 import AppBar from "@material-ui/core/AppBar";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
@@ -33,6 +31,7 @@ import { valToIndx, getNewMazedGrid } from "../helpers/gridHelper";
 
 import Grid from "../models/Grid";
 import { NavProps, FunctionHandled } from "./types/NavTypes";
+import WeightedButton from "./WeightedButton";
 
 function Nav(props: NavProps) {
   const {
@@ -57,12 +56,10 @@ function Nav(props: NavProps) {
   const theme = useTheme();
   const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
   const [openDrawer, setOpenDrawer] = useState(false);
-  // const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
   const [rowTarget, colTarget] = valToIndx(target, nCols);
   const [rowStart, colStart] = valToIndx(start, nCols);
-  const [alpha, setAlpha] = useState(0.57);
-  const [fName, setFName] = useState("A*");
+
   const [openAlert, setOpenAlert] = useState(false);
 
   const handleClickOpenAlert = () => {
@@ -72,8 +69,6 @@ function Nav(props: NavProps) {
   const handleCloseAlert = () => {
     setOpenAlert(false);
   };
-
-  const changeAlpha = (alpha: number) => setAlpha(alpha);
 
   const clear = () => {
     clearAnimation(grid, start, target);
@@ -105,14 +100,6 @@ function Nav(props: NavProps) {
     setDisable(true);
     await alg;
     setDisable(false);
-  };
-
-  const hanldeSliderChange = () => {
-    if (alpha !== 0 && alpha !== 1) setFName("A*");
-    else {
-      if (alpha === 0) setFName("Best Fisrt Search");
-      if (alpha === 1) setFName("Dijkstra");
-    }
   };
 
   const btnOptList = [
@@ -205,39 +192,7 @@ function Nav(props: NavProps) {
     </Fragment>
   );
 
-  const wBtns = (
-    <Fragment>
-      <div className={classes.slider}>
-        <Slider
-          defaultValue={alpha}
-          min={0}
-          max={1}
-          onAfterChange={hanldeSliderChange}
-          onChange={changeAlpha}
-          step={0.01}
-          disabled={disable}
-        />
-      </div>
-      <span className={classes.text}>Alpha: {alpha}</span>
-      <Button
-        className={classes.button}
-        onClick={() =>
-          handleClick(
-            a(
-              grid,
-              grid.grid[rowStart][colStart],
-              grid.grid[rowTarget][colTarget],
-              alpha
-            )
-          )
-        }
-        disabled={disable}
-      >
-        {fName}
-      </Button>
-    </Fragment>
-  );
-
+  // Create new component
   const negBtns = (
     <Fragment>
       <Button
@@ -312,7 +267,21 @@ function Nav(props: NavProps) {
     <Fragment>
       <div className={classes.btnOpt}> {btnOpts}</div>
       <div>{isWeighted ? null : unWBtns}</div>
-      <div>{!isWeighted ? null : isNegative ? negBtns : wBtns}</div>
+      <div>
+        {!isWeighted ? null : isNegative ? (
+          negBtns
+        ) : (
+          <WeightedButton
+            grid={grid}
+            start={start}
+            target={target}
+            disable={disable}
+            btn={true}
+            handleClick={handleClick}
+            setOpenDrawer={setOpenDrawer}
+          />
+        )}
+      </div>
       <Button
         className={classes.button}
         onClick={() => {
@@ -355,42 +324,15 @@ function Nav(props: NavProps) {
         </List>
         {isWeighted ? (
           !isNegative ? (
-            <List disablePadding>
-              <ListItem divider>
-                <Slider
-                  defaultValue={alpha}
-                  min={0}
-                  max={1}
-                  onAfterChange={hanldeSliderChange}
-                  onChange={changeAlpha}
-                  step={0.01}
-                  disabled={disable}
-                  className={classes.slider}
-                />
-              </ListItem>
-              <ListItem divider className={classes.button}>
-                <ListItemText>Alpha: {alpha}</ListItemText>
-              </ListItem>
-              <ListItem
-                onClick={() => {
-                  setOpenDrawer(false);
-                  handleClick(
-                    a(
-                      grid,
-                      grid.grid[rowStart][colStart],
-                      grid.grid[rowTarget][colTarget],
-                      alpha
-                    )
-                  );
-                }}
-                divider
-                button
-                className={classes.button}
-                disabled={disable}
-              >
-                <ListItemText>{fName}</ListItemText>
-              </ListItem>
-            </List>
+            <WeightedButton
+              grid={grid}
+              start={start}
+              target={target}
+              disable={disable}
+              btn={false}
+              handleClick={handleClick}
+              setOpenDrawer={setOpenDrawer}
+            />
           ) : (
             <List disablePadding>
               <ListItem
