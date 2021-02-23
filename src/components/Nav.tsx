@@ -4,14 +4,8 @@ import React, { Fragment, useState } from "react";
 import "rc-slider/assets/index.css";
 import bfs from "../algorithms/bfs";
 import dfs from "../algorithms/dfs";
-// import a from "../algorithms/a";
-import bellmanFord from "../algorithms/bellmanFord";
+
 import { clearAnimation, clearPathAnimation } from "../helpers/animations";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
 
 import AppBar from "@material-ui/core/AppBar";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -32,6 +26,7 @@ import { valToIndx, getNewMazedGrid } from "../helpers/gridHelper";
 import Grid from "../models/Grid";
 import { NavProps, FunctionHandled } from "./types/NavTypes";
 import WeightedButton from "./WeightedButton";
+import NegButton from "./NegButton";
 
 function Nav(props: NavProps) {
   const {
@@ -59,16 +54,6 @@ function Nav(props: NavProps) {
 
   const [rowTarget, colTarget] = valToIndx(target, nCols);
   const [rowStart, colStart] = valToIndx(start, nCols);
-
-  const [openAlert, setOpenAlert] = useState(false);
-
-  const handleClickOpenAlert = () => {
-    setOpenAlert(true);
-  };
-
-  const handleCloseAlert = () => {
-    setOpenAlert(false);
-  };
 
   const clear = () => {
     clearAnimation(grid, start, target);
@@ -192,84 +177,24 @@ function Nav(props: NavProps) {
     </Fragment>
   );
 
-  // Create new component
-  const negBtns = (
-    <Fragment>
-      <Button
-        onClick={handleClickOpenAlert}
-        disabled={disable}
-        className={classes.button}
-      >
-        <Typography className={classes.text}>Bellman-Ford</Typography>
-      </Button>
-      <Dialog
-        open={openAlert}
-        onClose={handleCloseAlert}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          How to run Bellman-Ford?
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            * Recommended Mode: Will Clear Grid, add to layers of walls and then
-            run Bellman-Ford. PS: Put both start and finsih node in the same
-            connected component is necessary for search min Path.
-          </DialogContentText>
-          <DialogContentText>
-            * Free-Style: Won't change any grid property and you can run as you
-            want.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={async () => {
-              handleCloseAlert();
-              clear();
-              await newMaze();
-              await newMaze();
-              setIsWeighted(true);
-              handleClick(
-                bellmanFord(
-                  grid,
-                  grid.grid[rowStart][colStart],
-                  grid.grid[rowTarget][colTarget]
-                )
-              );
-            }}
-            color="primary"
-          >
-            Recommended
-          </Button>
-          <Button
-            onClick={async () => {
-              handleCloseAlert();
-              handleClick(
-                bellmanFord(
-                  grid,
-                  grid.grid[rowStart][colStart],
-                  grid.grid[rowTarget][colTarget]
-                )
-              );
-            }}
-            color="primary"
-            autoFocus
-          >
-            Free-Style
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Fragment>
-  );
-
   const btns = (
     <Fragment>
       <div className={classes.btnOpt}> {btnOpts}</div>
       <div>{isWeighted ? null : unWBtns}</div>
       <div>
         {!isWeighted ? null : isNegative ? (
-          negBtns
+          <NegButton
+            grid={grid}
+            start={start}
+            target={target}
+            disable={disable}
+            btn={true}
+            handleClick={handleClick}
+            setOpenDrawer={setOpenDrawer}
+            clear={clear}
+            newMaze={newMaze}
+            setIsWeighted={setIsWeighted}
+          />
         ) : (
           <WeightedButton
             grid={grid}
@@ -299,8 +224,6 @@ function Nav(props: NavProps) {
   const drawer = (
     <Fragment>
       <SwipeableDrawer
-        // disableBackdropTransition={!iOS}
-        // disableDiscovery={iOS}
         open={openDrawer}
         onClose={() => setOpenDrawer(false)}
         onOpen={() => setOpenDrawer(true)}
@@ -334,78 +257,18 @@ function Nav(props: NavProps) {
               setOpenDrawer={setOpenDrawer}
             />
           ) : (
-            <List disablePadding>
-              <ListItem
-                onClick={handleClickOpenAlert}
-                divider
-                button
-                className={classes.button}
-                disabled={disable}
-              >
-                <ListItemText>Bellman-Ford</ListItemText>
-              </ListItem>
-              <Dialog
-                open={openAlert}
-                onClose={handleCloseAlert}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-              >
-                <DialogTitle id="alert-dialog-title">
-                  How to run Bellman-Ford?
-                </DialogTitle>
-                <DialogContent>
-                  <DialogContentText id="alert-dialog-description">
-                    * Recommended Mode: Will Clear Grid, add to layers of walls
-                    and then run Bellman-Ford. PS: Put both start and finsih
-                    node in the same connected component is necessary for search
-                    min Path.
-                  </DialogContentText>
-                  <DialogContentText>
-                    * Free-Style: Won't change any grid property and you can run
-                    as you want.
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button
-                    onClick={async () => {
-                      setOpenDrawer(false);
-                      handleCloseAlert();
-                      clear();
-                      await newMaze();
-                      await newMaze();
-                      setIsWeighted(true);
-                      handleClick(
-                        bellmanFord(
-                          grid,
-                          grid.grid[rowStart][colStart],
-                          grid.grid[rowTarget][colTarget]
-                        )
-                      );
-                    }}
-                    color="primary"
-                  >
-                    Recommended
-                  </Button>
-                  <Button
-                    onClick={async () => {
-                      setOpenDrawer(false);
-                      handleCloseAlert();
-                      handleClick(
-                        bellmanFord(
-                          grid,
-                          grid.grid[rowStart][colStart],
-                          grid.grid[rowTarget][colTarget]
-                        )
-                      );
-                    }}
-                    color="primary"
-                    autoFocus
-                  >
-                    Free-Style
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            </List>
+            <NegButton
+              grid={grid}
+              start={start}
+              target={target}
+              disable={disable}
+              btn={false}
+              handleClick={handleClick}
+              setOpenDrawer={setOpenDrawer}
+              clear={clear}
+              newMaze={newMaze}
+              setIsWeighted={setIsWeighted}
+            />
           )
         ) : (
           <List disablePadding>
