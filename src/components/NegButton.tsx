@@ -130,7 +130,7 @@ function NegButton(props: NegButtonProps) {
         className={classes.button}
         disabled={disable}
       >
-        <ListItemText style={{ textAlign: "center" }}>
+        <ListItemText className={classes.listItemText}>
           Bellman-Ford
         </ListItemText>
       </ListItem>

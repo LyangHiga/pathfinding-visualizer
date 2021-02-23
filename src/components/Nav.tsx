@@ -1,11 +1,6 @@
-// TODO: Refactoring Drawer and btns, break down in smaller components
 // TODO: Refactoring with context api, too much props
+// TODO: Create tests
 import React, { Fragment, useState } from "react";
-import "rc-slider/assets/index.css";
-import bfs from "../algorithms/bfs";
-import dfs from "../algorithms/dfs";
-
-import { clearAnimation, clearPathAnimation } from "../helpers/animations";
 
 import AppBar from "@material-ui/core/AppBar";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -20,13 +15,15 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 
-import styles from "../styles/NavStyles";
-import { valToIndx, getNewMazedGrid } from "../helpers/gridHelper";
-
 import Grid from "../models/Grid";
-import { NavProps, FunctionHandled } from "./types/NavTypes";
+import { clearAnimation } from "../helpers/animations";
+import { getNewMazedGrid } from "../helpers/gridHelper";
+
 import WeightedButton from "./WeightedButton";
 import NegButton from "./NegButton";
+import { createBtnOptList, createUnWBtnsList } from "./navHelper";
+import { NavProps, FunctionHandled } from "./types/NavTypes";
+import styles from "../styles/NavStyles";
 
 function Nav(props: NavProps) {
   const {
@@ -51,9 +48,6 @@ function Nav(props: NavProps) {
   const theme = useTheme();
   const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
   const [openDrawer, setOpenDrawer] = useState(false);
-
-  const [rowTarget, colTarget] = valToIndx(target, nCols);
-  const [rowStart, colStart] = valToIndx(start, nCols);
 
   const clear = () => {
     clearAnimation(grid, start, target);
@@ -87,63 +81,28 @@ function Nav(props: NavProps) {
     setDisable(false);
   };
 
-  const btnOptList = [
-    { name: "Clear", click: () => clear(), disabled: disable },
-    {
-      name: "Clear Path",
-      click: () => clearPathAnimation(grid),
-      disabled: disable,
-    },
-    { name: "Maze", click: () => handleClick(newMaze()), disabled: disable },
-    {
-      name: "Change Start",
-      click: () => handleChangeStart(),
-      disabled: disable,
-    },
-    {
-      name: "Change Target",
-      click: () => handleChangeTarget(),
-      disabled: disable,
-    },
-    {
-      name: isWeighted ? "Unweighted Grid" : "Weighted Grid",
-      click: () => toggleIsweighted(),
-      disabled: disable,
-    },
-    {
-      name: isNegative ? "Positive" : "Negative",
-      click: negativeWeight,
-      disabled: disable,
-    },
-  ];
+  const btnOptList = createBtnOptList({
+    grid,
+    disable,
+    isNegative,
+    isWeighted,
+    clear,
+    newMaze,
+    handleClick,
+    handleChangeStart,
+    handleChangeTarget,
+    negativeWeight,
+    toggleIsweighted,
+  });
 
-  const unWBtnsList = [
-    {
-      name: "BFS",
-      click: () => {
-        handleClick(
-          bfs(
-            grid,
-            grid.grid[rowStart][colStart],
-            grid.grid[rowTarget][colTarget]
-          )
-        );
-      },
-      disabled: isWeighted ? true : disable,
-    },
-    {
-      name: "DFS",
-      click: () =>
-        handleClick(
-          dfs(
-            grid,
-            grid.grid[rowStart][colStart],
-            grid.grid[rowTarget][colTarget]
-          )
-        ),
-      disabled: isWeighted ? true : disable,
-    },
-  ];
+  const unWBtnsList = createUnWBtnsList({
+    grid,
+    start,
+    target,
+    isWeighted,
+    disable,
+    handleClick,
+  });
 
   const btnOpts = (
     <Fragment>
@@ -241,7 +200,9 @@ function Nav(props: NavProps) {
               className={classes.button}
               disabled={disable}
             >
-              <ListItemText>{btn.name}</ListItemText>
+              <ListItemText className={classes.listItemText}>
+                {btn.name}
+              </ListItemText>
             </ListItem>
           ))}
         </List>
@@ -284,7 +245,9 @@ function Nav(props: NavProps) {
                 className={classes.button}
                 disabled={disable}
               >
-                <ListItemText>{btn.name}</ListItemText>
+                <ListItemText className={classes.listItemText}>
+                  {btn.name}
+                </ListItemText>
               </ListItem>
             ))}
           </List>
@@ -300,7 +263,9 @@ function Nav(props: NavProps) {
               );
             }}
           >
-            <ListItemText>Instructions</ListItemText>
+            <ListItemText className={classes.listItemText}>
+              Instructions
+            </ListItemText>
           </ListItem>
         </List>
       </SwipeableDrawer>

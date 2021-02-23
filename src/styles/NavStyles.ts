@@ -79,6 +79,9 @@ const styles = makeStyles((theme) => ({
       fontSize: "0.8rem",
     },
   },
+  listItemText: {
+    textAlign: "center",
+  },
 }));
 
 export default styles;

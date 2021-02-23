@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, List, ListItem, ListItemText } from "@material-ui/core";
 import Slider from "rc-slider";
+import "rc-slider/assets/index.css";
 
 import a from "../algorithms/a";
 import { valToIndx } from "../helpers/gridHelper";
@@ -73,7 +74,9 @@ function WeightedButton(props: WeightedButtonProps) {
     <List disablePadding>
       <ListItem divider>{MySlider}</ListItem>
       <ListItem divider className={classes.button}>
-        <ListItemText>Alpha: {alpha}</ListItemText>
+        <ListItemText className={classes.listItemText}>
+          Alpha: {alpha}
+        </ListItemText>
       </ListItem>
       <ListItem
         onClick={() => {
@@ -92,7 +95,7 @@ function WeightedButton(props: WeightedButtonProps) {
         className={classes.button}
         disabled={disable}
       >
-        <ListItemText style={{ textAlign: "center" }}>{fName}</ListItemText>
+        <ListItemText className={classes.listItemText}>{fName}</ListItemText>
       </ListItem>
     </List>
   );
