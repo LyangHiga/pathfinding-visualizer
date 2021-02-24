@@ -30,8 +30,6 @@ function Nav(props: NavProps) {
   const {
     grid,
     disable,
-    start,
-    target,
     setGrid,
     setDisable,
     isWeighted,
@@ -43,7 +41,7 @@ function Nav(props: NavProps) {
     handleChangeTarget,
   } = props;
 
-  const { nCols, nRows, max, min } = grid;
+  const { nCols, nRows, max, min, start, target } = grid;
 
   const classes = styles();
   const theme = useTheme();

@@ -139,8 +139,6 @@ export default function PathFindingVisualizer() {
         setGrid={setGrid}
         disable={disable}
         setDisable={setDisable}
-        start={startVertex}
-        target={finishVertex}
         nRows={nRows}
         nCols={nCols}
         wRange={wRange}

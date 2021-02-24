@@ -3,8 +3,6 @@ import Grid from "../../models/Grid";
 export interface NavProps {
   grid: Grid;
   disable: boolean;
-  start: number;
-  target: number;
   setGrid(grid: Grid): void;
   setDisable(isDisabled: boolean): void;
   isWeighted: boolean;
