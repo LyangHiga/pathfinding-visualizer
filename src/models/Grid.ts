@@ -3,6 +3,8 @@ import { createAdjList, getVal } from "../helpers/gridHelper";
 
 export default class Grid {
   public grid: Node[][];
+  public start: number;
+  public target: number;
   public readonly nRows: number;
   public readonly nCols: number;
   // min and max weight allowed
@@ -18,6 +20,8 @@ export default class Grid {
     min = 1
   ) {
     this.grid = [];
+    this.start = start;
+    this.target = target;
     this.nCols = nCols;
     this.nRows = nRows;
     this.min = min;
