@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Node renders correctly 1`] = `
+<div>
+  <ComponentEnhancer(undefined)
+    activeDotStyle={Object {}}
+    className="makeStyles-slider-5"
+    defaultValue={0.57}
+    disabled={true}
+    dotStyle={Object {}}
+    dots={false}
+    handle={[Function]}
+    handleStyle={
+      Array [
+        Object {},
+      ]
+    }
+    included={true}
+    marks={Object {}}
+    max={1}
+    min={0}
+    onAfterChange={[Function]}
+    onBeforeChange={[Function]}
+    onChange={[Function]}
+    prefixCls="rc-slider"
+    railStyle={Object {}}
+    reverse={false}
+    step={0.01}
+    trackStyle={
+      Array [
+        Object {},
+      ]
+    }
+    vertical={false}
+  />
+  <span
+    className="makeStyles-text-7"
+  >
+    Alpha: 
+    0.57
+  </span>
+  <WithStyles(ForwardRef(Button))
+    className="makeStyles-button-4"
+    disabled={true}
+    onClick={[Function]}
+  >
+    A*
+  </WithStyles(ForwardRef(Button))>
+</div>
+`;

@@ -3,8 +3,6 @@ import { FunctionHandled } from "./NavTypes";
 
 export default interface WeightedButtonProps {
   grid: Grid;
-  start: number;
-  target: number;
   disable: boolean;
   btn: boolean;
   handleClick: (alg: FunctionHandled) => Promise<void>;

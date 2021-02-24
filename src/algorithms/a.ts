@@ -4,14 +4,10 @@ import Heap from "../structures/heap";
 import { valToIndx, manhattan, getPath } from "../helpers/gridHelper";
 import { pathAnimation, visitedAnimation } from "../helpers/animations";
 
-const a = async (
-  g: Grid,
-  start: Node,
-  end: Node,
-  alpha: number,
-  test = false
-) => {
-  const { grid, nCols, max } = g;
+const a = async (g: Grid, alpha: number, test = false) => {
+  const { grid, nCols, max, start, target } = g;
+  const [targetRow, targetCol] = valToIndx(target, nCols);
+  const targetNode = grid[targetRow][targetCol];
   const heap = new Heap<number>();
   // expected value of a random (uniformily) weight :
   //  range:[1,max), rememebr sum of 1st 100 int = (100+1) * 50
@@ -28,14 +24,14 @@ const a = async (
   let decrease = false;
   // number of dequeues
   let nDeq = 0;
-  distances[start.val] = 0;
+  distances[start] = 0;
   // distances[start.val] = 0;
   //   add the start node to the heap
   //   we will use f(n) = alpha * distance + ( 1 - alpha) * Manhattan distance
   // as val to be minimized in the heap
   //   f for the start node is zero anyway
-  // heap.enqueue(start.val, f(0, start, end, alpha));
-  heap.enqueue(start.val, 0);
+  // heap.enqueue(start.val, f(0, start, target, alpha));
+  heap.enqueue(start, 0);
   inspectedNodes++;
 
   //   while there are elements in this heap
@@ -45,7 +41,7 @@ const a = async (
     nDeq++;
     smallestVal = s.key;
     // check if it is the target node
-    if (smallestVal === end.val) {
+    if (smallestVal === target) {
       break;
     }
     // convert smallestVal to a Node
@@ -62,15 +58,15 @@ const a = async (
         let nextNode = grid[row][col];
         // calculate Dijkstra's  Greedy Criterium and manhattan distance
         let d = distances[smallestVal] + smallest.weight;
-        let newF = f(d, nextNode, end, alpha, SCALING_FACTOR);
+        let newF = f(d, nextNode, targetNode, alpha, SCALING_FACTOR);
         let oldF = f(
           distances[nextNode.val],
           nextNode,
-          end,
+          targetNode,
           alpha,
           SCALING_FACTOR
         );
-        //   compare f(d,next,end) with f calculated with last distance storaged
+        //   compare f(d,next,target) with f calculated with last distance storaged
         if (newF < oldF && !nextNode.isWall) {
           //   updating distances and parents
           distances[nextNode.val] = d;
@@ -80,18 +76,18 @@ const a = async (
             // enqueue with new priority
             heap.enqueue(nextNode.val, newF);
           }
-          if (!test) await visitedAnimation(nextNode.val, start.val, end.val);
+          if (!test) await visitedAnimation(nextNode.val, start, target);
           inspectedNodes++;
         }
       }
     }
   }
-  if (distances[end.val] === Infinity) {
+  if (distances[target] === Infinity) {
     return { parents, path: null };
   }
-  const path = getPath(parents, start.val, end.val);
+  const path = getPath(parents, start, target);
   //   min distance g() found  by A*
-  console.log(`A* with Alpha= ${alpha} Min Distance = ${distances[end.val]}`);
+  console.log(`A* with Alpha= ${alpha} Min Distance = ${distances[target]}`);
   //   distance of this path (yellow)
   console.log(
     `A* with Alpha= ${alpha} Distance Calculated = ${getPathDistance(
@@ -119,10 +115,11 @@ const f = (distance: number, a: Node, b: Node, alpha: number, sf: number) => {
   return w + z;
 };
 
-const getPathDistance = (path: number[], g: Grid, start: Node) => {
+const getPathDistance = (path: number[], g: Grid, start: number) => {
   const { grid, nCols } = g;
+  const [startRow, startCol] = valToIndx(start, nCols);
   // start and finish nodes are not in the path (yelow animation)
-  let d = start.weight;
+  let d = grid[startRow][startCol].weight;
   for (let i = 0; i < path.length; i++) {
     let [r, c] = valToIndx(path[i], nCols);
     const node = grid[r][c];

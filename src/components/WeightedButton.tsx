@@ -4,25 +4,14 @@ import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 
 import a from "../algorithms/a";
-import { valToIndx } from "../helpers/gridHelper";
 import styles from "../styles/NavStyles";
 import WeightedButtonProps from "./types/WeightedButtonTypes";
 
 function WeightedButton(props: WeightedButtonProps) {
   const [alpha, setAlpha] = useState(0.57);
   const [fName, setFName] = useState("A*");
-  const {
-    grid,
-    disable,
-    start,
-    target,
-    btn,
-    handleClick,
-    setOpenDrawer,
-  } = props;
+  const { grid, disable, btn, handleClick, setOpenDrawer } = props;
   const classes = styles();
-  const [rowStart, colStart] = valToIndx(start, grid.nCols);
-  const [rowTarget, colTarget] = valToIndx(target, grid.nCols);
 
   const changeAlpha = (alpha: number) => setAlpha(alpha);
 
@@ -53,16 +42,7 @@ function WeightedButton(props: WeightedButtonProps) {
       <span className={classes.text}>Alpha: {alpha}</span>
       <Button
         className={classes.button}
-        onClick={() =>
-          handleClick(
-            a(
-              grid,
-              grid.grid[rowStart][colStart],
-              grid.grid[rowTarget][colTarget],
-              alpha
-            )
-          )
-        }
+        onClick={() => handleClick(a(grid, alpha))}
         disabled={disable}
       >
         {fName}
@@ -81,14 +61,7 @@ function WeightedButton(props: WeightedButtonProps) {
       <ListItem
         onClick={() => {
           setOpenDrawer(false);
-          handleClick(
-            a(
-              grid,
-              grid.grid[rowStart][colStart],
-              grid.grid[rowTarget][colTarget],
-              alpha
-            )
-          );
+          handleClick(a(grid, alpha));
         }}
         divider
         button
