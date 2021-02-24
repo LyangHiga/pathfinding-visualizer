@@ -13,6 +13,10 @@ const Z = 22;
 const NCOLS = 5;
 const NROWS = 5;
 
+const BEST_FIRST_SEARCH_ALPHA = 0;
+const DIJKSTRA_ALPHA = 1;
+const A_ALPHA = 0.57;
+
 const MIN = 1;
 const MAX = 201;
 
@@ -45,7 +49,7 @@ test("Best-First Search: start and target in different connected component", asy
     g,
     g.grid[startRow][startCol],
     g.grid[targetRow][targetCol],
-    0,
+    BEST_FIRST_SEARCH_ALPHA,
     true
   );
   expect(path).toBeNull();
@@ -81,7 +85,7 @@ test("Dijkstra: start and target in different connected component", async () => 
     g,
     g.grid[startRow][startCol],
     g.grid[targetRow][targetCol],
-    1,
+    DIJKSTRA_ALPHA,
     true
   );
   expect(path).toBeNull();
@@ -117,7 +121,7 @@ test("A*: start and target in different connected component", async () => {
     g,
     g.grid[startRow][startCol],
     g.grid[targetRow][targetCol],
-    0,
+    A_ALPHA,
     true
   );
   expect(path).toBeNull();
