@@ -98,8 +98,6 @@ function Nav(props: NavProps) {
 
   const unWBtnsList = createUnWBtnsList({
     grid,
-    start,
-    target,
     isWeighted,
     disable,
     handleClick,

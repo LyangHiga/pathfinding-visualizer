@@ -1,6 +1,5 @@
 import bfs from "../algorithms/bfs";
 import dfs from "../algorithms/dfs";
-import { valToIndx } from "../helpers/gridHelper";
 import { clearPathAnimation } from "../helpers/animations";
 import { BtnOptListParams, UnWBtnsListParams } from "./types/NavHelperTypes";
 
@@ -50,33 +49,19 @@ export const createBtnOptList = (params: BtnOptListParams) => {
 };
 
 export const createUnWBtnsList = (params: UnWBtnsListParams) => {
-  const { grid, start, target, isWeighted, disable, handleClick } = params;
-  const [rowTarget, colTarget] = valToIndx(target, grid.nCols);
-  const [rowStart, colStart] = valToIndx(start, grid.nCols);
+  const { grid, isWeighted, disable, handleClick } = params;
+
   return [
     {
       name: "BFS",
       click: () => {
-        handleClick(
-          bfs(
-            grid,
-            grid.grid[rowStart][colStart],
-            grid.grid[rowTarget][colTarget]
-          )
-        );
+        handleClick(bfs(grid));
       },
       disabled: isWeighted ? true : disable,
     },
     {
       name: "DFS",
-      click: () =>
-        handleClick(
-          dfs(
-            grid,
-            grid.grid[rowStart][colStart],
-            grid.grid[rowTarget][colTarget]
-          )
-        ),
+      click: () => handleClick(dfs(grid)),
       disabled: isWeighted ? true : disable,
     },
   ];

@@ -4,30 +4,31 @@ import Stack from "../structures/stack";
 import { valToIndx, getPath } from "../helpers/gridHelper";
 import { visitedAnimation, pathAnimation } from "../helpers/animations";
 
-const dfs = async (g: Grid, start: Node, target: Node, test = false) => {
-  const { grid, nCols } = g;
+const dfs = async (g: Grid, test = false) => {
+  const { grid, nCols, start, target } = g;
   // stack pop order
   const result: number[] = [];
   const visited = new Map<number, boolean>();
   const parents = new Map<number, number | null>();
   const stack = new Stack<Node>();
+  const [startRow, startCol] = valToIndx(start, nCols);
   // add start node to the stack
-  stack.push(start);
+  stack.push(grid[startRow][startCol]);
   // start node is already visited
-  visited.set(start.val, true);
-  parents.set(start.val, null);
+  visited.set(start, true);
+  parents.set(start, null);
   let v;
   while (stack.size !== 0) {
     // take node v from the top of the stack
     v = stack.pop()!.key!;
     result.push(v.val);
-    if (v.val === target.val) {
+    if (v.val === target) {
       //   we find the target
       break;
     }
     // mark v as visited
     visited.set(v.val, true);
-    if (!test) await visitedAnimation(v.val, start.val, target.val);
+    if (!test) await visitedAnimation(v.val, start, target);
     // for every edge of v
     for (const key in v.adjList) {
       const w = v.adjList[key];
@@ -40,7 +41,7 @@ const dfs = async (g: Grid, start: Node, target: Node, test = false) => {
           //   push w node
           stack.push(wNode);
           parents.set(w, v.val);
-          if (w === target.val) {
+          if (w === target) {
             //   we find the target
             visited.set(w, true);
             break;
@@ -49,8 +50,8 @@ const dfs = async (g: Grid, start: Node, target: Node, test = false) => {
       }
     }
   }
-  if (visited.get(target.val)) {
-    const path = getPath(parents, start.val, target.val);
+  if (visited.get(target)) {
+    const path = getPath(parents, start, target);
     if (!test) await pathAnimation(path);
     return { path, parents, visited };
   }

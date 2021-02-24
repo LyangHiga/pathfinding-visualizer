@@ -19,7 +19,5 @@ export interface UnWBtnsListParams {
   grid: Grid;
   isWeighted: boolean;
   disable: boolean;
-  start: number;
-  target: number;
   handleClick(alg: FunctionHandled): Promise<void>;
 }
