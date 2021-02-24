@@ -23,6 +23,7 @@ import WeightedButton from "./WeightedButton";
 import NegButton from "./NegButton";
 import { createBtnOptList, createUnWBtnsList } from "./navHelper";
 import { NavProps, FunctionHandled } from "./types/NavTypes";
+import { WALL_EPS } from "../helpers/consts";
 import styles from "../styles/NavStyles";
 
 function Nav(props: NavProps) {
@@ -57,7 +58,7 @@ function Nav(props: NavProps) {
   };
 
   const newMaze = async () => {
-    const newGrid = await getNewMazedGrid(grid, 0.33);
+    const newGrid = await getNewMazedGrid(grid, WALL_EPS);
     setGrid(newGrid);
     // console.log(grid === newGrid)
   };
