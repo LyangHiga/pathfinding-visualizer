@@ -13,7 +13,6 @@ import {
 } from "@material-ui/core";
 
 import bellmanFord from "../algorithms/bellmanFord";
-import { valToIndx } from "../helpers/gridHelper";
 
 import styles from "../styles/NavStyles";
 import NegButtonProps from "./types/NegButtonTypes";
@@ -21,8 +20,6 @@ import NegButtonProps from "./types/NegButtonTypes";
 function NegButton(props: NegButtonProps) {
   const {
     grid,
-    start,
-    target,
     disable,
     btn,
     handleClick,
@@ -32,8 +29,6 @@ function NegButton(props: NegButtonProps) {
     setIsWeighted,
   } = props;
   const classes = styles();
-  const [rowStart, colStart] = valToIndx(start, grid.nCols);
-  const [rowTarget, colTarget] = valToIndx(target, grid.nCols);
 
   const [openAlert, setOpenAlert] = useState(false);
 
@@ -75,13 +70,7 @@ function NegButton(props: NegButtonProps) {
             await newMaze();
             await newMaze();
             setIsWeighted(true);
-            handleClick(
-              bellmanFord(
-                grid,
-                grid.grid[rowStart][colStart],
-                grid.grid[rowTarget][colTarget]
-              )
-            );
+            handleClick(bellmanFord(grid));
           }}
           color="primary"
         >
@@ -91,13 +80,7 @@ function NegButton(props: NegButtonProps) {
           onClick={async () => {
             setOpenDrawer(false);
             handleCloseAlert();
-            handleClick(
-              bellmanFord(
-                grid,
-                grid.grid[rowStart][colStart],
-                grid.grid[rowTarget][colTarget]
-              )
-            );
+            handleClick(bellmanFord(grid));
           }}
           color="primary"
           autoFocus

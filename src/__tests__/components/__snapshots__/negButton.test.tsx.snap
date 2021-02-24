@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Node renders correctly 1`] = `
+<div>
+  <WithStyles(ForwardRef(Button))
+    className="makeStyles-button-4"
+    disabled={true}
+    onClick={[Function]}
+  >
+    <WithStyles(ForwardRef(Typography))
+      className="makeStyles-text-7"
+    >
+      Bellman-Ford
+    </WithStyles(ForwardRef(Typography))>
+  </WithStyles(ForwardRef(Button))>
+  <WithStyles(ForwardRef(Dialog))
+    aria-describedby="alert-dialog-description"
+    aria-labelledby="alert-dialog-title"
+    onClose={[Function]}
+    open={false}
+  >
+    <WithStyles(ForwardRef(DialogTitle))
+      id="alert-dialog-title"
+    >
+      How to run Bellman-Ford?
+    </WithStyles(ForwardRef(DialogTitle))>
+    <WithStyles(ForwardRef(DialogContent))>
+      <WithStyles(ForwardRef(DialogContentText))
+        id="alert-dialog-description"
+      >
+        * Recommended Mode: Will Clear Grid, add to layers of walls and then run Bellman-Ford. PS: Put both start and finsih node in the same connected component is necessary for search min Path.
+      </WithStyles(ForwardRef(DialogContentText))>
+      <WithStyles(ForwardRef(DialogContentText))>
+        * Free-Style: Won't change any grid property and you can run as you want.
+      </WithStyles(ForwardRef(DialogContentText))>
+    </WithStyles(ForwardRef(DialogContent))>
+    <WithStyles(ForwardRef(DialogActions))>
+      <WithStyles(ForwardRef(Button))
+        color="primary"
+        onClick={[Function]}
+      >
+        Recommended
+      </WithStyles(ForwardRef(Button))>
+      <WithStyles(ForwardRef(Button))
+        autoFocus={true}
+        color="primary"
+        onClick={[Function]}
+      >
+        Free-Style
+      </WithStyles(ForwardRef(Button))>
+    </WithStyles(ForwardRef(DialogActions))>
+  </WithStyles(ForwardRef(Dialog))>
+</div>
+`;

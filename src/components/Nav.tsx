@@ -145,8 +145,6 @@ function Nav(props: NavProps) {
         {!isWeighted ? null : isNegative ? (
           <NegButton
             grid={grid}
-            start={start}
-            target={target}
             disable={disable}
             btn={true}
             handleClick={handleClick}
@@ -217,8 +215,6 @@ function Nav(props: NavProps) {
           ) : (
             <NegButton
               grid={grid}
-              start={start}
-              target={target}
               disable={disable}
               btn={false}
               handleClick={handleClick}

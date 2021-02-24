@@ -1,5 +1,4 @@
 import Grid from "../models/Grid";
-import Node from "../models/Node";
 import { valToIndx, getPath } from "../helpers/gridHelper";
 import {
   pathAnimation,
@@ -14,8 +13,8 @@ import { colors } from "../helpers/consts";
 // detect negative cycles: boolean output (cycle)
 // use parents (predecessor pointers) to traverse the path
 // const bellmanFord = async (grid, start, end, nCols) => {
-const bellmanFord = async (g: Grid, start: Node, end: Node, test = false) => {
-  const { grid, nCols } = g;
+const bellmanFord = async (g: Grid, test = false) => {
+  const { grid, nCols, start, target } = g;
   // O(m) space => to reconstruct path from s to (any) v
   // parents  (predecessor pointers)
   const distances = Array(grid.length * nCols).fill(Infinity);
@@ -26,7 +25,7 @@ const bellmanFord = async (g: Grid, start: Node, end: Node, test = false) => {
   // i: number of edges allowed
   // for i =0, all dist from s to node are infinity
   // dist s to s
-  distances[start.val] = 0;
+  distances[start] = 0;
   // i edges allowed, (n-1) at most => O(n)
   // try for n edges to check for negative cycles
   // if costs get smaller indefinitely (OPT(n,v) !== OPT(n-1,v))
@@ -58,8 +57,8 @@ const bellmanFord = async (g: Grid, start: Node, end: Node, test = false) => {
             if (!test) {
               await visitedAnimation(
                 neighbour,
-                start.val,
-                end.val,
+                start,
+                target,
                 colors.light_gray
               );
             }
@@ -73,7 +72,7 @@ const bellmanFord = async (g: Grid, start: Node, end: Node, test = false) => {
               stop = false;
               // node with cost decreased
               if (!test) {
-                await visitedAnimation(neighbour, start.val, end.val);
+                await visitedAnimation(neighbour, start, target);
               }
             }
           }
@@ -87,8 +86,8 @@ const bellmanFord = async (g: Grid, start: Node, end: Node, test = false) => {
   }
 
   console.log(`cycle: ${!stop}`);
-  if (parents.get(end.val) && stop) {
-    const path = getPath(parents, start.val, end.val);
+  if (parents.get(target) && stop) {
+    const path = getPath(parents, start, target);
     if (!test) {
       await pathAnimation(path);
     }

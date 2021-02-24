@@ -24,16 +24,7 @@ test("Bellman-Ford: Negative Cycle", async () => {
   const max = -1;
   const g = new Grid(START, TARGET, NROWS, NCOLS, max, min);
 
-  // get row and col of start and target
-  const [startRow, startCol] = valToIndx(START, NCOLS);
-  const [targetRow, targetCol] = valToIndx(TARGET, NCOLS);
-
-  const { cycle, path } = await bellmanFord(
-    g,
-    g.grid[startRow][startCol],
-    g.grid[targetRow][targetCol],
-    TEST
-  );
+  const { cycle, path } = await bellmanFord(g, TEST);
   expect(cycle).toBeTruthy();
   expect(path).toBeNull();
 });
@@ -49,16 +40,7 @@ test("Bellman-Ford: Test Path when all nodes have the same positive weight", asy
   const max = 2;
   const g = new Grid(START, TARGET, NROWS, NCOLS, max, min);
 
-  // get row and col of start and target
-  const [startRow, startCol] = valToIndx(START, NCOLS);
-  const [targetRow, targetCol] = valToIndx(TARGET, NCOLS);
-
-  const { cycle, path } = await bellmanFord(
-    g,
-    g.grid[startRow][startCol],
-    g.grid[targetRow][targetCol],
-    TEST
-  );
+  const { cycle, path } = await bellmanFord(g, TEST);
   expect(cycle).toBeFalsy();
   expect(path![0]).toBe(11);
   expect(path![1]).toBe(12);
@@ -76,10 +58,6 @@ test("Bellman-Ford: start and target nodes in different connected component, all
   const max = 2;
   const g = new Grid(START, TARGET, NROWS, NCOLS, max, min);
 
-  // get row and col of start and target
-  const [startRow, startCol] = valToIndx(START, NCOLS);
-  const [targetRow, targetCol] = valToIndx(TARGET, NCOLS);
-
   // make nodes: 2,7,12,17,22 walls
   const [uRow, uCol] = valToIndx(U, NCOLS);
   const [vRow, vCol] = valToIndx(V, NCOLS);
@@ -92,12 +70,7 @@ test("Bellman-Ford: start and target nodes in different connected component, all
   toggleIsWall(g.grid[xRow][xCol]);
   toggleIsWall(g.grid[yRow][yCol]);
   toggleIsWall(g.grid[zRow][zCol]);
-  const { cycle, path, parents } = await bellmanFord(
-    g,
-    g.grid[startRow][startCol],
-    g.grid[targetRow][targetCol],
-    TEST
-  );
+  const { cycle, path, parents } = await bellmanFord(g, TEST);
   expect(cycle).toBeFalsy();
   expect(path).toBeNull();
   expect(parents.get(TARGET)).toBeUndefined();
