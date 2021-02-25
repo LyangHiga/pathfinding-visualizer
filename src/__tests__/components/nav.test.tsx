@@ -15,15 +15,13 @@ const NROWS = 5;
 //      15  16  17  18  19
 //      20  21  22  23  24
 
-describe("Node", () => {
+describe("Nav", () => {
   it("renders correctly", () => {
     const grid = new Grid(START, TARGET, NROWS, NCOLS);
     const wrapper = shallow(
       <Nav
         grid={grid}
         disable={false}
-        start={START}
-        target={TARGET}
         isWeighted={false}
         isNegative={false}
         setGrid={jest.fn()}

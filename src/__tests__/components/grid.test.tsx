@@ -1,7 +1,8 @@
 import React from "react";
 import { shallow } from "enzyme";
-import NegButton from "../../components/NegButton";
-import Grid from "../../models/Grid";
+import Grid from "../../components/Grid";
+
+import GridModel from "../../models/Grid";
 
 const START = 10;
 const TARGET = 14;
@@ -14,19 +15,16 @@ const NROWS = 5;
 // g =   S  11  12  13  T
 //      15  16  17  18  19
 //      20  21  22  23  24
-describe("Neg Button", () => {
+describe("Grid", () => {
   it("renders correctly", () => {
-    const grid = new Grid(START, TARGET, NROWS, NCOLS);
+    const g = new GridModel(START, TARGET, NROWS, NCOLS);
     const wrapper = shallow(
-      <NegButton
-        grid={grid}
-        disable={true}
-        btn={true}
-        handleClick={jest.fn()}
-        setOpenDrawer={jest.fn()}
-        clear={jest.fn()}
-        newMaze={jest.fn()}
-        setIsWeighted={jest.fn()}
+      <Grid
+        grid={g}
+        isWeighted={true}
+        handleMouseDown={jest.fn()}
+        handleMouseEnter={jest.fn()}
+        handleMouseUp={jest.fn()}
       />
     );
     expect(wrapper).toMatchSnapshot();
