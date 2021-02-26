@@ -16,11 +16,10 @@ import useToggleState from "./hooks/useToggleState";
 import useWindowDimensions from "./hooks/useWindowDim";
 
 import {
-  getNewGridWithWallToggled,
-  getNewGridWitNewStart,
-  getNewGridWitNewTarget,
   getNRowsandNCols,
   getRandomNode,
+  changeStartNode,
+  changeTargetNode,
 } from "./helpers/gridHelper";
 
 import {
@@ -40,14 +39,10 @@ function App() {
 
   const [nRows, nCols] = getNRowsandNCols(matchesSM, height, width);
   const [isWeighted, setIsWeighted, toggleIsweighted] = useToggleState();
-  const [isNegative, setIsNegative, toggleIsNegative] = useToggleState(false);
+  const [isNegative, setIsNegative, toggleIsNegative] = useToggleState();
   //   disable buttons in nav
   const [disable, setDisable] = useState(false);
-  const [start, setStart] = useState(getRandomNode(nRows, nCols));
-  const [target, setTarget] = useState(getRandomNode(nRows, nCols));
-  const [grid, setGrid] = useState<GridModel>(
-    new GridModel(start, target, nRows, nCols, MAX)
-  );
+  const [grid, setGrid] = useState<GridModel>();
 
   const [mouseIsPressed, setMouseIsPressed] = useState(false);
   const [createWall, setCreatWall, toggleCreateWall] = useToggleState(false);
@@ -60,15 +55,15 @@ function App() {
 
   //   run only once, similar to Component Did mount
   useEffect(() => {
-    async function initialGrid() {
-      document.title = "Pathfinding Visualizer";
-      // const g = new Grid(start, target, nRows, nCols, MAX);
-      // setGrid(n.grid);
-      // setGrid(g);
+    const initialGrid = async () => {
+      const start = getRandomNode(nRows, nCols);
+      const target = getRandomNode(nRows, nCols);
+      const g = new GridModel(start, target, nRows, nCols, MAX);
+      setGrid(g);
       await sleep(1);
       startNodeAnimation(start);
       finishNodeAnimation(target);
-    }
+    };
     initialGrid();
   }, []);
 
@@ -84,7 +79,7 @@ function App() {
     toggleChangeTarget();
   };
 
-  const handleKeyPress = (event: KeyboardEvent) => {
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
     switch (event.key) {
       case "w":
         setChangeStart(false);
@@ -106,18 +101,20 @@ function App() {
       // setGrid(newGrid);
       setMouseIsPressed(true);
     } else if (changeStart) {
-      clearNodeAnimation(start);
-      const newGrid = getNewGridWitNewStart(grid!, row, col, start);
-      setStart(newGrid[row][col].val);
-      // setGrid(newGrid);
-      startNodeAnimation(newGrid[row][col].val);
+      clearNodeAnimation(grid!.start);
+      // we will change 2 nodes inside from grid.grid out of setState
+      changeStartNode(grid!, grid!.grid[row][col]);
+      // changing start property of grid using setState
+      setGrid({ ...grid!, start: grid!.grid[row][col].val });
+      startNodeAnimation(grid!.grid[row][col].val);
       setChangeStart(false);
     } else if (changeTarget) {
-      clearNodeAnimation(target);
-      const newGrid = getNewGridWitNewTarget(grid!, row, col, target);
-      setTarget(newGrid[row][col].val);
-      // setGrid(newGrid);
-      finishNodeAnimation(newGrid[row][col].val);
+      clearNodeAnimation(grid!.target);
+      // we will change 2 nodes inside from grid.grid out of setState
+      changeTargetNode(grid!, grid!.grid[row][col]);
+      // changing target property of grid using setState
+      setGrid({ ...grid!, target: grid!.grid[row][col].val });
+      finishNodeAnimation(grid!.grid[row][col].val);
       setChangeTarget(false);
     }
   };
@@ -125,7 +122,7 @@ function App() {
   const handleMouseEnter = (row: number, col: number) => {
     if (!mouseIsPressed || !createWall) return;
     wallAnimation(grid!.grid[row][col]);
-    const newGrid = getNewGridWithWallToggled(grid!, row, col);
+    // const newGrid = getNewGridWithWallToggled(grid!, row, col);
     // setGrid(newGrid);
   };
 
@@ -134,21 +131,22 @@ function App() {
   };
 
   return (
-    // <div onKeyDown={handleKeyPress} tabIndex="0">
-    <div>
-      <Nav
-        grid={grid!}
-        setGrid={setGrid}
-        disable={disable}
-        setDisable={setDisable}
-        isWeighted={isWeighted}
-        setIsWeighted={setIsWeighted}
-        toggleIsweighted={toggleIsweighted}
-        isNegative={isNegative}
-        toggleIsNegative={toggleIsNegative}
-        handleChangeStart={handleChangeStart}
-        handleChangeTarget={handleChangeTarget}
-      />
+    <div onKeyDown={handleKeyPress} tabIndex={0}>
+      {!grid ? null : (
+        <Nav
+          grid={grid!}
+          setGrid={setGrid}
+          disable={disable}
+          setDisable={setDisable}
+          isWeighted={isWeighted}
+          setIsWeighted={setIsWeighted}
+          toggleIsweighted={toggleIsweighted}
+          isNegative={isNegative}
+          toggleIsNegative={toggleIsNegative}
+          handleChangeStart={handleChangeStart}
+          handleChangeTarget={handleChangeTarget}
+        />
+      )}
       <div className="grid">
         {!grid ? null : (
           <GridComponent

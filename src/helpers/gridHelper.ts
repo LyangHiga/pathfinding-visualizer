@@ -86,89 +86,24 @@ export const toggleIsWall = (node: Node) => {
   changeNodeProperty(node, "isWall", !node.isWall);
 };
 
-// returns a new grid after a mouse click (wall is created)
-// probably dont need this function
-export const getNewGridWithWallToggled = (
-  grid: Grid,
-  // row and col of the node to toggle isWall property
-  row: number,
-  col: number
-) => {
-  if (grid.grid[row][col].isStart || grid.grid[row][col].isTarget) return grid;
-  const newGrid = grid.grid.slice();
-  const node = newGrid[row][col];
-  const newNode = changeNodeProperty(node, "isWall", !node.isWall)!;
-  newGrid[row][col] = newNode;
-  return newGrid;
+// changes 2 nodes from grid.hrid withou using setState, not a pure function
+// PAY ATTETION
+export const changeStartNode = (grid: Grid, newStart: Node) => {
+  // change node properties
+  const [r, c] = valToIndx(grid.start, grid.nCols);
+  const oldStart = grid.grid[r][c];
+  oldStart.isStart = false;
+  newStart.isStart = true;
 };
 
-// returns a new grid that changes some property (isStart or isTarget) from an oldNode
-//  by its val, to a new node by its row and col
-const getNewGridWithNewProperty = (
-  grid: Grid,
-  // row and col of the node that will get a new propperty
-  row: number,
-  col: number,
-  // property to be changed {is}
-  // prop: string,
-  prop: "isStart" | "isTarget",
-  // val of the node that was (start,target or wall) and will be a free node
-  val: number
-  // nCols: number
-) => {
-  const newGrid = grid.grid.slice();
-  // const [r, c] = valToIndx(val, nCols);
-  const [r, c] = valToIndx(val, grid.nCols);
-  const oldNode = newGrid[r][c];
-  const oldPropToggled = changeNodeProperty(oldNode, prop, false)!;
-  newGrid[r][c] = oldPropToggled;
-  const node = newGrid[row][col];
-  const newNode = changeNodeProperty(node, prop, true);
-  newGrid[row][col] = newNode!;
-  return newGrid;
-};
-
-// returns a new grid with a new start node
-export const getNewGridWitNewStart = (
-  grid: Grid,
-  // row and col of the new isStart
-  row: number,
-  col: number,
-  // val representation of the old isStart
-  startVal: number
-  //
-  // nCols: number
-) => {
-  const newGrid = getNewGridWithNewProperty(
-    grid,
-    row,
-    col,
-    "isStart",
-    startVal
-    // nCols
-  );
-  return newGrid;
-};
-
-// returns a new grid with a new target point
-export const getNewGridWitNewTarget = (
-  grid: Grid,
-  // row and col of the new isStart
-  row: number,
-  col: number,
-  // val representation of the old isTarget
-  targetVal: number
-  // nCols
-) => {
-  const newGrid = getNewGridWithNewProperty(
-    grid,
-    row,
-    col,
-    "isTarget",
-    targetVal
-    // nCols
-  );
-  return newGrid;
+// changes 2 nodes from grid.hrid withou using setState, not a pure function
+// PAY ATTETION
+export const changeTargetNode = (grid: Grid, newTarget: Node) => {
+  // change node properties
+  const [r, c] = valToIndx(grid.target, grid.nCols);
+  const oldTarget = grid.grid[r][c];
+  oldTarget.isTarget = false;
+  newTarget.isTarget = true;
 };
 
 // returns a new mazed grid
@@ -197,18 +132,6 @@ export const getNewMazedGrid = async (grid: Grid, eps: number) => {
   grid.grid = newGrid;
   return grid;
 };
-
-//   building path
-// export const getPath = (parents: Node[], end, dist) => {
-//   let a = parents[end];
-//   let path = [];
-//   for (let i = 0; i < dist - 1; i++) {
-//     path.push(a);
-//     a = parents[a];
-//   }
-//   console.log(`Min Path: ${path.length + 1} squares`);
-//   return path.reverse();
-// };
 
 //   building path
 export const getPath = (
