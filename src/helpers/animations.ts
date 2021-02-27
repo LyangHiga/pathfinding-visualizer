@@ -53,7 +53,8 @@ const changingPropAnimation = (val: number, color: string) => {
 
 // chnages the color of a new wall
 export const wallAnimation = async (node: Node) => {
-  if (node.isStart || node.isTarget || !node.isWall) return;
+  // start and target node cant be walls
+  if (node.isStart || node.isTarget) return;
   await sleep(1);
   changingPropAnimation(node.val, colors.black);
 };

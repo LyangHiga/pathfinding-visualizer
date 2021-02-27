@@ -64,26 +64,9 @@ export const getNRowsandNCols = (
   return [nRows, nCols];
 };
 
-// to change a boolean property of Node (isStart, isTarget, isWall) to a new prop val
-const changeNodeProperty = (node: Node, prop: string, newPropVal: boolean) => {
-  switch (prop) {
-    case "isStart":
-      node.isStart = newPropVal;
-      return node;
-    case "isTarget":
-      node.isTarget = newPropVal;
-      return node;
-    case "isWall":
-      node.isWall = newPropVal;
-      return node;
-    default:
-      console.log(`${prop} is not a property of Node`);
-      return null;
-  }
-};
-
+// changes node inside of grid.grid withou setState, PAY ATTENTION
 export const toggleIsWall = (node: Node) => {
-  changeNodeProperty(node, "isWall", !node.isWall);
+  node.isWall = !node.isWall;
 };
 
 // changes 2 nodes from grid.hrid withou using setState, not a pure function
@@ -123,7 +106,8 @@ export const getNewMazedGrid = async (grid: Grid, eps: number) => {
       }
       if (Math.random() <= eps) {
         const node = newGrid[row][col];
-        const newNode = changeNodeProperty(node, "isWall", true)!;
+        const newNode = node;
+        newNode.isWall = true;
         newGrid[row][col] = newNode;
         await wallAnimation(newGrid[row][col]);
       }

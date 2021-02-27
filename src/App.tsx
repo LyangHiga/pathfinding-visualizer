@@ -1,6 +1,3 @@
-// TODO: Change start and finish node in mobile node, reorganize files
-// TODO: Refactoring with TypeSCript
-// TODO: Handle state with useReducer !? is probably better
 // TODO: Context api to global state is probably better than share state using props
 
 import React, { useState, useEffect } from "react";
@@ -20,6 +17,7 @@ import {
   getRandomNode,
   changeStartNode,
   changeTargetNode,
+  toggleIsWall,
 } from "./helpers/gridHelper";
 
 import {
@@ -97,8 +95,8 @@ function App() {
   const handleMouseDown = (row: number, col: number) => {
     if (createWall) {
       wallAnimation(grid!.grid[row][col]);
-      // const newGrid = getNewGridWithWallToggled(grid!, row, col);
-      // setGrid(newGrid);
+      // ATTENTION changing nodes isnde gri.grid withou setState
+      toggleIsWall(grid!.grid[row][col]);
       setMouseIsPressed(true);
     } else if (changeStart) {
       clearNodeAnimation(grid!.start);
@@ -122,8 +120,8 @@ function App() {
   const handleMouseEnter = (row: number, col: number) => {
     if (!mouseIsPressed || !createWall) return;
     wallAnimation(grid!.grid[row][col]);
-    // const newGrid = getNewGridWithWallToggled(grid!, row, col);
-    // setGrid(newGrid);
+    // ATTENTION changing nodes isnde gri.grid withou setState
+    toggleIsWall(grid!.grid[row][col]);
   };
 
   const handleMouseUp = () => {
