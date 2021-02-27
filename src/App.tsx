@@ -28,7 +28,7 @@ import {
   sleep,
 } from "./helpers/animations";
 
-import { MAX } from "./helpers/consts";
+import { MAX, KEYS } from "./helpers/consts";
 
 function App() {
   const { height, width } = useWindowDimensions();
@@ -79,13 +79,13 @@ function App() {
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
     switch (event.key) {
-      case "w":
+      case KEYS.wall:
         setChangeStart(false);
         setChangeTarget(false);
         return toggleCreateWall();
-      case "s":
+      case KEYS.start:
         return handleChangeStart();
-      case "f":
+      case KEYS.target:
         return handleChangeTarget();
       default:
         return;
