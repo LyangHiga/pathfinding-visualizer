@@ -1,3 +1,5 @@
+// TODO: test with different g sizes, weighted or not
+
 import React from "react";
 import { shallow } from "enzyme";
 import Grid from "../../components/Grid";
@@ -30,4 +32,23 @@ describe("Grid", () => {
     expect(wrapper).toMatchSnapshot();
     // On the first run of this test, Jest will generate a snapshot file automatically.
   });
+});
+
+it("Render a Grid with RANDOM_ROWS and RANDOM_COLS", () => {
+  const RANDOM_ROWS = Math.floor(Math.random() * 10);
+  const RANDOM_COLS = Math.floor(Math.random() * 20);
+  const g = new GridModel(START, TARGET, RANDOM_ROWS, RANDOM_COLS);
+  const wrapper = shallow(
+    <Grid
+      grid={g}
+      isWeighted={true}
+      handleMouseDown={jest.fn()}
+      handleMouseEnter={jest.fn()}
+      handleMouseUp={jest.fn()}
+    />
+  );
+  // Check if Grid has (<RANDOM_ROWS>) rows
+  expect(wrapper.props().children.length).toBe(RANDOM_ROWS);
+  // Check if Grid has (<RANDOM_COLS>) rows
+  expect(wrapper.props().children[0].props.children.length).toBe(RANDOM_COLS);
 });
