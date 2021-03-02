@@ -25,6 +25,7 @@ function WeightedButton(props: WeightedButtonProps) {
 
   const MySlider = (
     <Slider
+      key="slider"
       defaultValue={alpha}
       min={0}
       max={1}
@@ -39,8 +40,11 @@ function WeightedButton(props: WeightedButtonProps) {
   const WButton = (
     <div>
       {MySlider}
-      <span className={classes.text}>Alpha: {alpha}</span>
+      <span key="alpha" className={classes.text}>
+        Alpha: {alpha}
+      </span>
       <Button
+        key="alg-btn"
         className={classes.button}
         onClick={() => handleClick(a(grid, alpha))}
         disabled={disable}
@@ -52,8 +56,10 @@ function WeightedButton(props: WeightedButtonProps) {
 
   const WListItem = (
     <List disablePadding>
-      <ListItem divider>{MySlider}</ListItem>
-      <ListItem divider className={classes.button}>
+      <ListItem divider key="list-item-slider">
+        {MySlider}
+      </ListItem>
+      <ListItem divider className={classes.button} key="list-item-alpha">
         <ListItemText className={classes.listItemText}>
           Alpha: {alpha}
         </ListItemText>
@@ -67,6 +73,7 @@ function WeightedButton(props: WeightedButtonProps) {
         button
         className={classes.button}
         disabled={disable}
+        key="list-item-alg-btn"
       >
         <ListItemText className={classes.listItemText}>{fName}</ListItemText>
       </ListItem>
