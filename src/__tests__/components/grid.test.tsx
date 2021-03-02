@@ -33,9 +33,11 @@ describe("Grid", () => {
 });
 
 it("Render a Grid with RANDOM_ROWS and RANDOM_COLS", () => {
-  const RANDOM_ROWS = Math.floor(Math.random() * 10);
-  const RANDOM_COLS = Math.floor(Math.random() * 20);
-  const g = new GridModel(START, TARGET, RANDOM_ROWS, RANDOM_COLS);
+  // Random size grid
+  const RANDOM_ROWS = Math.floor(Math.random() * 10) + 1;
+  const RANDOM_COLS = Math.floor(Math.random() * 20) + 2;
+  // start = 0, target = 1 are guaranteed to exist
+  const g = new GridModel(0, 1, RANDOM_ROWS, RANDOM_COLS);
   const wrapper = shallow(
     <Grid
       grid={g}
@@ -52,9 +54,11 @@ it("Render a Grid with RANDOM_ROWS and RANDOM_COLS", () => {
 });
 
 it("Render an unweighted Grid", () => {
-  const RANDOM_ROWS = Math.floor(Math.random() * 10);
-  const RANDOM_COLS = Math.floor(Math.random() * 20);
-  const g = new GridModel(START, TARGET, RANDOM_ROWS, RANDOM_COLS);
+  // Random size grid
+  const RANDOM_ROWS = Math.floor(Math.random() * 10) + 1;
+  const RANDOM_COLS = Math.floor(Math.random() * 20) + 2;
+  // start = 0, target = 1 are guaranteed to exist
+  const g = new GridModel(0, 1, RANDOM_ROWS, RANDOM_COLS);
   const wrapper = shallow(
     <Grid
       grid={g}
