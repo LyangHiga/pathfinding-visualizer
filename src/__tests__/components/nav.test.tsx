@@ -1,3 +1,7 @@
+// TODO: test with different g sizes,
+// check if btns change
+// weighted or not, negative or not, disable or not
+
 import React from "react";
 import { shallow } from "enzyme";
 import Nav from "../../components/Nav";
@@ -36,4 +40,72 @@ describe("Nav", () => {
     expect(wrapper).toMatchSnapshot();
     // On the first run of this test, Jest will generate a snapshot file automatically.
   });
+});
+
+interface Btn {
+  key: string;
+  props: {
+    disabled: boolean;
+  };
+}
+
+it("Weighted and Negative Grid with disable prop, should render unWeighted btn, positive btn and keep all btns disabled ", () => {
+  // Random size grid
+  const RANDOM_ROWS = Math.floor(Math.random() * 10) + 1;
+  const RANDOM_COLS = Math.floor(Math.random() * 20) + 2;
+  // start = 0, target = 1 are guaranteed to exist
+  const g = new Grid(0, 1, RANDOM_ROWS, RANDOM_COLS);
+  // disable true
+  // isWeighted true
+  // isNegative false
+  const wrapper = shallow(
+    <Nav
+      grid={g}
+      disable={true}
+      isWeighted={true}
+      isNegative={false}
+      setGrid={jest.fn()}
+      setDisable={jest.fn()}
+      setIsWeighted={jest.fn()}
+      toggleIsweighted={jest.fn()}
+      toggleIsNegative={jest.fn()}
+      handleChangeStart={jest.fn()}
+      handleChangeTarget={jest.fn()}
+    />
+  );
+
+  // Option Btns from Nav component
+  const optBtns: (Btn | null)[] = wrapper.props().children.props.children[1]
+    .props.children[0].props.children[1].props.children;
+
+  let unWeightedBtn: Btn | null = null;
+  let weightedBtn: Btn | null = null;
+  let negBtn: Btn | null = null;
+  let posBtn: Btn | null = null;
+  for (let i = 0; i < optBtns.length; i++) {
+    // there are btns only available for mobile
+    if (optBtns[i] !== null) {
+      if (optBtns[i]!.key === "btnOpt-Unweighted Grid") {
+        unWeightedBtn = optBtns[i]!;
+      }
+      if (optBtns[i]!.key === "btnOpt-Weighted Grid") {
+        weightedBtn = optBtns[i];
+      }
+      if (optBtns[i]!.key === "btnOpt-Negative") {
+        negBtn = optBtns[i];
+      }
+      if (optBtns[i]!.key === "btnOpt-Positive") {
+        posBtn = optBtns[i];
+      }
+    }
+  }
+
+  expect(unWeightedBtn).not.toBeUndefined();
+  expect(unWeightedBtn).not.toBeNull();
+  expect(unWeightedBtn!.props.disabled).toBeTruthy();
+  expect(weightedBtn).toBeNull();
+  expect(negBtn).not.toBeUndefined();
+  expect(negBtn).not.toBeNull();
+  expect(negBtn!.props.disabled).toBeTruthy();
+  expect(posBtn).toBeNull();
 });
