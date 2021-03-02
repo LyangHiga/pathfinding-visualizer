@@ -137,6 +137,7 @@ it("Random size Grid with disable prop true and btn style, should render slider 
 interface ElementList {
   key: string;
   props: {
+    disabled?: boolean;
     children: Element;
   };
 }
@@ -164,8 +165,8 @@ it("Random size Grid with disable prop false and drawer style, should render sli
     .props.children;
   const alpha = weightedBtns.filter((e) => e.key === "list-item-alpha")[0].props
     .children;
-  const btn = weightedBtns.filter((e) => e.key === "list-item-alg-btn")[0].props
-    .children;
+  // disabled prop is in listItem not in btn itself
+  const btnItem = weightedBtns.filter((e) => e.key === "list-item-alg-btn")[0];
 
   expect(slider).not.toBeUndefined();
   expect(slider).not.toBeNull();
@@ -180,9 +181,55 @@ it("Random size Grid with disable prop false and drawer style, should render sli
   // default val of Alpha
   expect(alpha.props.children![1]).toBe(0.57);
 
-  expect(btn).not.toBeUndefined();
-  expect(btn).not.toBeNull();
-  expect(btn.props.disabled).toBeFalsy();
+  expect(btnItem).not.toBeUndefined();
+  expect(btnItem).not.toBeNull();
+  expect(btnItem.props.disabled).toBeFalsy();
   // Btn name for default val of Alpha(0.57)
-  expect(btn.props.children).toBe("A*");
+  expect(btnItem.props.children.props.children).toBe("A*");
+});
+
+it("Random size Grid with disable prop true and drawer style, should render slider, name of the function and algorithm btn in drawe style", () => {
+  // Random size grid
+  const RANDOM_ROWS = Math.floor(Math.random() * 10) + 1;
+  const RANDOM_COLS = Math.floor(Math.random() * 20) + 2;
+  // start = 0, target = 1 are guaranteed to exist
+  const g = new Grid(0, 1, RANDOM_ROWS, RANDOM_COLS);
+  // disable true
+  // btn false
+  const wrapper = shallow(
+    <WeightedButton
+      grid={g}
+      disable={true}
+      btn={false}
+      handleClick={jest.fn()}
+      setOpenDrawer={jest.fn()}
+    />
+  );
+
+  const weightedBtns: ElementList[] = wrapper.props().children;
+  const slider = weightedBtns.filter((e) => e.key === "list-item-slider")[0]
+    .props.children;
+  const alpha = weightedBtns.filter((e) => e.key === "list-item-alpha")[0].props
+    .children;
+  // disabled prop is in listItem not in btn itself
+  const btnItem = weightedBtns.filter((e) => e.key === "list-item-alg-btn")[0];
+
+  expect(slider).not.toBeUndefined();
+  expect(slider).not.toBeNull();
+  expect(slider.key).toBe("slider");
+  expect(slider.props.disabled).toBeTruthy();
+  expect(slider.props.min).toBe(0);
+  expect(slider.props.max).toBe(1);
+  expect(slider.props.step).toBe(0.01);
+
+  expect(alpha).not.toBeUndefined();
+  expect(alpha).not.toBeNull();
+  // default val of Alpha
+  expect(alpha.props.children![1]).toBe(0.57);
+
+  expect(btnItem).not.toBeUndefined();
+  expect(btnItem).not.toBeNull();
+  expect(btnItem.props.disabled).toBeTruthy();
+  // Btn name for default val of Alpha(0.57)
+  expect(btnItem.props.children.props.children).toBe("A*");
 });
