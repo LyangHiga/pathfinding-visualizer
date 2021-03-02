@@ -57,8 +57,7 @@ it("Random size Grid with disable prop false and btn style, should render slider
   // start = 0, target = 1 are guaranteed to exist
   const g = new Grid(0, 1, RANDOM_ROWS, RANDOM_COLS);
   // disable false
-  // isWeighted false
-  // isNegative true
+  // btn ture
   const wrapper = shallow(
     <WeightedButton
       grid={g}
@@ -83,13 +82,54 @@ it("Random size Grid with disable prop false and btn style, should render slider
 
   expect(alpha).not.toBeUndefined();
   expect(alpha).not.toBeNull();
-  expect(alpha.props.disabled).toBeFalsy();
   // default val of Alpha
   expect(alpha.props.children![1]).toBe(0.57);
 
   expect(btn).not.toBeUndefined();
   expect(btn).not.toBeNull();
   expect(btn.props.disabled).toBeFalsy();
+  // Btn name for default val of Alpha(0.57)
+  expect(btn.props.children).toBe("A*");
+});
+
+it("Random size Grid with disable prop true and btn style, should render slider disabled, name of the function and algorithm btn disabled ", () => {
+  // Random size grid
+  const RANDOM_ROWS = Math.floor(Math.random() * 10) + 1;
+  const RANDOM_COLS = Math.floor(Math.random() * 20) + 2;
+  // start = 0, target = 1 are guaranteed to exist
+  const g = new Grid(0, 1, RANDOM_ROWS, RANDOM_COLS);
+  // disable true
+  // btn true
+  const wrapper = shallow(
+    <WeightedButton
+      grid={g}
+      disable={true}
+      btn={true}
+      handleClick={jest.fn()}
+      setOpenDrawer={jest.fn()}
+    />
+  );
+
+  const weightedBtns: element[] = wrapper.props().children;
+  const slider = weightedBtns.filter((e) => e.key === "slider")[0];
+  const alpha = weightedBtns.filter((e) => e.key === "alpha")[0];
+  const btn = weightedBtns.filter((e) => e.key === "alg-btn")[0];
+
+  expect(slider).not.toBeUndefined();
+  expect(slider).not.toBeNull();
+  expect(slider.props.disabled).toBeTruthy();
+  expect(slider.props.min).toBe(0);
+  expect(slider.props.max).toBe(1);
+  expect(slider.props.step).toBe(0.01);
+
+  expect(alpha).not.toBeUndefined();
+  expect(alpha).not.toBeNull();
+  // default val of Alpha
+  expect(alpha.props.children![1]).toBe(0.57);
+
+  expect(btn).not.toBeUndefined();
+  expect(btn).not.toBeNull();
+  expect(btn.props.disabled).toBeTruthy();
   // Btn name for default val of Alpha(0.57)
   expect(btn.props.children).toBe("A*");
 });
