@@ -16,6 +16,7 @@ exports[`Node renders correctly 1`] = `
       ]
     }
     included={true}
+    key="slider"
     marks={Object {}}
     max={1}
     min={0}
@@ -35,6 +36,7 @@ exports[`Node renders correctly 1`] = `
   />
   <span
     className="makeStyles-text-7"
+    key="alpha"
   >
     Alpha: 
     0.57
@@ -42,6 +44,7 @@ exports[`Node renders correctly 1`] = `
   <WithStyles(ForwardRef(Button))
     className="makeStyles-button-4"
     disabled={true}
+    key="alg-btn"
     onClick={[Function]}
   >
     A*

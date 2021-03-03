@@ -94,6 +94,7 @@ function NegButton(props: NegButtonProps) {
   const negBtn = (
     <div>
       <Button
+        key="neg-btn"
         onClick={handleClickOpenAlert}
         disabled={disable}
         className={classes.button}
@@ -107,6 +108,7 @@ function NegButton(props: NegButtonProps) {
   const negBtnList = (
     <List disablePadding>
       <ListItem
+        key="neg-btn-list-item"
         onClick={handleClickOpenAlert}
         divider
         button
