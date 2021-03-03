@@ -14,13 +14,13 @@ Check [here](https://lyanghiga.github.io/pathfinding-visualizer/)!
 
 #### Nodes
 
-There are 3 types of nodes: Start (green) , Target (red) , and Wall (black).
+There are 3 types of nodes: Start (green), Target (red), and Wall (black).
 
 It's allowed only movements in 4 directions: N, E, S, and W.
 
 #### Weighted Grid
 
-Each node has weighted edges, all edges with the same cost, randomly chosen in [1, 200] range for "positive" and [-5,200] renge for negative option. The number inside each node represents the cost of each edge.
+Each node has weighted edges, all edges with the same cost, randomly chosen in [1, 200] range for "positive" and [-5,200] range for negative option. The number inside each node represents the cost of each edge.
 
 ### Buttons
 
@@ -32,19 +32,24 @@ Each node has weighted edges, all edges with the same cost, randomly chosen in [
 - Change start/ target: Available only in mobile version. Just click in a free node to change start or target node.
 - Slider to change Alpha Value
   - Alpha == 0 : Best First Search
+  - 0 < Alpha < 1 : A\*
   - Alpha == 1 : Dijkstra
+- Bellman-Ford:
+  - Animation: Nodes in Gray were visited but their cost was not decreased, nodes in blue were visited and their cost was reduced.
+  - If a negative Cycle exists a message will be printed in console browser, besides that no path will be found.
+  - It's available only for negative weight grid.
 
 ### Keyboard Commands
 
-Just press one of the keys bellow and click in some node to change something.
+Just press one of the keys below and click on some node to change something.
 
-- S: Press 'S' and click in a free node to change start Node.
-- F: Press 'F' and click in a free node to change final/ target Node.
-- W: Press 'W' and click and click in free nodes to create as many walls you like.
+- S: Press 'S' and click in a free node to change the start Node.
+- T: Press 'T' and click in a free node to change the target Node.
+- W: Press 'W' and click and click in free nodes to create as many walls as you like.
 
 ### Algorithms And Data Structures
 
-All algorithms and data structures are implemented as they used to be taught [1][2][6][7], all code is available in this repo. I think the main observations are in Best-first Search and A*, I use Manhattan Distance as heuristic, in A* to scale the function f, which we want to minimize:
+All algorithms and data structures are implemented as they used to be taught [1][2][6][7], all code is available in this repo. I think the main observations are in Best-first Search and A*, I use Manhattan Distance as a heuristic, in A* to scale the function f, which we want to minimize:
 
 g: edge costs and h: Manhattan Distance
 
@@ -56,20 +61,26 @@ To scale I used the expected value of the random variable of the weights, given 
 sum / maxWeight ; where sum is of the N terms from 1 to maxWeight, thus:
 sum = (maxWeight + 1) \* (maxWeight/2)
 
-\*maxWeight is a const defined equals to 50. But we can use any maxWeight > 1.
+\*maxWeight is a const defined equals to 200. But we can use any maxWeight > 1.
 I use Alpha = 0.57 as default value.
 If Alpha == 0 => To use only h (Best First Search)
 If Alpha == 1 => to use only g (Dijkstra)
 
 ### Using Decrease Key instead of Reinsert
 
-In this last commit I decided to use Decrease key when we found a new min distance to any node instead of reinserting the same node with its new distance, this means that we only make n dequeues because we insert each node just one time, in the worst case. [4]
+I decided to use Decrease key, for algorithms that use min-heap, when we found a new min distance to any node instead of reinserting the same node with its new distance, this means that we only make n dequeues because we insert each node just one time, in the worst case. [4]
 
-To implement Decrease Key I use a hash table (javascript object) to map Vals to indexes. [5]
+To implement Decrease Key I use a hash table ([Map object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)) to map Vals to indexes. [5]
 
 ### Browser Console
 
 After any algorithm runs you can check the distance of the chosen path (yellow) and some other useful information are also available in the browser's console.
+
+### Test
+
+I use Jest and Enzyme to implement Unit Tests. It was the first time I use Unit Test for testing React Components. It was extremely helpful especially for refactoring and migrating from JS to TS.
+
+We just have to make some basic configurations to start testing, it's totally worth it. I recommend these two references [8][9] to start testing React Component.
 
 ### References
 
@@ -87,6 +98,10 @@ After any algorithm runs you can check the distance of the chosen path (yellow) 
 [6]: [Algorithm Design 1st Edition](https://www.amazon.com/Algorithm-Design-Jon-Kleinberg/dp/0321295358)
 
 [7]: [Introduction to Algorithms, 3rd Edition](https://www.amazon.com/Introduction-Algorithms-3rd-MIT-Press/dp/0262033844)
+
+[8]: [Create react app typescript: testing with jest and enzyme](https://feralamillo.medium.com/create-react-app-typescript-testing-with-jest-and-enzyme-869fdba1bd3)
+
+[9]: [Testing React Components with Jest](https://medium.com/opendoor-labs/testing-react-components-with-jest-a7e8e4d312d8)
 
 Also check the [repo](https://github.com/clementmihailescu/Pathfinding-Visualizer-Tutorial) from Clement's video.
 
