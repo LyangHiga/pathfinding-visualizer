@@ -79,3 +79,36 @@ describe("Neg Button", () => {
     expect(negBtn.props.disabled).toBeFalsy();
   });
 });
+
+describe("Neg Button", () => {
+  it("Random size Grid with disable prop true and btn style, should render enable neg btn", () => {
+    // Random size grid
+    const RANDOM_ROWS = Math.floor(Math.random() * 10) + 1;
+    const RANDOM_COLS = Math.floor(Math.random() * 20) + 2;
+    // start = 0, target = 1 are guaranteed to exist
+    const g = new Grid(0, 1, RANDOM_ROWS, RANDOM_COLS);
+    const wrapper = shallow(
+      <NegButton
+        grid={g}
+        disable={true}
+        btn={true}
+        handleClick={jest.fn()}
+        setOpenDrawer={jest.fn()}
+        clear={jest.fn()}
+        newMaze={jest.fn()}
+        setIsWeighted={jest.fn()}
+      />
+    );
+    const btns = wrapper.props().children;
+    const negBtn: Element = btns.filter((e: Element) => e.key === "neg-btn")[0];
+
+    expect(negBtn).not.toBeUndefined();
+    expect(negBtn).not.toBeNull();
+    // typography inside btn named as "Bellman-Ford"
+    expect(negBtn.props.children!.props!.children).toBe("Bellman-Ford");
+    // onClick func that opens dialog
+    expect(negBtn.props.onClick).not.toBeUndefined();
+    // should be enable
+    expect(negBtn.props.disabled).toBeTruthy();
+  });
+});
